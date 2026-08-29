@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Planner Old"
+  short_description: "Maintain a reviewable living plan, then ship the smallest native patch"
+  default_prompt: "Use $feature-planner-old to create and continuously update an English living spec plus Korean review mirror before every question. Record user, repository, and agent decisions distinctly; expose all agent choices for correction; finish the exact minimal-change implementation design before the final review question; then orchestrate small verified worker slices only from the reviewed revision."
