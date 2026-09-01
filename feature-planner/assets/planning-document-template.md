@@ -1,127 +1,216 @@
-# Planning Document Template
+# Feature Planner — Living Planning Document Template
 
-Copy and adapt this structure. During the interview, keep one file in the user's
-language. Use the base path for the authoritative English file at explicit finish
-and create its Korean mirror as `<base-name>.ko.md`.
+Copy and adapt this structure to the domain. It defines the minimum planning state,
+not a fixed questionnaire.
+
+Before asking the first question, replace every bracketed example with substantive
+content from the user's request and inspected evidence. When a value is genuinely
+unknown, create an `OI-*` entry with its consequence instead of leaving a vague
+placeholder. During an active or paused interview, write in the user's working
+language. At explicit finish, use the base path for the authoritative English
+version and create the Korean mirror as `<base-name>.ko.md`.
 
 ---
 
-# [Plan title]
+# [Outcome-oriented plan title]
+
+> One authoritative living planning document. The document, not the chat, is the
+> current planning state.
 
 ## Document State
 
-- Interview state: `active | paused | explicitly-finished`
-- Working language: [language]
-- Current revision: [number]
-- Last updated: [date and time]
-- Base path: [authoritative English final path]
-- Korean mirror: [base name].ko.md (created only at explicit finish)
-- Next authorized action: [what may happen next, or `awaiting user authorization`]
+| Field | Value |
+| --- | --- |
+| Interview state | `active` / `paused` / `explicitly-finished` |
+| Working language | [language used during the interview] |
+| Current revision | [monotonically increasing integer] |
+| Last updated | [ISO 8601 timestamp with timezone] |
+| Project or workspace root | [resolved root or `not writable / in-response draft`] |
+| Base path | [authoritative English path, normally `docs/specs/<feature-slug>-spec.md`] |
+| Korean mirror path | [normally `docs/specs/<feature-slug>-spec.ko.md`; created at finish] |
+| Explicit finish received | `yes` / `no` |
+| Next authorized action | [specific action already authorized, or `awaiting separate user authorization`] |
 
 ## Current Snapshot
 
-- Outcome: [current best statement of the desired result]
-- Primary users or audience: [who benefits or uses it]
-- In scope: [short summary]
-- Out of scope: [short summary]
-- Current focus: [the decision area being refined]
-- Material unresolved items: [IDs or `none`]
+- **Outcome:** [current best statement of the intended result]
+- **Primary users or audience:** [current best identification]
+- **In scope:** [compact boundary]
+- **Out of scope:** [compact non-goals]
+- **Current decision focus:** [area being refined]
+- **Material unresolved items:** [active `OI-*` IDs or `none`]
+- **Active question IDs:** [open `Q-*` IDs or `none`]
 
 ## Outcome and Context
 
-[Explain the problem, desired outcome, background, and why it matters.]
+### Desired Outcome
+
+[Describe what should become possible or improve.]
+
+### Problem and Background
+
+[Describe the present problem, supplied context, and why the work matters.]
+
+### Planning Boundary
+
+[State what this plan is deciding and what remains outside planning or requires a
+separate authorization.]
 
 ## Users and Stakeholders
 
-[Describe users, audience, owners, affected parties, and their material needs.]
+| User or stakeholder | Need, responsibility, or concern | Evidence / source IDs | Status |
+| --- | --- | --- | --- |
+| [primary user] | [material need] | [UD/SF/AR/OI IDs] | active |
 
 ## Scope and Non-Goals
 
 ### In Scope
 
-- [Included result or capability]
+| Scope item | Source IDs | Status | Notes |
+| --- | --- | --- | --- |
+| [included capability, result, or process] | [UD/SF/AR/OI IDs] | active | [boundary] |
 
-### Out of Scope
+### Out of Scope / Non-Goals
 
-- [Explicit exclusion]
+| Excluded item | Source IDs | Status | Why excluded or deferred |
+| --- | --- | --- | --- |
+| [explicit exclusion] | [UD/SF/AR/OI IDs] | active | [reason] |
 
-## Core Experience or Operating Flow
+## Core Experience / Operating Flow
 
-1. [First meaningful step or state]
-2. [Next meaningful step or state]
-3. [Expected result or handoff]
+### Primary Flow
+
+1. [Actor or system reaches the initial state.]
+2. [Meaningful action or transition occurs.]
+3. [Decision, validation, or system response occurs.]
+4. [Observable result or handoff is produced.]
+
+### Alternate, Error, or Edge Flows
+
+| Condition | Expected behavior | Related requirement or decision IDs | Status |
+| --- | --- | --- | --- |
+| [alternate/error condition] | [expected handling] | [R/UD/OI IDs] | active / unresolved |
+
+### State, Data, or Lifecycle Notes
+
+[Describe relevant state transitions, retention, ownership, synchronization,
+operational lifecycle, or domain-equivalent concerns. Omit categories that do not
+apply, but preserve the decisions they represent.]
 
 ## Requirements
 
-| ID | Requirement | Source or linked decision | Status |
-| --- | --- | --- | --- |
-| R-001 | [Required behavior or outcome] | [UD/SF/AR/OI ID] | active |
+Keep IDs stable. Never leave an obsolete requirement active after its source was
+corrected or superseded.
 
-## Constraints and Success Evidence
+| ID | Requirement | Type | Source IDs | Priority | Status | Success evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| R-001 | [observable required behavior or outcome] | functional / quality / operational | [UD/SF/AR/OI IDs] | must / should / could | active | [acceptance test, metric, review, or artifact] |
 
-### Constraints
+## Constraints
 
-- [Technical, budget, time, policy, quality, or compatibility constraint]
+Record only constraints supported by a source or clearly marked assumption.
 
-### Success Evidence
+| Category | Constraint | Source IDs | Consequence | Status |
+| --- | --- | --- | --- | --- |
+| technical / performance / cost / schedule / policy / security / compatibility / quality | [constraint] | [UD/SF/AR/OI IDs] | [design or scope impact] | active / proposed / unresolved |
 
-- [Observable acceptance signal, metric, test, review, or artifact]
+## Success Evidence
+
+Define how success will be observed, not merely that work was “implemented.”
+
+| Related requirement IDs | Evidence or acceptance condition | Verification method | Owner or reviewer | Status |
+| --- | --- | --- | --- | --- |
+| [R-*] | [observable result, threshold, QA condition, user validation, or required artifact] | test / metric / inspection / review | [owner or unresolved] | proposed / active / blocked |
 
 ## Decision and Evidence Ledger
 
-Use stable IDs. Keep corrected history instead of deleting it.
+This is the audit log. Preserve corrected history rather than deleting it.
 
-| ID | Kind | Statement | Evidence or rationale | Status | Consequence |
+| ID | Kind | Statement | Evidence / rationale | Status | Consequence / linked IDs |
 | --- | --- | --- | --- | --- | --- |
-| UD-001 | user decision | [Explicit user choice] | [User message or supplied source] | active | [Affected scope or requirement] |
-| SF-001 | sourced fact | [Verified fact] | [File, URL, or evidence] | active | [Planning impact] |
-| AR-001 | agent assumption/recommendation | [Inference or recommendation] | [Reasoning and uncertainty] | proposed | [What changes if accepted] |
-| OI-001 | unresolved item | [Unknown, conflict, skip, or deferral] | [Why unresolved] | open | [Risk or blocked decision] |
+| UD-001 | user decision | [explicit user choice or condition] | [user message / revision] | active | [R/OI/RK/Q IDs] |
+| SF-001 | sourced fact | [verified fact] | [revisitable file, section, symbol, line, or URL] | active | [planning impact] |
+| AR-001 | agent recommendation / assumption | [advice or inference] | [evidence and uncertainty] | proposed | [impact if accepted; accepting creates a new UD] |
+| OI-001 | unresolved item | [unknown, conflict, skipped, deferred, or blocked decision] | [why unresolved] | open | [scope, behavior, risk, or requirement impact] |
 
-Allowed statuses include `active`, `proposed`, `open`, `deferred`, `skipped`,
-`corrected`, and `superseded`.
+Typical statuses include `active`, `proposed`, `open`, `resolved`, `conflict`,
+`skipped`, `deferred`, `corrected`, `superseded`, `cancelled`, and `blocked`.
+
+## Question Register
+
+Register a question here before asking it. Do not renumber or reuse IDs.
+
+| ID | Decision needed | Why it matters | Related IDs | State | Asked / updated revision | Resolution |
+| --- | --- | --- | --- | --- | --- | --- |
+| Q-001 | [specific material decision] | [behavior, scope, cost, quality, or risk impact] | [OI/R/RK/UD IDs] | open | [revision] | [UD/OI ID or `pending`] |
+
+Question states may include `open`, `answered`, `skipped`, `deferred`, `cancelled`,
+and `conflict-resolution`.
 
 ## Corrections and Revision History
 
-| Revision | Change | Superseded or corrected IDs | Downstream updates |
-| --- | --- | --- | --- |
-| 1 | Initial planning hypothesis | none | Initial scope, requirements, risks, and questions |
+| Revision | Trigger | Change | Corrected / superseded IDs | Downstream sections and IDs reconciled |
+| --- | --- | --- | --- | --- |
+| 1 | Initial request and inspected context | Initial best planning hypothesis | none | Snapshot, scope, flow, requirements, risks, ledger, questions |
 
 ## Risks, Conflicts, and Dependencies
 
-| ID | Risk, conflict, or dependency | Likelihood/impact | Mitigation or owner | Status |
-| --- | --- | --- | --- | --- |
-| RK-001 | [Material uncertainty or dependency] | [Assessment] | [Response or owner] | open |
+| ID | Kind | Risk, conflict, or dependency | Likelihood / impact | Mitigation, decision, or owner | Related IDs | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| RK-001 | risk / conflict / dependency | [material item] | [assessment] | [response, owner, or unresolved action] | [UD/SF/AR/OI/R IDs] | open |
 
 ## Open, Skipped, and Deferred Items
 
-| ID | Item | State | Why it matters | Recommendation | Revisit trigger |
-| --- | --- | --- | --- | --- | --- |
-| OI-001 | [Decision or missing fact] | open | [Consequence] | [Suggested answer, if any] | [When to revisit] |
+| ID | Item | State | Why it matters / consequence | Current recommendation | Owner | Revisit trigger |
+| --- | --- | --- | --- | --- | --- | --- |
+| OI-001 | [missing fact or decision] | open / conflict / skipped / deferred / blocked | [planning impact] | [AR-* or neutral] | [owner or unknown] | [specific event, evidence, milestone, or date] |
+
+## Coverage and Consistency Check
+
+| Planning area | State | Supporting IDs | Remaining gap or note |
+| --- | --- | --- | --- |
+| Outcome | covered / partial / open | [IDs] | [note] |
+| Users and stakeholders | covered / partial / open | [IDs] | [note] |
+| Scope | covered / partial / open | [IDs] | [note] |
+| Non-goals | covered / partial / open | [IDs] | [note] |
+| Core flow | covered / partial / open | [IDs] | [note] |
+| Constraints | covered / partial / open | [IDs] | [note] |
+| Success evidence | covered / partial / open | [IDs] | [note] |
+| Risks and dependencies | covered / partial / open | [IDs] | [note] |
+| Unresolved decisions | covered / partial / open | [IDs] | [note] |
+| Handoff and authorization | covered / partial / open | [IDs] | [note] |
 
 ## Interview Checkpoint
 
-- Latest answers incorporated: [summary]
-- Latest sourced evidence incorporated: [summary]
-- Affected sections reconciled: [sections or IDs]
-- Next question focus: [one related domain]
-- Completeness check: [covered/gaps for outcome, users, scope, flow,
-  constraints, success evidence, risks, unresolved decisions, and handoff]
-- Explicit finish received: `yes | no`
+- **Latest user message incorporated:** [summary and revision]
+- **Latest sourced evidence incorporated:** [SF IDs and sources, or `none`]
+- **Ledger transitions applied:** [new or changed IDs]
+- **Affected sections reconciled:** [sections and requirement/risk/question IDs]
+- **Contradictory active items check:** [passed, or list blockers]
+- **Traceability check:** [passed, or list unlinked active requirements]
+- **Current focus:** [one decision domain]
+- **Next question IDs:** [registered open Q IDs, or `none`]
+- **Resume point:** [where a new session should continue]
 
 ## Finalization and Handoff
 
-Complete this section only after an explicit finish signal.
+Complete only after an explicit finish signal. Do not resolve open items merely to
+make the document look finished.
 
-- English source: [path]
-- Korean mirror: [path]
-- Synchronization check: [same IDs, statuses, requirements, decisions, risks,
-  unresolved items, and next authorized action]
-- Remaining gaps: [IDs and consequences, or `none`]
-- Assumptions still requiring confirmation: [IDs or `none`]
-- Next authorized action: [specific action already authorized, or
+- **Final interview state:** `explicitly-finished`
+- **Authoritative English source:** [base path]
+- **Korean mirror:** [`.ko.md` path]
+- **Synchronization check:** [confirm identical stable IDs, statuses, requirements,
+  decisions, risks, unresolved items, and next authorized action]
+- **Remaining gaps and consequences:** [OI/RK IDs or `none`]
+- **Assumptions still requiring confirmation:** [AR IDs or `none`]
+- **Next authorized action:** [specific action already authorized, or
   `awaiting separate user authorization`]
-- Resume point if planning reopens: [section and unresolved IDs]
+- **Implementation handoff:** [relevant R/UD/SF/AR/OI/RK IDs and suggested executor,
+  without requiring a proprietary schema]
+- **Resume point if planning reopens:** [section, OI/Q IDs, and changed context to
+  reconcile]
 
-> Finishing or approving this plan does not itself authorize implementation,
-> publishing, messaging, purchasing, deployment, or external-system changes.
+> Finishing or approving this plan does not authorize implementation, commits, pull
+> requests, package installation, deployment, publishing, messaging, purchasing, or
+> external-system changes. Those require separate explicit authorization.

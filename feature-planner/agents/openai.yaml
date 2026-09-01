@@ -1,7 +1,7 @@
 interface:
   display_name: "Feature Planner"
-  short_description: "Turn evolving ideas into durable interview-led plans"
-  default_prompt: "Use $feature-planner to refine my idea through questions and maintain the planning document."
+  short_description: "Build durable feature plans"
+  default_prompt: "Use $feature-planner to inspect available context, create a living planning document before asking questions, and refine my idea through traceable decisions."
 
 policy:
   allow_implicit_invocation: true
