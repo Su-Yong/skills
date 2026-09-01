@@ -1,7 +1,7 @@
 interface:
   display_name: "Feature Implementer"
   short_description: "Implement plans with minimal verified changes"
-  default_prompt: "Use $feature-implementer to implement this planning document with the smallest verified change."
+  default_prompt: "Use $feature-implementer to read this planning document in full, implement only its authorized scope with the smallest verified semantic diff, preserve existing workspace changes, and return an evidence-based integrated report."
 
 policy:
   allow_implicit_invocation: true
