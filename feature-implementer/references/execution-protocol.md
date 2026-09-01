@@ -1,70 +1,305 @@
 # Feature Implementer Execution Protocol
 
-Use this protocol when an implementation run needs explicit work units, workers,
-dependency waves, recovery, or nontrivial integration and validation. Adapt its
-depth to the plan, but preserve the ownership, evidence, and authorization
-invariants whether the primary agent works directly or delegates.
+This protocol defines the detailed execution model for complex Feature Implementer
+runs. Read it completely before editing when the work uses internal workers,
+dependency waves, finite recovery, nontrivial integration, or complex validation.
+For a small direct change, its invariants still apply even when the full protocol is
+not loaded.
 
-## 1. Plan Intake
+The protocol optimizes for:
 
-Read the entire plan and record:
+```text
+Plan Fidelity
++ Minimal Semantic Diff
++ Workspace Preservation
++ Adaptive Execution
++ Requirement Traceability
++ Evidence-based Validation
++ Strict Authorization Boundary
+```
 
-- source path and, when present, its revision or completion state;
-- requirements and acceptance criteria;
-- explicit non-goals and do-not-touch areas;
-- user decisions versus sourced facts, agent recommendations, and unresolved
-  items;
-- technical, compatibility, migration, security, performance, and rollout
-  constraints relevant to the requested work; and
-- actions authorized now versus actions merely named as future work.
+## 0. Sources of truth and precedence
 
-A `feature-planner` document may expose stable IDs and provenance tables. Reuse
-those IDs when useful, but infer equivalent requirement records from an ordinary
-Markdown plan instead of requiring a planner-specific schema.
+Use two complementary sources of truth:
 
-Do not implement an affected requirement when the plan lacks an essential
-contract that cannot be discovered safely from repository evidence. Record the
-missing decision and its consequence. Continue units that do not depend on it.
+- **Planning document:** desired behavior, scope, non-goals, constraints, acceptance
+  criteria, unresolved decisions, provenance, and authorized next action.
+- **Repository evidence:** current architecture, behavior, code conventions,
+  available abstractions, validation commands, baseline state, and existing user
+  changes.
 
-## 2. Repository Baseline
+Do not use either source to silently override higher-priority runtime instructions or
+explicit user authorization. When the plan and repository evidence materially
+conflict, record the conflict and block only the affected requirement unless an
+unambiguous safe interpretation exists.
 
-Before editing, establish a bounded baseline:
+An explicit implementation request authorizes repository investigation, workspace
+edits, and validation within the plan's scope. It does not automatically authorize
+Git-history changes, remote operations, deployment, publication, installation,
+purchasing, messaging, or external-system mutation.
 
-1. Find and read applicable repository instruction files.
-2. Locate the smallest relevant implementation and test surface.
-3. Identify existing components, helpers, patterns, and configuration to reuse.
-4. When Git exists, record branch-independent status plus staged and unstaged
-   changes for relevant files.
-5. Discover targeted validation commands and broader repository checks.
-6. Run a cheap baseline check when it is necessary to distinguish existing
-   failures from regressions and its cost is proportionate.
+## 1. Normalize the planning document
 
-Do not reset, clean, stash, move, broadly reformat, or overwrite user-owned work.
-If a required target already contains user changes, inspect and preserve them while
-making the smallest compatible edit. Ask only when the plan and the existing change
-express a material conflict that repository evidence cannot resolve.
+### 1.1 Read the complete source
 
-## 3. Minimal-Change Map
+Read the entire identified planning document before editing. Record:
 
-For every requirement, identify:
+- source path or URL;
+- title, revision, language, and completion state when present;
+- current implementation authorization;
+- active requirements;
+- acceptance criteria and success evidence;
+- scope and non-goals;
+- constraints and compatibility commitments;
+- risks and dependencies;
+- unresolved, skipped, deferred, corrected, superseded, or conflicting items; and
+- provenance or decision records.
 
-- existing behavior to preserve;
-- existing code or abstraction to reuse;
-- exact file or symbol that must change;
-- necessary tests or fixtures;
-- behavior that must remain out of scope; and
-- evidence that will prove completion.
+Do not start from a summary when the complete source is available. Do not treat a
+plan's explicit finish as implementation authority; the user's current request must
+authorize implementation separately.
 
-Prefer a local change to a new abstraction when both satisfy the plan cleanly.
-Introduce a shared abstraction or dependency only when the plan genuinely requires
-it or existing architecture makes it the smaller semantic change. Reject unrelated
-cleanup even when it would improve the code in isolation.
+### 1.2 Support planner and general Markdown inputs
 
-## 4. Work-Unit Contract
+For a Feature Planner artifact, preserve stable identifiers such as:
 
-For multi-unit or delegated work, create one record per implementation unit. A
-direct low-risk unit may instead use a compact requirement-to-target-and-evidence
-map when the full record would add no useful coordination signal.
+- requirements: `R-*`;
+- user decisions: `UD-*`;
+- sourced facts: `SF-*`;
+- agent recommendations or assumptions: `AR-*`;
+- unresolved items: `OI-*`; and
+- risks: `RK-*`.
+
+Reuse these IDs in work units, code-change explanations, tests, and final evidence.
+Do not invoke or depend on a Feature Planner runtime.
+
+For a sufficiently concrete general Markdown plan, create an internal stable map:
+
+- implementation requirements: `IR-*`;
+- acceptance criteria: `IAC-*`;
+- constraints: `IC-*`;
+- non-goals: `ING-*`; and
+- unresolved items: `IOI-*`.
+
+These IDs exist only for execution traceability. Do not rewrite the user's source
+plan merely to add them.
+
+### 1.3 Create the requirement ledger
+
+Create one record per active requirement:
+
+```text
+Requirement ID:
+Statement:
+Source / provenance:
+Required or optional:
+Acceptance criteria:
+Constraints:
+Dependencies:
+Related non-goals / do-not-touch areas:
+Unresolved decisions:
+Authorized actions:
+Implementation target: pending
+Evidence target: pending
+Implementation status: pending
+Evidence status: pending
+```
+
+Inactive, corrected, or superseded requirements remain useful context but must not be
+implemented as active scope unless the plan explicitly reactivates them.
+
+### 1.4 Classify gaps without inventing contracts
+
+For every missing detail, choose exactly one path:
+
+1. **Discoverable technical fact** — inspect relevant repository evidence.
+2. **Material user-owned contract** — mark dependent requirements `blocked` when the
+   plan and repository cannot establish it safely.
+3. **Non-blocking implementation choice** — select the repository-consistent option
+   that produces the smallest semantic diff and record the rationale.
+4. **Residual uncertainty** — continue, but record the uncertainty and consequence.
+
+Material contracts include product behavior, public API meaning, data retention or
+deletion semantics, authorization policy, migration guarantees, security posture,
+compatibility promises, and user-visible failure behavior. Do not silently choose
+among materially different outcomes.
+
+A gap in one requirement does not stop independent work. Propagate the blocked state
+only through actual dependencies.
+
+## 2. Establish the repository baseline
+
+### 2.1 Resolve applicable instructions
+
+Before editing, locate and read instructions that govern the repository and target
+paths, including repository-level and nested instruction files. Apply the most
+specific applicable instruction without ignoring broader rules.
+
+Record any instruction that constrains:
+
+- allowed files or directories;
+- generated code;
+- migrations or schema changes;
+- test commands;
+- formatting or linting;
+- dependency management;
+- documentation requirements; or
+- commit, branch, or deployment behavior.
+
+### 2.2 Inspect the minimum relevant surface
+
+Inspect only what is needed to understand and implement the requirement map:
+
+- entry points and call paths;
+- target modules, symbols, components, routes, handlers, schemas, or configuration;
+- direct consumers and dependencies;
+- related tests and fixtures;
+- existing helpers or abstractions;
+- generated artifacts and their source definitions; and
+- repository-standard validation commands.
+
+Avoid broad repository exploration that does not reduce implementation uncertainty.
+
+### 2.3 Record workspace state
+
+When Git is available, inspect the current branch-independent workspace state and the
+relevant staged and unstaged changes. Existing changes are user-owned unless the
+current run can prove ownership.
+
+Never use destructive or ownership-blind operations such as:
+
+```text
+git reset
+git clean
+git checkout -- <unowned path>
+git restore <unowned path>
+automatic stash
+repository-wide formatter
+broad rename or move
+```
+
+If a target file already contains changes:
+
+1. understand the existing diff;
+2. preserve its intent;
+3. make a compatible minimal edit on top of it; and
+4. ask only when the existing work and plan express a material conflict that cannot
+   be resolved from evidence.
+
+### 2.4 Separate baseline failures
+
+Run a cheap pre-change check only when it is proportionate and useful for separating
+pre-existing failures from regressions. Record:
+
+```text
+Baseline check:
+Command or observation:
+Scope:
+Result:
+Known failure signature:
+Evidence source:
+Cost / reason for running:
+```
+
+Do not run an expensive full suite merely to establish a baseline when a targeted
+check is sufficient. A failure may be classified `baseline-failure` only when there
+is evidence that it predates the implementation or is demonstrably unrelated.
+
+## 3. Build the Minimal-Change Map
+
+Create one map per requirement before editing:
+
+```text
+Requirement ID:
+Required behavior:
+Existing behavior to preserve:
+Existing abstraction to reuse:
+Target file(s) / symbol(s):
+Necessary test(s) / fixture(s):
+Explicit non-goals:
+Do-not-touch paths or behavior:
+Potential user-owned overlap:
+Acceptance evidence:
+Dependencies:
+Expected semantic diff:
+```
+
+The map answers both questions:
+
+- What must change?
+- Where is the exact stopping point after the requirement is satisfied?
+
+### 3.1 Select the smallest semantic diff
+
+Evaluate candidate implementations in this order:
+
+1. reuse an existing behavior or extension point;
+2. modify the narrowest existing abstraction that already owns the behavior;
+3. add a local implementation when a shared abstraction would widen scope;
+4. introduce a shared abstraction only when multiple required consumers genuinely
+   need it or the existing architecture makes it the smaller semantic change; and
+5. add or upgrade a dependency only when no repository-consistent built-in option
+   can satisfy an authorized requirement safely.
+
+Minimality is not line-count minimization. A slightly larger local test-backed change
+may be semantically smaller than a short but global rewrite.
+
+Reject changes that are useful only as cleanup, modernization, style preference,
+unrelated bug fixes, speculative extensibility, or dependency refreshes.
+
+## 4. Build the work graph and choose execution depth
+
+### 4.1 Identify work units and dependencies
+
+Group requirement maps into implementation units. Two requirements may share a unit
+when they are tightly coupled in the same file, contract, migration, generated
+artifact, or validation path. Do not split tightly coupled work merely to create
+parallelism.
+
+Represent dependencies as a directed acyclic graph when possible:
+
+```text
+prerequisite unit
+      ↓
+dependent implementation
+      ↓
+integration or scenario validation
+```
+
+Cycles usually indicate that units should be combined or that an interface contract
+must be established first.
+
+### 4.2 Direct execution
+
+The primary agent should work directly when the task is:
+
+- one bounded change;
+- low risk;
+- small enough to understand and validate as a unit;
+- concentrated in one tightly coupled write surface; or
+- unlikely to gain material speed or quality from delegation.
+
+A direct task still requires requirement mapping, workspace preservation, targeted
+validation, and an integrated report.
+
+### 4.3 Delegated execution
+
+Use internal collaboration workers only when delegation has a concrete benefit:
+
+- independent write-disjoint units can progress concurrently;
+- dependency waves provide useful parallelism;
+- a complex bounded subsystem benefits from specialist implementation; or
+- risk justifies an independent read-only reviewer or validator.
+
+Do not delegate solely because there are many checklist items. Do not make worker
+availability a blocker when the primary agent can safely own the work.
+
+A read-only review worker may inspect overlapping paths because it has no write
+scope. Concurrent write workers must remain disjoint.
+
+## 5. Define each Work Unit
+
+Use this contract for every delegated unit and for complex direct units:
 
 ```text
 ID:
@@ -81,162 +316,462 @@ Validation commands:
 Expected report:
 ```
 
-The exclusive write scope must be precise enough that concurrently running workers
-do not edit the same file or tightly coupled symbols. A directory-wide scope is
-appropriate only when the unit truly owns that directory. Read-only context may
-overlap freely.
+### 5.1 Exclusive write scope rules
 
-When a worker is used, its assignment must also state:
+The exclusive write scope must be precise and enforceable. Concurrent units must not
+write to the same:
 
-- the workspace is shared and other changes may appear during execution;
-- do not revert, reset, discard, or overwrite changes outside the unit;
-- do not broaden scope or opportunistically fix other issues;
-- do not spawn further agents unless the primary agent explicitly reassigns that
-  coordination responsibility;
-- run the specified targeted validation; and
-- report changed files, validation evidence, baseline observations, and any
-  blocked or unverified acceptance criterion.
+- file;
+- tightly coupled symbol or public contract;
+- migration chain;
+- generated artifact;
+- shared snapshot or golden file;
+- package or lockfile;
+- central registry; or
+- core type definition and its generated outputs.
 
-## 5. Delegation and Dependency Rules
+Directory-wide ownership is allowed only when the unit genuinely owns the entire
+directory. Read-only context may overlap freely.
 
-Choose delegation from task shape and risk, not from unit count alone:
+If several units must modify the same file or contract, combine them or serialize
+them through dependencies.
 
-- The primary agent may implement and validate one low-risk, bounded unit directly.
-- Delegate when independent, write-disjoint units can make useful concurrent
-  progress or complexity or risk makes independent work or review materially
-  useful. Never split work merely to manufacture parallelism.
-- Run dependency-free delegated units in parallel when their write scopes do not
-  overlap. Reserve capacity for primary-agent integration when practical, inspect
-  each wave, and release downstream work only after its dependencies integrate.
-- Do not concurrently assign the same file, generated artifact, migration chain,
-  tightly coupled type contract, or shared test snapshot to multiple workers.
+### 5.2 Required worker context
 
-Use only internal collaboration sub-agents. Do not create separate user-owned tasks
-as a substitute for workers. Worker availability alone is not a blocker: continue
-directly when the primary agent can safely own the work. Block only when the work's
-actual complexity, risk, contract, or capability prevents safe progress.
+Every worker assignment must state that:
 
-## 6. Shared-Workspace Coordination
+- the workspace is shared and unrelated changes may appear while it runs;
+- it owns only the listed write scope;
+- it must not reset, revert, discard, overwrite, or broadly reformat unassigned
+  changes;
+- it must not expand scope or opportunistically fix other issues;
+- it must preserve listed existing changes;
+- it must not spawn additional agents unless the primary agent explicitly delegates
+  that coordination responsibility;
+- it must run the specified targeted validation; and
+- its report must identify changed files, requirement coverage, validation evidence,
+  blocked items, unverified items, and baseline observations.
 
-The primary agent is the sole owner of the complete work graph and integration
-decision. Workers own only their assigned write scopes.
+## 6. Execute dependency waves
 
-Before accepting a worker result, the primary agent must:
+Schedule only units whose dependencies have been integrated and reviewed.
 
-1. Inspect the current workspace rather than relying only on the worker summary.
-2. Confirm that changed paths stay within the assigned scope.
-3. Confirm that user-owned and other workers' changes remain present.
-4. Review the semantic diff against linked requirements and non-goals.
-5. Check the worker's validation output and rerun important checks when necessary.
-6. Reconcile downstream unit assumptions with the integrated state.
+Example:
 
-If two results conflict, do not discard either result wholesale. Resolve an obvious,
-small integration conflict directly; otherwise revise ownership and delegate a
-bounded reconciliation unit.
+```text
+Wave 1
+A: schema or core contract
 
-## 7. Worker Failure and Retry Policy
+Wave 2
+B: API implementation
+C: repository or UI implementation
 
-When a worker is used, its attempt fails when it cannot complete a required
-acceptance criterion, produces invalid changes, exceeds its write scope, or lacks
-trustworthy validation.
+Wave 3
+D: integration and scenario validation
+```
 
-Apply this finite sequence:
+Within a wave:
 
-1. Inspect the failure and shared workspace state.
-2. Before another attempt, identify and isolate or remove only invalid or
-   out-of-scope edits made by the failed attempt. Verify ownership first and
-   preserve user-owned changes and valid changes from every worker.
-3. Clarify missing context, constraints, or evidence and retry the same worker once.
-4. If that retry fails, assign the unit once to a different worker with the updated
-   context and the surviving valid workspace state.
-5. If the replacement fails, let the primary agent fix only a small integration,
-   conflict, or mechanical-alignment problem.
-6. Otherwise mark the unit `blocked`, preserve valid independent work, and state
-   the exact missing decision, contract, capability, or failing evidence.
+- write scopes must be disjoint;
+- no unit may depend on another unit in the same wave unless the dependency is
+  read-only and already stable;
+- the primary agent keeps enough attention for shared-workspace monitoring and
+  integration; and
+- downstream work is not released merely because a worker reports success.
 
-Do not loop indefinitely, silently relax acceptance criteria, or call an unverified
-unit complete.
+After each wave, the primary agent must inspect and integrate prerequisite changes
+before scheduling dependent work.
 
-## 8. Primary-Agent Ownership and Direct Work
+## 7. Inspect and integrate worker results
 
-The primary agent may implement one low-risk bounded unit directly and may perform
-small integration, conflict resolution, or mechanical alignment supported by the
-plan. It may remove invalid edits from the current run only after verifying
-ownership and preserving user work.
+A worker's completion statement is not evidence. Before accepting a result, the
+primary agent must inspect the actual workspace and verify:
 
-Delegate when Section 5's independence, complexity, or risk test creates a
-material benefit. After the finite worker retries, the primary agent may absorb
-only a small integration or mechanical fix; otherwise block the unit rather than
-quietly changing the work graph or acceptance criteria.
+1. changed paths stay inside the assigned write scope;
+2. user-owned and other workers' changes remain present;
+3. the semantic diff satisfies linked requirements;
+4. non-goals and do-not-touch areas remain intact;
+5. repository style and abstractions are preserved;
+6. dependency assumptions remain valid;
+7. validation output is relevant, reproducible, and trustworthy; and
+8. downstream units still have correct prerequisites.
 
-With or without workers, the primary agent owns requirement mapping,
-minimal-change discipline, direct validation, baseline-failure classification,
-and the integrated report.
+Rerun important targeted checks when the worker output is incomplete, ambiguous, or
+high risk.
 
-## 9. Validation Ladder
+If two valid results conflict, do not discard either wholesale. Resolve an obvious
+small integration issue directly. Otherwise redefine ownership and create a bounded
+serialized reconciliation unit.
 
-Use the narrowest meaningful checks first, then expand in proportion to risk:
+## 8. Apply finite worker recovery
 
-1. **Unit checks:** Tests, type checks, static analysis, build steps, or manual
-   evidence tied directly to the unit's acceptance criteria.
-2. **Integration checks:** Re-run checks across interacting units and inspect their
-   combined runtime, type, data, or UI contract.
-3. **Repository checks:** Run broader lint, typecheck, build, or test commands when
-   repository convention and change impact justify the cost.
-4. **Scenario checks:** Exercise the plan's observable acceptance paths, including
-   edge and failure cases relevant to the implementation.
+A worker attempt fails when it:
 
-When a full check is unavailable or disproportionately costly, record what was not
-run, why, and which narrower evidence was used instead. Classify evidence clearly:
+- cannot satisfy a required acceptance criterion;
+- produces invalid or out-of-scope changes;
+- damages user-owned or other worker changes;
+- violates a material constraint or non-goal;
+- lacks trustworthy validation; or
+- reports success while the workspace does not support the claim.
 
-- `verified`: meaningful validation passed for the acceptance criterion;
-- `blocked`: implementation cannot safely proceed without a missing decision,
-  contract, tool, or capability;
-- `unverified`: implementation exists but a meaningful acceptance criterion could
-  not be tested; and
-- `baseline-failure`: the failure was present before or is demonstrably unrelated
-  to the implementation.
+Use this finite recovery sequence:
 
-A new failure caused by the implementation is neither a baseline failure nor a
-completed result.
+```text
+Initial worker attempt
+        │
+        ├─ success → inspect, validate, integrate
+        │
+        └─ failure
+              ↓
+Primary agent investigates failure and workspace ownership
+              ↓
+Isolate or remove only invalid edits owned by that attempt
+              ↓
+Retry the same worker once with corrected context
+        │
+        ├─ success → inspect, validate, integrate
+        │
+        └─ failure
+              ↓
+Retry once with a different worker and updated context
+        │
+        ├─ success → inspect, validate, integrate
+        │
+        └─ failure
+              ↓
+Small mechanical or integration fix only?
+        │                         │
+       yes                       no
+        │                         │
+Primary agent fixes        mark unit blocked
+```
 
-## 10. Final Integration Report
+Before cleaning a failed attempt, establish ownership. Remove only edits created by
+that attempt and only when doing so cannot erase valid user or worker changes.
 
-Deliver one consolidated report after all safe work and validation finish. Include:
+The primary agent may absorb a final fix only when it is small, mechanical, or a
+bounded integration adjustment supported by the existing plan. It must not secretly
+implement a large failed unit, change the work graph, weaken acceptance criteria, or
+loop indefinitely.
 
-1. Overall outcome: complete, partially complete, blocked, or unverified.
-2. Requirement ledger: each requirement mapped to `verified`, `blocked`, or
-   `unverified` evidence.
-3. Change inventory: each changed file and why it was necessary.
-4. Execution summary: direct and delegated units, dependencies, worker ownership
-   and retries when applicable, and primary-agent integration work.
-5. Validation evidence: commands or observations, results, and skipped checks.
-6. Baseline separation: pre-existing failures versus new failures.
-7. Residual risks and the smallest useful next action.
-8. Authorization boundary: actions not taken because they require a separate
-   request.
+## 9. Implement with repository-consistent discipline
 
-Do not commit, branch, rebase, merge, push, open or update a pull request, deploy,
-publish, install, or modify an external system unless the user separately requests
-that action.
+During direct or delegated implementation:
 
-## 11. Behavioral Acceptance Matrix
+- reuse current helpers, components, services, errors, data access patterns, and test
+  utilities when they fit;
+- preserve public behavior not changed by the plan;
+- keep changes inside the minimal-change map;
+- update generated outputs only through the repository's supported source and
+  generation path;
+- treat schema and migration order as serialized write scope;
+- update tests when they are necessary acceptance evidence, not merely to mirror
+  implementation details;
+- avoid broad formatting and unrelated import churn;
+- do not change dependencies or lockfiles unless required; and
+- do not fix unrelated failures discovered during implementation.
 
-Use these scenarios when reviewing or changing the skill:
+If an unrelated issue prevents validation, record it as a dependency or baseline
+failure. Do not silently widen the feature scope to repair it unless separately
+authorized and necessary for the requested requirement.
+
+## 10. Validate through the evidence ladder
+
+Validation starts with the narrowest meaningful evidence and expands in proportion
+to the implementation's impact and risk.
+
+### Level 1 — Targeted validation
+
+Directly exercises a requirement or work unit:
+
+- focused unit or component test;
+- specific type check or static analysis;
+- target-specific lint;
+- targeted build or generation command;
+- API or CLI invocation;
+- direct UI or runtime observation; or
+- deterministic inspection of a generated artifact.
+
+Every implemented requirement should have Level 1 evidence when the repository makes
+it feasible.
+
+### Level 2 — Integration validation
+
+Checks changed contracts between units, such as:
+
+- API ↔ service;
+- service ↔ database;
+- frontend ↔ API;
+- schema ↔ generated client;
+- type ↔ consumer;
+- configuration ↔ runtime; or
+- migration ↔ application startup.
+
+Run this when multiple units interact or the requirement crosses a boundary.
+
+### Level 3 — Repository validation
+
+Run broader repository-standard checks when the change impact justifies their cost:
+
+- lint;
+- typecheck;
+- build;
+- test suite;
+- packaging; or
+- repository-specific verification scripts.
+
+Do not claim repository-wide confidence when only a targeted subset was run.
+
+### Level 4 — Scenario validation
+
+Exercise the plan's observable acceptance paths, including relevant:
+
+- happy paths;
+- edge cases;
+- failure paths;
+- authorization boundaries;
+- compatibility paths; and
+- migration or rollback expectations when in scope.
+
+Scenario evidence may be automated or a precise manual observation. State which.
+
+### 10.1 Evidence record
+
+Record each meaningful check as:
+
+```text
+Evidence ID:
+Linked requirement / acceptance criterion:
+Level:
+Command or observation:
+Environment and scope:
+Result:
+Classification:
+Relevant output or artifact:
+Skipped broader check and reason:
+```
+
+### 10.2 Evidence classifications
+
+Use these classifications exactly:
+
+- `verified` — meaningful evidence passed for the acceptance criterion.
+- `blocked` — a missing decision, contract, tool, environment, permission, or
+  capability prevents safe implementation or validation.
+- `unverified` — implementation exists, but meaningful acceptance evidence could not
+  be obtained.
+- `baseline-failure` — the failed check predates the implementation or is
+  demonstrably unrelated.
+
+`baseline-failure` describes a check result; it does not by itself verify the linked
+requirement. Use other successful evidence to mark that requirement verified, or
+leave it unverified when no meaningful evidence remains.
+
+A new failure introduced by the implementation is a **regression**, not a baseline
+failure. Fix it, safely remove only current-run edits that caused it, or report a
+non-complete outcome.
+
+### 10.3 Proportionate validation
+
+When a full check is unavailable, extremely expensive, flaky, destructive, or
+outside the available environment:
+
+1. run the strongest narrower evidence available;
+2. record exactly what was not run;
+3. state why it was skipped;
+4. explain which acceptance claims remain unverified; and
+5. do not upgrade the status merely because the implementation looks plausible.
+
+## 11. Decide completion honestly
+
+### 11.1 Requirement-level state
+
+Each required item ends in one of these states:
+
+- `verified` — implementation exists and meaningful acceptance evidence passed;
+- `blocked` — safe implementation or validation cannot proceed because of a specific
+  missing prerequisite; or
+- `unverified` — implementation exists or partial work is present, but evidence is
+  insufficient.
+
+Attach any `baseline-failure` evidence separately. Record new regressions explicitly.
+
+### 11.2 Overall outcome
+
+Use one outcome:
+
+- **Complete** — every required item is verified and no new regression remains.
+- **Partially Complete** — at least one meaningful independent item is verified, but
+  one or more remaining items are blocked or unverified.
+- **Blocked** — a core decision, contract, environment, permission, or capability
+  prevents safe implementation and little or no valid progress can be completed.
+- **Unverified** — the principal implementation exists, but meaningful evidence for
+  core acceptance behavior is unavailable.
+
+Use the most conservative accurate classification. Never report Complete when:
+
+- any required item is blocked or unverified;
+- a new regression remains;
+- acceptance criteria were weakened;
+- worker output was not inspected; or
+- critical validation was skipped without equivalent evidence.
+
+## 12. Produce the Integrated Implementation Report
+
+Return one report owned by the primary agent. Do not forward raw worker reports as
+the final result.
+
+Use this structure:
+
+```markdown
+# Integrated Implementation Report
+
+## Overall Outcome
+
+`Complete | Partially Complete | Blocked | Unverified`
+
+[One-paragraph explanation of the result and its limiting evidence.]
+
+## Requirement Ledger
+
+| Requirement | Implementation | Evidence | Status | Notes |
+| --- | --- | --- | --- | --- |
+| R-001 | `path/to/file` | `command` or observation | verified | ... |
+
+## Change Inventory
+
+### `path/to/file`
+- Linked requirements: ...
+- Why this change was necessary: ...
+- Existing behavior preserved: ...
+
+## Execution Summary
+
+- Direct work: ...
+- Delegated units and ownership: ...
+- Dependency waves: ...
+- Worker retries or recovery: ...
+- Primary-agent integration: ...
+
+## Validation Evidence
+
+| Evidence | Level | Command or observation | Result | Classification |
+| --- | --- | --- | --- | --- |
+
+### Skipped or unavailable checks
+- Check: ...
+- Reason: ...
+- Consequence: ...
+
+## Baseline Separation
+
+- Pre-existing or unrelated failures: ...
+- Regressions introduced by this run: `none` or ...
+
+## Blocked or Unverified Items
+
+- Requirement: ...
+- Exact blocker or missing evidence: ...
+- Consequence: ...
+- Smallest useful next action: ...
+
+## Residual Risks
+
+- ...
+
+## Authorization Boundary
+
+- Workspace changes and validation performed: ...
+- Commit created: `no`, unless separately authorized
+- Branch changed or created: `no`, unless separately authorized
+- Push or pull request performed: `no`, unless separately authorized
+- Deployment, publication, or external mutation performed: `no`, unless separately authorized
+```
+
+Include only execution details that occurred. Preserve stable plan IDs throughout the
+report when available.
+
+## 13. Stop at the authorized boundary
+
+The normal stopping point is:
+
+```text
+workspace changes
++ validation
++ integrated report
+```
+
+Without separate explicit authorization, do not:
+
+- create, amend, rewrite, rebase, merge, or otherwise alter commits;
+- create, switch, rename, or delete branches;
+- push or change remotes;
+- open, update, merge, or close pull requests;
+- deploy or publish;
+- install globally or mutate shared environments;
+- send messages or update external trackers; or
+- change production or external-service configuration.
+
+Do not infer authorization from successful validation, plan completion, repository
+access, or the existence of credentials.
+
+## 14. Behavioral Acceptance Matrix
+
+Use this matrix when reviewing the skill or testing an execution run:
 
 | Scenario | Required behavior |
 | --- | --- |
-| General Markdown input | Extract an executable requirement map without a planner dependency. |
-| `feature-planner` artifact | Reuse stable structure and provenance without invoking a planner runtime. |
-| Dirty or staged worktree | Preserve existing changes and identify the minimal compatible edit. |
-| Multiple independent units | Run internal workers concurrently when their write scopes are disjoint and delegation provides useful progress. |
-| Single low-risk unit | Let the primary agent implement and validate it directly without artificial delegation. |
-| Independent review benefit | Use a worker when complexity or risk makes an independent implementation or review materially useful. |
-| Dependency chain | Execute safe prerequisites in parallel waves and downstream work in order. |
-| Shared-file conflict | Do not concurrently assign the same file or tightly coupled symbols. |
-| Worker failure | Apply one same-worker retry, one replacement-worker retry, then limited recovery or blocking. |
-| No worker available | Continue directly when safe; do not block solely because worker capacity is unavailable. |
-| Missing essential contract | Block only the affected unit and do not invent the contract. |
-| Expensive validation | Run targeted and impact-scope checks and disclose skipped broader checks. |
-| Baseline failure | Separate pre-existing failures from regressions introduced by the work. |
-| Authorization boundary | Make no installation, Git-history, remote, deployment, or external-system change without a separate request. |
+| General Markdown plan | Build an internal requirement map without requiring Feature Planner. |
+| Feature Planner artifact | Reuse stable IDs and provenance without depending on its runtime. |
+| Plan approval only | Do not begin implementation. |
+| Explicit implementation request | Permit bounded investigation, workspace edits, and validation. |
+| Missing material contract | Block only dependent requirements; do not invent the contract. |
+| Repository-discoverable fact | Inspect the repository instead of asking the user. |
+| Dirty or staged worktree | Preserve existing user-owned changes and add compatible minimal edits. |
+| Single low-risk bounded task | Let the primary agent implement directly without artificial delegation. |
+| Independent disjoint tasks | Allow parallel workers only when write scopes do not overlap. |
+| Complex or risky task | Allow bounded worker implementation or independent read-only review. |
+| Dependency chain | Integrate prerequisites before releasing downstream waves. |
+| Shared file or contract | Serialize the work or combine it into one unit. |
+| Worker claims success | Inspect the workspace and evidence before acceptance. |
+| Worker fails | Same worker retry once, replacement once, limited primary recovery, then block. |
+| Worker unavailable | Continue directly when safe; availability alone is not a blocker. |
+| Existing test failure | Record baseline evidence and distinguish it from new regressions. |
+| Expensive broad validation | Run targeted evidence first and disclose skipped checks and consequences. |
+| New regression | Never classify the result Complete. |
+| Implementation succeeds | Do not commit, push, open a PR, or deploy without separate authorization. |
+
+## 15. Functional conformance checklist
+
+Use this checklist when changing the Feature Implementer skill itself:
+
+| Requirement | Protocol gate |
+| --- | --- |
+| FI-001 | Section 1.1 requires reading the complete plan before edits. |
+| FI-002 | Section 1.2 supports both Feature Planner and general Markdown plans. |
+| FI-003 | Section 1.2 reuses planner stable IDs and provenance. |
+| FI-004 | Sections 1.1–1.3 extract requirements, non-goals, constraints, and acceptance criteria. |
+| FI-005 | Section 1.4 prohibits inventing material contracts. |
+| FI-006 | Section 1.4 propagates blocking only through actual dependencies. |
+| FI-007 | Section 2.1 requires applicable repository-instruction discovery. |
+| FI-008 | Section 2.2 limits inspection to the relevant source and test surface. |
+| FI-009 | Section 3.1 prioritizes reuse of existing abstractions. |
+| FI-010 | Section 2.3 records relevant staged and unstaged changes. |
+| FI-011 | Section 2.3 forbids reset, revert, overwrite, stash, and broad formatting of unowned work. |
+| FI-012 | Sections 1.3 and 3 map each requirement to targets and evidence. |
+| FI-013 | Section 3 defines the smallest semantic diff. |
+| FI-014 | Sections 3.1 and 9 prohibit unrelated cleanup, refactors, and dependency upgrades. |
+| FI-015 | Section 4.2 allows direct primary-agent execution for bounded low-risk work. |
+| FI-016 | Section 4.3 permits workers only when they provide material benefit. |
+| FI-017 | Section 5.1 requires disjoint concurrent write scopes. |
+| FI-018 | Section 6 enforces dependency-wave ordering. |
+| FI-019 | Section 7 requires primary-agent workspace inspection and integration. |
+| FI-020 | Section 7 rejects worker success claims as completion evidence. |
+| FI-021 | Section 8 defines finite same-worker and replacement-worker retries. |
+| FI-022 | Section 10 expands validation from targeted to integration, repository, and scenario checks. |
+| FI-023 | Sections 10.2 and 11 classify verified, blocked, and unverified evidence. |
+| FI-024 | Sections 2.4 and 10.2 separate baseline failures. |
+| FI-025 | Sections 10.2 and 11 prohibit Complete when a new regression remains. |
+| FI-026 | Section 12 requires one integrated implementation report. |
+| FI-027 | Section 13 prohibits unapproved Git-history and remote operations. |
+| FI-028 | Section 13 prohibits unapproved deployment, publication, and external mutation. |
