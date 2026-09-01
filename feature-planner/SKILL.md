@@ -1,130 +1,368 @@
 ---
 name: feature-planner
-description: Refine an incomplete idea, brief, feature, or project through repeated questions while maintaining a durable planning document. Use when the user wants help making a plan concrete; do not use merely to implement an already-approved plan.
+description: Create and maintain one provenance-aware living planning document while refining incomplete ideas, feature requests, service concepts, game systems, workflows, or project briefs through adaptive decision questions. Use for new planning, plan revision, pause/resume, or explicit finalization. Do not use to implement an approved plan or change code, deployments, packages, or external systems.
 ---
 
 # Feature Planner
 
-Maintain one self-contained plan that reflects the user's evolving intent without
-taking over their decisions. Use [the planning document template](assets/planning-document-template.md)
-for the working document and final pair, adapting it to the domain instead of
-forcing a fixed questionnaire.
+Turn an incomplete idea into a durable planning artifact without taking product
+decisions away from the user. Treat the planning document—not the chat—as the
+planning state and sole source of truth.
 
-## Create the Document Before Asking
+Use [the planning document template](assets/planning-document-template.md) as the
+minimum semantic structure. Adapt it to the domain; never turn it into a fixed
+questionnaire.
 
-1. Read supplied material and safely inspect discoverable workspace facts. Do not
-   ask the user for facts that can be inspected, and preserve unrelated files and
-   existing document conventions.
-2. Resolve the active workspace or project root from the supplied material and
-   discoverable repository structure; otherwise use the current working directory.
-   Store planning documents under `<root>/docs/specs/`, creating that directory
-   when needed. Follow an existing filename convention there or use a descriptive
-   `<feature-slug>-spec.md` name. Do not overwrite an unrelated document. A path
-   explicitly requested by the user for the current plan overrides this default.
-   If the intended location is not writable, draft the complete document in the
-   response, state its intended `docs/specs/` path, and do not claim it was saved.
-3. Before the first question, create or fully draft one living document in the
-   user's language. Fill it with the best current planning hypothesis rather than
-   placeholders, and mark uncertainty explicitly.
-4. Show a compact checkpoint with the path, outcome, material changes, and
-   unresolved topics; then ask one to three related material questions.
+## Non-negotiable contract
 
-The initial document must exist as a file or full in-response draft before any
-question.
+1. **Document before question.** Create or fully draft the best planning hypothesis
+   available before asking the first clarification question. A blank template does
+   not satisfy this rule.
+2. **Update before question.** After every later user message, save the answer and
+   all downstream effects before asking anything else.
+3. **One authoritative living document.** Maintain one current plan rather than a
+   separate chat summary, scratch plan, and final plan.
+4. **Explicit provenance.** Keep user decisions, sourced facts, agent assumptions or
+   recommendations, and unresolved items visibly distinct.
+5. **User-owned material decisions.** Recommend actively, but never silently settle
+   a material product trade-off for the user.
+6. **No automatic completion.** Only an explicit, unambiguous finish signal ends the
+   planning interview.
+7. **Planning is not execution.** Planning or approving a plan does not authorize
+   implementation, deployment, installation, publishing, messaging, purchasing, or
+   external-system changes.
 
-## Keep One Authoritative Living Document
+## Operating loop
 
-Before every later question round, update the document with all effects of the
-latest message: answers, corrections, evidence, decisions, requirements, scope,
-risks, deferred items, and open questions. Never let it lag behind a question.
+Run this sequence for every planning request and every subsequent message:
 
-Keep provenance visible with stable entries:
+1. Detect whether the message starts, answers, revises, skips, defers, pauses,
+   resumes, or explicitly finishes a planning session.
+2. Inspect all available context that can be read safely: supplied files, URLs,
+   repository structure, existing specifications, relevant source and tests, and
+   established project conventions. Do not ask the user for a fact that can be
+   verified through this inspection.
+3. Locate the current living document or choose its path. Follow an explicit user
+   path first, then an existing project convention, otherwise use
+   `<project-root>/docs/specs/<feature-slug>-spec.md`.
+4. Create, load, or update the living document as a complete transaction.
+5. Reconcile every affected section and run the consistency checks in this skill.
+6. Save the document before communicating the next decision questions.
+7. Show a compact checkpoint, then either ask the next material question round,
+   pause, or finalize according to the user's control signal.
 
-- **User decision:** explicitly selected or corrected by the user.
-- **Sourced fact:** only a fact actually established by supplied material or
-  completed read-only inspection; cite the file, URL, or other source precisely
-  enough to revisit it. Otherwise keep it as an agent assumption or unresolved item.
-- **Agent assumption or recommendation:** an inference or suggested default,
-  never presented as user-approved fact.
-- **Unresolved item:** unknown, conflicting, skipped, or deferred information,
-  including its consequence.
+Never reverse steps 4–6. If the workspace is not writable, produce the complete
+living document in the response, identify its intended path, and explicitly state
+that it was not saved. The full draft must still precede the first question.
 
-For a correction, preserve the earlier entry as `superseded` or `corrected`, add
-the new user decision, and reconcile every affected section so obsolete scope,
-requirements, risks, and questions are no longer active.
+## Inspect evidence before asking
 
-## Run Adaptive Question Rounds
+Use read-only inspection to reduce user burden. In an existing software repository,
+inspect only what is relevant to the requested feature, such as data models,
+authentication, APIs, UI patterns, configuration, tests, documentation, and naming
+conventions. In a non-software project, inspect the supplied policies, workflows,
+research, requirements, or other evidence instead.
 
-Ask one to three closely related questions per round. Prioritize material gaps in
-outcome, users, scope and non-goals, core flow, constraints, success evidence,
-risks, unresolved decisions, and handoff. Apparent completeness is not a finish
-signal: continue with useful confirmation, trade-off, or challenge questions until
-the user explicitly finishes, without repeating settled questions.
+Apply these evidence rules:
 
-Every question must follow this choice-plus-free-text contract:
+- Record a claim as a sourced fact only after actually verifying it.
+- Include a revisitable source location: repository path and symbol/line when
+  practical, document/section, or URL.
+- Record inferences from evidence as agent assumptions or recommendations, not
+  sourced facts.
+- Record missing, inaccessible, contradictory, or stale evidence as unresolved.
+- Preserve unrelated files and existing project conventions.
+- Creating and updating the planning document is allowed; modifying product code or
+  other execution artifacts is not.
 
-- Give it a stable `Q-ID` and briefly explain why the decision affects behavior,
-  scope, cost, or risk.
-- Offer three to five numbered, materially distinct viable choices by default,
-  each with one concise impact or trade-off. If only two meaningful choices exist,
-  show two, explain why, and do not invent a third.
-- Keep a free-text path separate from the numbered choices; `Other decision` does
-  not count as a choice. Never imply that the list is exhaustive.
-- Mark one or more choices `(Recommended)` only when supported by current evidence,
-  separate recommendations from user decisions, and state when each fits. Order
-  multiple recommendations by evidence strength; if none is supported, stay
-  neutral.
-- Default to single choice. When a combination is genuinely meaningful, label the
-  question `Multiple selections allowed` and treat selected numbers as one decision.
-- End by inviting a number, one or more numbers when multi-select is explicit, or
-  the user's own decision in free text.
+## Establish the living document
 
-Interpret answers without forcing them into the listed choices:
+### Resolve identity and path
 
-- A bare number, `N번`, or exact choice label selects that choice. Number plus prose
-  selects it as the base and records the prose as a constraint or adjustment.
-- Preserve unmatched free text verbatim as the user's custom decision.
-- For several questions, recommend `Q-ID: answer` mappings such as
-  `Q-001: 2, Q-002: custom decision`, but accept unambiguous natural language.
-- For `Multiple selections allowed`, accept forms such as `1, 3` as one combined
-  decision unless the user explicitly separates them.
-- If an answer is ambiguous or conflicts with an earlier decision, first update
-  the document with that state, then ask exactly one focused resolution question
-  before unrelated refinement.
+- Reuse an existing plan only when its outcome or feature identity matches the
+  request. Otherwise create a new descriptive slug and do not overwrite an
+  unrelated document.
+- During an active or paused interview, write the document in the user's working
+  language.
+- Reserve the base `.md` path for the authoritative English document at explicit
+  finish. If the active document is not English, the same file may be rewritten in
+  English during finalization; its Korean mirror is placed beside it as
+  `<base-name>.ko.md`.
+- Record project root, base path, Korean mirror path, working language, revision,
+  timestamp, interview state, and next authorized action in `Document State`.
 
-Apply user controls after updating the document:
+### Build the initial hypothesis
 
-- **Answer:** record it with provenance and propagate its consequences.
-- **Skip:** mark the item skipped and state what remains uncertain because of it.
-- **Defer:** retain the item with its consequence and a useful revisit trigger.
-- **Pause:** update the document, provide its path and a resumable checkpoint, and
-  stop asking questions without marking the plan finished.
-- **Resume:** read the living document first, reconcile any new context, update it,
-  and continue the interview from its unresolved state.
-- **Explicit finish:** when the user clearly says `finish`, `done`, `complete`, or
-  an unambiguous equivalent in the user's language, stop asking and finalize
-  immediately. If intent is ambiguous, keep the interview active.
+Before the first question:
 
-## Finalize Only on Explicit Finish
+1. State the best current outcome and context.
+2. Identify known users and stakeholders.
+3. Define current in-scope and out-of-scope boundaries.
+4. Describe the most plausible core experience or operating flow.
+5. Derive traceable requirements, constraints, success evidence, risks, and
+   dependencies from current evidence.
+6. Add verified facts as `SF-*`, explicit statements already made by the user as
+   `UD-*`, defensible inferences as `AR-*`, and material gaps as `OI-*`.
+7. Register the first `Q-*` entries that address only the highest-value remaining
+   user decisions.
 
-Use the living document as the sole planning source. Do not invent answers, refuse
-completion because gaps remain, or silently resolve conflicts.
+Do not leave placeholder prose such as “TBD” where a concrete hypothesis can be
+made. When information is genuinely unknown, create an explicit unresolved item
+with its consequence instead of pretending the plan is complete.
 
-1. Rewrite the base Markdown file, if necessary, as the authoritative English
-   final document.
-2. Create a substantive Korean mirror beside it by inserting `.ko` before `.md`.
-   Keep the same IDs, statuses, requirements, decisions, risks, unresolved items,
-   and next authorized action in both files.
-3. Mark the interview explicitly finished while preserving every remaining
-   assumption, conflict, skipped or deferred item, and risk.
-4. Make either file sufficient to resume without chat history: include intent,
-   evidence, scope, behavior, decisions, requirements, unresolved items,
-   completion state, and handoff.
-5. Report both paths, remaining gaps, and the next authorized action.
+## Stable identifiers and provenance
 
-## Preserve Authorization Boundaries
+Allocate monotonically increasing IDs within the document. Never renumber, recycle,
+or repurpose an ID after it has appeared.
 
-Planning, answering, approving, or finishing does not authorize implementation,
-publishing, messaging, purchasing, deployment, installation, or external-system
-changes. Record them only as next actions unless separately and unambiguously
-authorized, and never broaden that authority during finalization.
+| Prefix | Meaning | Required treatment |
+| --- | --- | --- |
+| `UD-*` | User Decision | Only an explicit user choice, correction, or condition. |
+| `SF-*` | Sourced Fact | Only evidence actually verified from a supplied or inspected source. |
+| `AR-*` | Agent Recommendation or Assumption | Advice or inference; never imply user approval. |
+| `OI-*` | Unresolved Item | Unknown, conflict, skipped item, deferred item, or blocked decision. |
+| `RK-*` | Risk, conflict, or dependency | Material uncertainty or dependency and its response. |
+| `R-*` | Requirement | Observable required behavior or outcome linked to source IDs. |
+| `Q-*` | Decision Question | Stable interview question recorded before it is asked. |
+
+Use lifecycle statuses rather than deletion. Appropriate statuses include
+`active`, `proposed`, `open`, `answered`, `resolved`, `conflict`, `skipped`,
+`deferred`, `corrected`, `superseded`, `cancelled`, and `blocked`.
+
+Additional provenance rules:
+
+- Every active requirement should link to at least one `UD-*`, `SF-*`, `AR-*`, or
+  `OI-*`. Prefer an active user decision or sourced fact for normative requirements.
+- Accepting an `AR-*` creates a new `UD-*`; do not rewrite the recommendation itself
+  into a user decision.
+- Resolving an `OI-*` preserves it with a `resolved` status and links the resolving
+  decision or fact.
+- Preserve the user's material wording in the ledger. Summaries elsewhere may be
+  normalized for clarity without changing meaning.
+- Never keep two mutually exclusive decisions or requirements active at once.
+
+## Apply every user message as a document transaction
+
+Before the next question, perform all of the following:
+
+1. Parse the message for question answers, custom decisions, conditions, new facts,
+   corrections, constraints, control commands, and finish intent.
+2. Add or transition the relevant ledger and question-register entries.
+3. Propagate the change through every affected area:
+   - current snapshot and outcome;
+   - users and stakeholders;
+   - scope and non-goals;
+   - core flow and alternate/error flows;
+   - requirements;
+   - constraints;
+   - success evidence;
+   - risks, conflicts, and dependencies;
+   - open, skipped, and deferred items;
+   - handoff and next authorized action.
+4. Mark obsolete decisions, requirements, risks, and questions as corrected,
+   superseded, resolved, or cancelled. Do not silently erase their history.
+5. Record the revision and downstream changes in the correction/revision history.
+6. Increment the revision, update the timestamp and interview checkpoint, and save.
+
+A message may answer a question and introduce additional requirements at the same
+time. Record both. Do not discard information merely because it did not follow the
+suggested answer format.
+
+## Handle corrections and conflicts
+
+When the user changes an earlier decision:
+
+1. Keep the old `UD-*` and mark it `corrected` or `superseded`.
+2. Create a new active `UD-*` containing the replacement decision.
+3. Link the two entries and record why the revision occurred.
+4. Reconcile all dependent scope, flow, requirements, constraints, success evidence,
+   risks, unresolved items, and questions.
+5. Ensure no requirement based only on the old decision remains active.
+
+When a new statement conflicts but does not clearly replace an earlier decision:
+
+1. Record the conflict as an `OI-*` and, when material, an `RK-*`.
+2. Mark affected requirements or decisions `blocked` or `conflict` as appropriate.
+3. Save the document.
+4. Ask exactly one focused conflict-resolution question before any unrelated
+   refinement.
+
+Never choose the winner silently.
+
+## Select material questions adaptively
+
+Do not run a universal survey. Derive questions from the current document and
+prioritize material gaps in this order unless context justifies another order:
+
+1. desired outcome;
+2. primary users and stakeholders;
+3. scope;
+4. non-goals;
+5. core experience or operating flow;
+6. constraints;
+7. success evidence;
+8. risks and dependencies;
+9. unresolved decisions;
+10. handoff conditions and next authorized action.
+
+Ask **one to three closely related questions per round by default**. Never exceed
+five in one round, and use more than three only when the questions form one tightly
+coupled decision set or the user explicitly requests a larger batch. Do not repeat
+answered questions or ask for discoverable facts.
+
+Register each question in the living document before presenting it. A question must
+have a stable `Q-*`, impact, status, and related IDs so a later session can resume
+without chat history.
+
+### Question contract
+
+Use this form:
+
+```text
+[Q-<number>] — <short decision title>
+<why the decision matters and which behavior, scope, cost, quality, or risk it affects>
+
+1. <materially distinct choice>
+   <concise impact or trade-off when useful>
+2. <materially distinct choice> — Recommended
+   <evidence-based reason and when it fits>
+3. <materially distinct choice>
+   <concise impact or trade-off when useful>
+
+You may answer with a number or write a different decision in free text.
+```
+
+Apply these rules:
+
+- Offer three to five materially distinct viable choices when possible. If only two
+  meaningful choices exist, show two and do not invent a third.
+- A free-text path is always available and is not counted as one of the choices.
+- Mark `Recommended` only when current evidence supports it. Explain the fit; do not
+  manufacture a recommendation to appear decisive.
+- A recommendation remains `AR-*` until the user chooses it.
+- Default to single-select. State `Multiple selections allowed` only when a combined
+  decision is coherent.
+- Separate multiple questions with a clear divider and finish the round with a
+  compact answer example such as `Q-001: 2, Q-002: custom decision`.
+
+## Interpret answers flexibly
+
+Accept all of the following without forcing the user to restate them:
+
+- `2`, `2번`, or the exact choice label: select that choice.
+- `2번인데 관리자는 사유를 남겨야 함`: select choice 2 and include the condition
+  in the same user decision or a linked user decision when independently material.
+- A free-text rule not present in the choices: preserve it as the user's custom
+  decision.
+- `Q-001: 2, Q-002: 3`: resolve multiple questions by stable ID.
+- `1, 3`: treat as a combined answer only when that question was explicitly marked
+  `Multiple selections allowed`.
+
+When an answer is genuinely ambiguous, first record the ambiguity and its impact,
+save the document, and then ask one focused resolution question. Do not use minor
+wording uncertainty as a reason to ignore an otherwise clear decision.
+
+## Honor interview controls
+
+Controls may be expressed in any unambiguous language or natural phrasing.
+
+- **Answer:** record the decision and propagate every consequence.
+- **Skip:** mark the relevant `Q-*` skipped, retain an `OI-*` with what remains
+  uncertain, and continue from other material gaps.
+- **Defer:** mark the question and `OI-*` deferred; record impact, current
+  recommendation if justified, owner when known, and a concrete revisit trigger.
+- **Pause:** incorporate the entire current message, set interview state to
+  `paused`, save a resumable checkpoint, report the path and remaining items, and
+  ask no new questions. Pause is not finish.
+- **Resume:** read the living document first, reconcile new evidence or repository
+  changes, set state to `active`, and continue from unresolved or deferred items
+  without repeating settled questions.
+- **Finish / Done / Complete:** only when clearly directed at the planning session,
+  incorporate the message, stop all additional questions, and finalize immediately.
+
+Never infer finish merely because the document appears thorough. Confirmation,
+trade-off, challenge, and omission questions may continue while useful, but the
+session remains active until the user explicitly ends it.
+
+## Finalize on explicit finish only
+
+Use the living document as the only planning source. Do not fill unresolved gaps
+with new decisions during finalization.
+
+1. Run a final consistency sweep and preserve all active assumptions, conflicts,
+   skipped items, deferred items, unresolved decisions, risks, and dependencies.
+2. Rewrite the base file as the substantive authoritative **English** document.
+3. Create a substantive **Korean mirror** beside it by inserting `.ko` before
+   `.md`.
+4. Keep both files synchronized in meaning and exactly aligned for stable IDs,
+   statuses, requirements, decisions, risks, unresolved items, interview state,
+   and next authorized action.
+5. Mark the state `explicitly-finished`, record final paths and synchronization
+   result, and leave a precise resume point in case planning reopens.
+6. Report both paths, remaining gaps and consequences, and the next separately
+   authorized action. Ask no further planning questions.
+
+Either final file must be sufficient to understand intent, context, evidence,
+scope, behavior, decisions, requirements, risks, unresolved items, completion
+state, and handoff without the chat history.
+
+If both files cannot be written, do not claim finalization artifacts exist. Provide
+complete English and Korean drafts in the response, identify intended paths, and
+state the write failure accurately.
+
+## Preserve the authorization boundary
+
+Within this skill, the following are permitted:
+
+- research and read-only inspection;
+- creation and revision of the planning document;
+- decision questions and recommendations;
+- final English and Korean planning artifacts.
+
+The following require separate, explicit execution authorization and are never
+implied by planning approval or finish:
+
+- product or source-code changes;
+- package installation or dependency changes;
+- tests that mutate external systems;
+- commits, pull requests, releases, deployment, or production changes;
+- external service configuration;
+- messages, purchases, or other side effects.
+
+A finished document may recommend `$feature-implementer` or another executor as the
+next action, but it must not require a proprietary schema. Preserve `R-*`, `UD-*`,
+`SF-*`, `AR-*`, `OI-*`, and `RK-*` so an implementer can trace requirements to
+implementation and verification evidence.
+
+## Communicate checkpoints
+
+After saving and before questions, provide a compact checkpoint containing:
+
+- document path, revision, and interview state;
+- material changes incorporated in this transaction;
+- affected IDs or sections reconciled;
+- current focus and material unresolved IDs.
+
+Then present only the current question round. On pause or finish, replace questions
+with the resumable or final handoff summary.
+
+## Consistency gates
+
+Before every question round, verify:
+
+- the living document exists as a saved file or complete in-response draft;
+- the latest user message and all downstream effects are present;
+- sourced facts are actually sourced and recommendations are not user decisions;
+- no mutually exclusive decisions or requirements remain active;
+- each active requirement is traceable to provenance;
+- the question is material, unresolved, non-repetitive, and not answerable by
+  inspection;
+- the question register and checkpoint match the questions being shown.
+
+Before final output, additionally verify:
+
+- an explicit finish signal was received;
+- English and Korean files contain the same stable IDs and statuses;
+- unresolved state was preserved rather than silently solved;
+- the next authorized action does not exceed the user's authority;
+- no implementation or external side effect occurred merely because planning ended.
