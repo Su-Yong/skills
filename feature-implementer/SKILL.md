@@ -1,6 +1,6 @@
 ---
 name: feature-implementer
-description: Execute an implementation-ready feature plan in an existing repository while preserving plan fidelity and user-owned workspace changes, making the smallest semantic diff, and verifying every requirement with evidence. Use when the user explicitly asks to implement a plan, specification, or planning document. Do not use for planning-only, review-only, diagnosis-only, feasibility-only, or architecture-advice requests.
+description: Execute an implementation-ready feature plan in an existing repository with requirement traceability, coordinated execution, and evidence-based completion. Use when the user explicitly asks to implement a plan, specification, or planning document. Do not use for planning-only, review-only, diagnosis-only, feasibility-only, or architecture-advice requests.
 ---
 
 # Feature Implementer
@@ -10,8 +10,10 @@ This is a controlled plan-to-code executor, not a product planner and not a gene
 refactoring agent.
 
 Treat the planning document as the source of intended behavior and the repository as
-the source of current technical truth. Preserve both unless the user explicitly
-authorizes a broader change.
+the source of current technical truth.
+
+This skill owns plan intake, requirement tracking, work allocation, integration,
+acceptance evidence, and completion reporting.
 
 ## Require implementation authority
 
@@ -45,16 +47,13 @@ These rules apply whether the primary agent works directly or uses internal work
    would materially change the result.
 3. **Block only affected work.** A missing decision blocks only requirements that
    depend on it. Continue independent requirements that remain safe and authorized.
-4. **Preserve user-owned work.** Existing staged or unstaged changes belong to the
-   user or another worker unless ownership is proven otherwise.
-5. **Minimize semantic change.** Choose the implementation that disturbs existing
-   architecture, behavior, dependencies, and files the least—not merely the one with
-   the fewest changed lines.
-6. **Keep primary-agent ownership.** The primary agent owns the entire requirement
+4. **Track work ownership.** Distinguish pre-existing changes from each execution
+   unit's edits so integration and recovery affect only owned work.
+5. **Keep primary-agent ownership.** The primary agent owns the entire requirement
    map, work graph, shared workspace, integration, validation, and final status.
-7. **Treat worker reports as claims, not evidence.** Inspect the actual workspace diff
+6. **Treat worker reports as claims, not evidence.** Inspect the actual workspace diff
    and validation output before accepting delegated work.
-8. **Report uncertainty honestly.** Implementation, validation, and completion are
+7. **Report uncertainty honestly.** Implementation, validation, and completion are
    separate states. Never present blocked, unverified, or regressed work as complete.
 
 ## Model-specific behavioral corrections
@@ -134,49 +133,25 @@ Classify every material uncertainty before implementation:
 Ask the user only when a material conflict or missing contract prevents further safe
 progress and cannot be resolved from the plan or repository evidence.
 
-## Establish a bounded repository baseline
-
-Before editing, inspect only the surface needed to implement and verify the plan:
-
-1. applicable repository instructions;
-2. relevant source, configuration, schemas, migrations, generated artifacts, and
-   tests;
-3. existing helpers, components, services, patterns, and conventions to reuse;
-4. validation commands and repository-standard checks;
-5. relevant staged and unstaged changes when Git is available; and
-6. cheap baseline failures when they are needed to distinguish pre-existing failures
-   from regressions.
-
-Treat existing workspace changes as user-owned. Do not use destructive or
-broad-scope operations such as `git reset`, `git clean`, automatic stashing,
-restoring unowned files, repository-wide formatting, or opportunistic file moves.
-When a required target already contains changes, preserve them and add the smallest
-compatible edit. If the plan truly conflicts with those changes and repository
-evidence cannot resolve the conflict, block only the affected work.
-
 ## Build the requirement-to-evidence map
+
+Resolve each requirement's implementation target from relevant repository evidence
+and applicable instructions. Use available workspace and validation records,
+collecting missing evidence as needed. Record any overlap between planned work and
+existing edits for ownership and scheduling. If a material conflict remains, block only its dependent work.
 
 For each requirement, identify:
 
 ```text
 Requirement and provenance
-→ existing behavior to preserve
-→ existing abstraction to reuse
-→ exact target file or symbol
-→ necessary tests or fixtures
-→ explicit non-goals and do-not-touch areas
-→ acceptance evidence
+→ implementation target and plan constraints
+→ dependencies and ownership conflicts
+→ acceptance criterion and evidence source
 ```
 
-This is the minimal-change map. Use it to decide both where to edit and where to
-stop. Prefer an existing abstraction over a parallel implementation. Prefer a local,
-clear change over a new shared abstraction when both satisfy the plan without
-creating duplication or architectural inconsistency. Add or upgrade a dependency
-only when it is necessary to fulfill an authorized requirement and is the smallest
-semantic change available.
-
-Do not perform unrelated refactoring, cleanup, renaming, formatting, dependency
-upgrades, or opportunistic bug fixes.
+Keep this map tied to the active plan. An implementation choice does not create a
+new requirement or reactivate a deferred item. For ordinary plans, the map remains
+internal; do not rewrite the source document to add execution metadata.
 
 ## Choose execution depth from task shape
 
@@ -202,8 +177,8 @@ follow this file alone, but all invariants still apply.
 
 ## Implement and integrate under primary ownership
 
-Make only changes required by the requirement-to-evidence map. Keep the repository's
-established conventions unless the plan explicitly requires a change.
+Implement the active requirement map and integrate results against its contracts
+and dependencies.
 
 When workers are used:
 
@@ -211,8 +186,8 @@ When workers are used:
   read-only context, do-not-touch areas, existing changes to preserve, acceptance
   criteria, and validation commands;
 - schedule only dependency-ready, write-disjoint units in the same wave;
-- tell every worker that the workspace is shared and that unassigned changes must
-  not be reset, reverted, overwritten, reformatted, or expanded;
+- give each worker the shared-workspace ownership boundaries and applicable
+  repository instructions;
 - inspect each worker's actual diff and validation results before integration; and
 - release downstream work only after prerequisite changes have been reviewed and
   integrated by the primary agent.
@@ -223,19 +198,13 @@ worker once, retry a different worker once, allow the primary agent to perform o
 a small mechanical or integration fix, and otherwise mark the unit `blocked`.
 Never loop indefinitely or weaken acceptance criteria to claim success.
 
-## Validate from narrow to broad
+## Link validation evidence to acceptance
 
-Validate the implemented behavior in this order, expanding only as justified by
-impact and risk:
-
-1. **Targeted validation:** requirement- or work-unit-specific tests, type checks,
-   lint, builds, static checks, or direct behavior observations.
-2. **Integration validation:** contracts between changed units, such as API to
-   service, service to database, UI to API, schema to consumer, or generated output
-   to runtime use.
-3. **Repository validation:** broader project-standard lint, typecheck, build, or
-   test commands when proportionate.
-4. **Scenario validation:** the plan's observable happy, edge, and failure paths.
+Reuse checks performed during code implementation. This workflow adds coverage
+accounting: every required acceptance criterion needs relevant evidence, and
+cross-unit contracts and plan scenarios must be covered where applicable. Run
+additional validation when that coverage is missing or integration has invalidated
+an earlier result. Link valid results to all criteria they cover.
 
 Record the exact command or observation, result, relevant scope, and evidence source.
 Classify acceptance evidence as:
@@ -249,9 +218,9 @@ Classify acceptance evidence as:
   demonstrably unrelated to it.
 
 A baseline failure does not automatically verify a requirement. A new regression
-caused by the implementation must be fixed, reverted only when the reverted edits
-are owned by the current run, or reported as non-complete. Never classify a new
-regression as a baseline failure.
+keeps the affected requirement and overall outcome non-complete until resolved.
+Evidence from another workspace state is reusable only if intervening changes have
+not invalidated it.
 
 ## Decide completion requirement by requirement
 

@@ -17,15 +17,13 @@ report a worker's completion claim as acceptance evidence.
 Complete in-scope implementation and validation using the existing authority and
 missing-contract rules, without repeated approval requests for routine local work.
 Do not turn planning approval into execution authority, an assumption into an active
-requirement, or a discovered unrelated bug into extra scope. Preserve user-owned
-changes even when replacing them would be faster. A dependency upgrade, broad
-refactor, Git operation, or external write is not authorized merely because it
-would help finish the task. Stop at the common authorization and recovery boundaries.
+requirement, or a discovered unrelated bug into extra scope. Git operations or
+external writes are not authorized merely because they would help finish the task. Stop at the common authorization and recovery boundaries.
 
 ## S3. Keep execution lean without dropping the required procedure
 
-Use the existing minimal-change map, conditional protocol loading, and Work Unit
-contract. Do not invent extra planning rounds, mandatory worker roles, candidate
+Use the existing requirement-to-evidence map, conditional protocol loading, and
+Work Unit contract. Do not invent extra planning rounds, mandatory worker roles, candidate
 implementation trees, or competing reports. Read the complete plan and, when
 required, the complete protocol; brevity is not permission to work from excerpts.
 When reducing tool output, retain enough command, scope, result, and artifact
