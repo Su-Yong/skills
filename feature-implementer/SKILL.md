@@ -57,6 +57,52 @@ These rules apply whether the primary agent works directly or uses internal work
 8. **Report uncertainty honestly.** Implementation, validation, and completion are
    separate states. Never present blocked, unverified, or regressed work as complete.
 
+## Model-specific behavioral corrections
+
+The common workflow in this file and [the execution protocol](references/execution-protocol.md)
+always applies. Add at most one behavioral profile; it does not replace either
+file or define another execution workflow. Within this skill, the common contract
+takes precedence over a profile. Follow the host's instruction hierarchy and
+applicable user instructions. Profiles add no authority, tools, or permissions and
+do not relax the conditions that require reading the full execution protocol.
+
+Select before plan intake, using current model identity explicitly supplied by the
+runtime or host when available:
+
+| Current identity | Additional instructions to read |
+| --- | --- |
+| `gpt-6-astra` / `GPT-6 Astra` | [Astra behavioral corrections](references/gpt-6-astra.md) |
+| `gpt-5.6-sol` / `GPT-5.6 Sol` | [Sol behavioral corrections](references/gpt-5.6-sol.md) |
+| OpenAI's `gpt-5.6` alias | Sol profile; do not extend this mapping to custom provider aliases. |
+| Unknown, unavailable, or any other model | Common workflow only. |
+
+Match these names case-insensitively, not by broad family-prefix guessing. Do not
+infer identity from writing style, the plan's contents, historical chat, or a default
+configuration that may not describe the current run. Mentioning a model is not
+evidence that it is running.
+
+When identity is unavailable, an explicit user or host selection such as
+`feature-implementer profile: astra` or `feature-implementer profile: sol` may select
+that profile. This selects instructions, not a model, and does not establish model
+identity. Otherwise continue with the common workflow without asking an identity
+question. An explicit `feature-implementer profile: common` disables the optional
+profile. Do not inherit a Feature Planner profile or require that skill to be present.
+
+Read only the selected profile. Re-select when the runtime reports a model change;
+the previous profile becomes inactive even if its text remains in context. On
+handoff, reconcile the current plan, actual workspace, and available execution
+records. Preserve requirement IDs, ownership, dependencies, integration state,
+retry counts, evidence classifications, and authorization. Recheck evidence affected
+by intervening changes; do not restart work or reset recovery limits just because
+the model changed. Missing ownership or evidence is not proof of a clean workspace
+or successful validation. A worker selects using its own supplied identity, not an
+assumed copy of the parent's model, and remains bounded by its assigned work unit.
+
+Do not change model settings, reasoning effort, invocation metadata, or plan and
+report schemas to activate a profile. These are prompt instructions, not executable
+model detection. Read [profile maintenance notes](references/model-profile-maintenance.md)
+only when maintaining or evaluating this skill, not during ordinary implementation.
+
 ## Intake the plan
 
 Read the identified planning document completely before changing the repository.
