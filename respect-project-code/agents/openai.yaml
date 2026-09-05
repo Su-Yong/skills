@@ -1,0 +1,7 @@
+interface:
+  display_name: "Respect Project Code"
+  short_description: "Preserve project style with the smallest safe diff"
+  default_prompt: "Use $respect-project-code to implement the requested change, preserve this project's local code style, and avoid unrelated edits."
+
+policy:
+  allow_implicit_invocation: true
