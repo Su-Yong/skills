@@ -32,6 +32,47 @@ questionnaire.
    implementation, deployment, installation, publishing, messaging, purchasing, or
    external-system changes.
 
+## Model-specific behavioral corrections
+
+The common workflow in this file always applies. Add at most one behavioral
+profile; profiles do not replace this skill or define another planning workflow.
+Within this skill, the common contract takes precedence over a profile. Follow the
+host's instruction hierarchy and applicable user instructions; a profile never
+adds authority, tools, or permission to execute the plan.
+
+Select before the operating loop, using current model identity explicitly supplied
+by the runtime or host when available:
+
+| Current identity | Additional instructions to read |
+| --- | --- |
+| `gpt-6-astra` / `GPT-6 Astra` | [Astra behavioral corrections](references/gpt-6-astra.md) |
+| `gpt-5.6-sol` / `GPT-5.6 Sol` | [Sol behavioral corrections](references/gpt-5.6-sol.md) |
+| OpenAI's `gpt-5.6` alias | Sol profile; do not extend this mapping to custom provider aliases. |
+| Unknown, unavailable, or any other model | Common workflow only. |
+
+Match these names case-insensitively, not by broad family-prefix guessing. Do not
+infer identity from writing style, task subject, historical chat, or a default
+configuration that may not describe the current run. A model mentioned in a source
+or request is not evidence that it is running.
+
+When identity is unavailable, an explicit user or host selection such as
+`feature-planner profile: astra` or `feature-planner profile: sol` may select that
+profile. This selects instructions, not a model, and is not proof of model identity.
+Otherwise continue with the common workflow without asking an identity question.
+An explicit `feature-planner profile: common` disables the optional profile.
+
+Read only the selected profile. Re-select when the runtime reports a model change;
+the previous profile becomes inactive even if its text remains in context. Read
+the current living document on handoff and preserve its path, revision, IDs,
+provenance, interview state, and authorization. Never restart planning merely
+because the model changed. A subagent uses its own supplied identity rather than
+assuming the parent's model; its delegated task still bounds its work.
+
+Do not change model settings, reasoning effort, invocation metadata, or the
+planning-document schema to activate a profile. The profiles are additional prompt
+instructions, not executable model detection. Read [profile maintenance notes](references/model-profile-maintenance.md)
+only when maintaining or evaluating this skill, not during ordinary planning.
+
 ## Operating loop
 
 Run this sequence for every planning request and every subsequent message:
