@@ -1,99 +1,175 @@
 # Respect Project Code
 
-A standalone, instruction-only Codex skill for writing code that fits an existing project and changes no more than necessary. No existing skill or repository is modified by this package. It does not install itself or change Codex settings.
+기존 프로젝트의 구조와 코드 관례를 따르면서 요청한 기능, 오류 수정과 범위가 정해진 리팩터링을 수행하는 스킬입니다. 다른 스킬이나 별도의 기획서 없이 사용할 수 있습니다.
 
-## Core behavior
+[설계서](SPEC.md) · [실행 지침](SKILL.md) · [행동 평가 시나리오](tests/acceptance.md)
 
-The skill follows a short loop: inspect the starting state → learn the local conventions → select a minimal correct change → edit only necessary code → validate behavior and the actual delta → stop.
+### 자주 묻는 질문
 
-“Minimal” means the smallest coherent behavioral and review surface, not the fewest lines regardless of correctness. Necessary tests, callers, types, exports, and generated files are included. Unrelated refactoring, whole-project formatting, speculative abstractions, and incidental dependency changes are excluded. Existing user edits must survive.
+- [간단한 사용 방법](#빠르게-시작하기)
+- [자주 생기는 상황](#자주-생기는-상황)
 
-The shared contract remains model-neutral. Optional Astra and Sol behavioral corrections are selected one at a time; they do not add a second workflow. The original purpose and all six common stages are preserved unchanged.
+## 언제 사용하나요?
 
-## Model-specific composition
+- 작은 수정에 관련 없는 코드 정리가 섞이지 않도록 하고 싶을 때
+- 기존 함수, 컴포넌트와 테스트의 작성 방식을 유지하고 싶을 때
+- 여러 패키지의 관례가 다른 저장소에서 특정 패키지만 수정할 때
+- 사용자 수정이 남아 있는 파일에 기능을 추가해야 할 때
+- 리팩터링 범위는 정해졌지만 주변 코드는 보존하고 싶을 때
 
-```text
-respect-project-code — common contract (always)
-  + Astra behavioral corrections (when selected)
-  OR Sol behavioral corrections (when selected)
-  OR no profile (common only)
-```
+빈 프로젝트의 초기 아키텍처 설계나 광범위한 재설계의 주 도구로 사용하지 않습니다. 읽기 전용 리뷰나 원인 분석만 요청했다면 코드를 수정하지 않습니다.
 
-The selector is defined once in [SKILL.md](SKILL.md). A trusted current-agent ID `gpt-6-astra` selects Astra; `gpt-5.6-sol` or OpenAI's `gpt-5.6` alias selects Sol. Missing/unmapped identity defaults to common only. It does not guess from project code or model names mentioned in a prompt.
+## 빠르게 시작하기
 
-When runtime identity is unavailable or unmapped, an explicit skill-level hint can choose a profile:
-
-```text
-$respect-project-code
-respect-project-code profile: astra
-Fix the empty-input error without changing neighboring behavior.
-```
-
-Use `respect-project-code profile: sol` for the Sol fallback. An explicit `respect-project-code profile: common` disables additions even for a recognized model. An Astra/Sol hint never overrides a recognized runtime model. Invalid or conflicting fallback hints result in common only. These are prompt instructions interpreted by this skill, not built-in Codex commands, configuration keys, or model switches.
-
-Astra's additions focus on repository-resolvable decisions, literal instruction boundaries, proportional verification, useful delegation, and reporting. Sol's focus on complete evidence despite brevity, economical context, bounded initiative, and direct tooling. See the English profiles and their full Korean mirrors under `references/`. Source mapping is in [model-profile-sources.md](references/model-profile-sources.md).
-
-## Install locally
-
-Extract the archive and copy its `respect-project-code` folder to **one** location:
-
-| Scope | Destination |
-| --- | --- |
-| Personal, across projects | `$HOME/.agents/skills/respect-project-code/` |
-| A single repository | `<repo>/.agents/skills/respect-project-code/` |
-
-The final path must end in `respect-project-code/SKILL.md`; avoid accidentally nesting the folder twice. For native Windows, `$HOME` is your user profile directory. For WSL or a remote Codex environment, use the home directory in that environment. Do not overwrite an existing same-named skill without reviewing it.
-
-Codex detects local skill changes automatically; restart Codex if it does not appear. Check `/skills` or the skill selector. This archive is a direct local skill folder, not a plugin-directory upload package.
-
-## Rename an existing installation
-
-The previous name was `minimal-change-coder`. Review and preserve any local customizations before replacing that installation. Install the new folder as `respect-project-code`, update old invocation references to `$respect-project-code`, and disable the old copy or keep it outside skill discovery locations so both coding disciplines are not selected together. This archive does not change installed copies, other skills, or host settings automatically.
-
-## Use
+스킬을 사용할 수 있는 에이전트 환경에서 수정할 프로젝트를 열고 다음처럼 요청합니다.
 
 ```text
 $respect-project-code
-Fix the error that occurs when the search field is empty.
-Preserve the existing component structure, error handling, and test conventions.
+검색어를 비우고 검색하면 오류가 발생해. 이 문제를 고쳐 줘.
+기존 컴포넌트 구조와 오류 처리 방식을 유지하고,
+관련 없는 이름 변경이나 코드 정리는 하지 말아 줘.
 ```
 
-With another implementation workflow already active, mention `$respect-project-code` as the coding discipline; the existing workflow still owns its planning and delivery steps.
+스킬은 기존 변경과 관련 코드를 확인하고 가까운 구현 및 테스트에서 관례를 파악합니다. 필요한 부분을 수정한 뒤 관련 동작과 실제 변경을 검증합니다.
 
-`agents/openai.yaml` enables implicit invocation with `allow_implicit_invocation: true`. This permits Codex to select the skill for matching tasks; it is not a guarantee that every coding task will use it. Explicitly mention `$respect-project-code` when its application matters. To make it explicit-only, change that value to `false` in your installed copy. This package does not modify `AGENTS.md` or create an always-on rule.
+## 요청을 작성하는 방법
 
-## Contents
+다음 세 가지를 적으면 작업 범위를 판단하기 쉽습니다.
 
-| File | Purpose |
+| 정보 | 예시 |
 | --- | --- |
-| [SKILL.md](SKILL.md) | Canonical English runtime instructions. |
-| [SKILL.ko.md](SKILL.ko.md) | Full Korean mirror for review; not a second entrypoint. |
-| [agents/openai.yaml](agents/openai.yaml) | Codex display metadata, default prompt, and invocation policy. |
-| [README.md](README.md) / [README.ko.md](README.ko.md) | Installation and usage in English and Korean. |
-| [tests/acceptance.md](tests/acceptance.md) / [tests/acceptance.ko.md](tests/acceptance.ko.md) | Eighteen unchanged common behavioral scenarios and their pass criteria. |
+| 바꿀 동작 | 빈 검색어는 오류 대신 기존 빈 상태를 표시합니다. |
+| 유지할 동작 | 일반 검색 결과, URL 파라미터와 오류 메시지 형식 |
+| 이미 알고 있는 맥락 | 해당 파일에 수정 중인 문구가 있고 기존 검색 테스트가 있습니다. |
 
-Additional files:
-
-| File | Purpose |
-| --- | --- |
-| [references/gpt-6-astra.md](references/gpt-6-astra.md) / [Korean mirror](references/gpt-6-astra.ko.md) | Astra-only corrections. |
-| [references/gpt-5.6-sol.md](references/gpt-5.6-sol.md) / [Korean mirror](references/gpt-5.6-sol.ko.md) | Sol-only corrections. |
-| [references/model-profile-sources.md](references/model-profile-sources.md) / [Korean mirror](references/model-profile-sources.ko.md) | Official sources and adaptation boundaries. |
-| [tests/model-profiles.md](tests/model-profiles.md) / [Korean mirror](tests/model-profiles.ko.md) | Sixteen routing, isolation, and behavioral scenarios. |
-
-For ordinary coding, read the canonical skill and at most the selected English profile. Installation docs, mirrors, source mapping, and evaluation scenarios are not required runtime context. No scripts, assets, or tool dependencies are bundled.
-
-## Verification and limitations
-
-Package checks cover UTF-8 files, YAML parsing, required metadata, matching skill/folder names, local links, paired document structure, and ZIP integrity. These are packaging checks, not proof of agent behavior. Actual Codex sessions and the eighteen common plus sixteen profile scenarios have not been run for this release; their status is `NOT_RUN`. Static preservation checks compare the original and updated common sections byte-for-byte; routing simulations test the documented selector, not actual model adherence. Instructions can guide a model, but cannot mechanically enforce minimal edits or replace code review and tests.
-
-The Korean files preserve the English documents’ rules, examples, technical identifiers, and caveats. Treat `SKILL.md` as canonical and update its Korean mirror when changing policy.
-
-## Official references
-
-Authoring and local discovery were checked against OpenAI documentation on 2026-09-06. Model-specific source provenance is recorded separately in [references/model-profile-sources.md](references/model-profile-sources.md). The following are documentation locations, not runtime dependencies:
+파일과 테스트의 정확한 위치를 몰라도 요청할 수 있습니다. 이미 알고 있는 경로나 재현 순서가 있다면 함께 제공하면 됩니다.
 
 ```text
-https://developers.openai.com/codex/skills
-https://learn.chatgpt.com/docs/build-skills
+$respect-project-code
+[수정할 동작과 현재 문제]를 처리해 줘.
+[유지할 동작 또는 제약]은 그대로 유지해 줘.
+[관련 경로 또는 재현 방법]을 참고하고 필요한 검증을 수행해 줘.
 ```
+
+## 사용 예시와 시나리오
+
+아래 경로는 예시입니다. 실제 프로젝트의 경로로 바꿔 사용합니다.
+
+### 1. 작은 오류 수정
+
+```text
+$respect-project-code
+페이지 번호가 0이면 목록 조회에서 오류가 나.
+기존 페이지 번호 검증 방식을 확인해서 고쳐 줘.
+정상 페이지의 결과와 응답 형식은 유지해 줘.
+```
+
+원인과 기존 검증 방식을 확인한 뒤 필요한 구현과 회귀 검증을 수행합니다. 오류를 숨기거나 임의의 기본값을 반환해 증상만 없애는 방식은 사용하지 않습니다.
+
+### 2. 기존 화면에 필드 추가
+
+```text
+$respect-project-code
+고객 편집 화면에 회사명 필드를 추가해 줘.
+같은 화면의 기존 입력 필드와 저장 흐름을 따라가고,
+필요한 타입, 호출부와 테스트도 함께 반영해 줘.
+```
+
+변경을 한 파일로 제한하지 않습니다. 동작을 완성하는 데 필요한 타입, 호출부, export와 테스트는 포함하고, 별도 폼 프레임워크나 범용 추상화를 임의로 만들지 않습니다.
+
+### 3. 모노레포의 특정 패키지 수정
+
+```text
+$respect-project-code
+packages/admin의 날짜 필터에 초기화 버튼을 추가해 줘.
+이 패키지의 설정과 주변 필터 컴포넌트 방식을 따라 줘.
+다른 패키지의 스타일을 가져와 통일하지는 말아 줘.
+```
+
+적용되는 명시적 설정을 우선하고 대상 파일과 가까운 유사 구현을 참고합니다. 스타일에는 공백뿐 아니라 상태 관리, 오류 처리, 파일 위치와 테스트 방식도 포함됩니다.
+
+### 4. 수정 중인 파일에 작업 추가
+
+```text
+$respect-project-code
+src/profile/form.ts의 저장 오류를 고쳐 줘.
+같은 파일의 안내 문구는 내가 이미 수정해 뒀어.
+기존 수정과 스테이징 상태를 보존하고 필요한 부분만 추가해 줘.
+```
+
+시작 내용을 확인하고 사용자 수정 위에서 호환되는 편집을 수행합니다. 기존 내용을 없애기 위한 reset, restore나 자동 stash를 사용하지 않습니다. 겹치는 변경의 소유권을 판단할 수 없으면 해당 편집의 충돌부터 해결합니다.
+
+### 5. 범위가 정해진 리팩터링
+
+```text
+$respect-project-code
+주문 모듈의 calculateFee를 calculateShippingFee로 바꿔 줘.
+해당 함수의 호출부와 테스트도 함께 수정하되 계산 동작은 유지해 줘.
+이름 변경과 무관한 구조 정리는 제외해 줘.
+```
+
+명시적으로 요청한 리팩터링은 수행합니다. 보존 원칙을 이유로 필요한 호출부 변경을 누락하지 않습니다.
+
+### 6. 생성물이 있는 프로젝트
+
+```text
+$respect-project-code
+사용자 스키마에 기획된 상태 필드를 반영해 줘.
+원본 스키마를 수정하고 프로젝트에서 사용하는 생성 명령으로
+필요한 타입 파일을 갱신해 줘.
+```
+
+원본과 생성물의 관계, 기존 명령을 확인합니다. 생성 코드만 손으로 수정하거나 필수 생성물을 누락해 변경량을 줄이지 않습니다.
+
+### 7. 수정 가능한 파일에 명시적 제한이 있는 경우
+
+```text
+$respect-project-code
+이번 작업은 src/search/parser.ts만 수정할 수 있어.
+빈 검색어 오류를 고쳐 줘.
+완전한 수정에 다른 파일이 필요하면 그 이유와 필요한 범위를 알려 줘.
+```
+
+정확한 수정에 다른 파일이 필수라면 경계를 넘기 전에 필요한 결정을 요청합니다. 한 파일만 고친 상태를 무조건 완료로 보고하지 않습니다. 파일 제한이 실제로 필요할 때 사용하는 예시입니다.
+
+## 스킬이 작업하는 순서
+
+1. 요청한 동작과 완료 조건, 적용 지침을 확인합니다.
+2. 기존 파일과 staged, unstaged, untracked 변경을 파악합니다.
+3. 관련 코드와 테스트, 가까운 유사 구현을 읽습니다.
+4. 필요한 수정 위치와 기존에 사용할 패턴을 정합니다.
+5. 관련 동작을 구현하고 필요한 지원 변경을 반영합니다.
+6. 관련 검사와 저장소 필수 검사를 수행합니다.
+7. 시작 상태와 비교해 실제 본인 변경을 검토하고 결과를 보고합니다.
+
+Git이 없는 프로젝트에서도 파일 비교로 시작 상태를 확인합니다. 별도의 기획 문서나 작업자 구성을 의무적으로 만들지 않습니다.
+
+## 어떤 결과를 기대할 수 있나요?
+
+최종 보고에는 수정한 동작, 해당 로컬 방식을 선택한 이유, 실제 검사 결과와 한계가 포함됩니다. 요청한 결과와 필요한 검증이 충족되면 작업을 끝냅니다.
+
+‘최소 변경’은 가장 적은 줄 수를 뜻하지 않습니다. 정확한 구현에 필요한 테스트, 호출부와 타입 변경은 유지하고 요청과 무관한 동작 변화와 검토 부담을 줄이는 기준입니다.
+
+## 자주 생기는 상황
+
+| 상황 | 처리 방식 |
+| --- | --- |
+| 기존 도우미가 비슷해 보이지만 오류 동작이 다름 | 의미와 생명주기가 맞는 경우에만 재사용합니다. |
+| formatter가 파일 전체를 바꿈 | 영향 범위를 확인하고 가능한 검사 전용 또는 제한된 실행을 사용합니다. |
+| 기존 코드에 위험한 패턴이 있음 | 직접 관련된 안전 요구를 충족하고 위험한 동작을 그대로 복제하지 않습니다. |
+| 수정 후 검사가 실패했는데 이전 결과가 없음 | 기존 문제라고 단정하지 않고 원인 불확실성을 보고합니다. |
+| 필요한 검사를 실행할 수 없음 | 사용할 수 없는 도구와 미검증 범위를 밝힙니다. |
+
+스킬 사용 자체가 커밋, push, 의존성 설치나 파괴적 작업을 허용하지 않습니다. 필요한 범위와 권한은 실제 요청과 적용 지침을 따릅니다.
+
+## 선택 사항: 공통 규칙만 사용하기
+
+이 스킬은 모델별로 추가 지시가 적용되어있습니다. 만약 모델별 지시를 제외하고 기본 규칙만 사용하려면 다음처럼 요청하면 됩니다.
+
+```text
+$respect-project-code
+respect-project-code profile: common
+현재 프로젝트의 빈 입력 오류를 고쳐 줘.
+```
+
+현재 `profile`은 `gpt-5.6 sol`, `gpt-6-astra` 모델만 지원하며 나머지 모델은 자동으로 `common` 프로필을 사용합니다.
