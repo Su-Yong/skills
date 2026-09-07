@@ -1,7 +1,7 @@
 interface:
   display_name: "Feature Implementer"
-  short_description: "Execute plans with requirement-level evidence"
-  default_prompt: "Use $feature-implementer to read this planning document in full, implement only its authorized scope, track requirements and execution dependencies, and return an evidence-based integrated report."
+  short_description: "Implement plans faithfully, quickly, and readably"
+  default_prompt: "Use $feature-implementer to read this planning document in full, implement its authorized requirements faithfully, agree producer/consumer contracts before parallel implementation, actively use subagents, and keep code consistent and grouped by concern. Reserve comments for non-obvious reasons behind hacky or tricky code. Verify the integrated behavior against the plan and return one evidence-based report."
 
 policy:
   allow_implicit_invocation: true

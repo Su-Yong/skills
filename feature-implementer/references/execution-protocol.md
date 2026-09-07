@@ -2,7 +2,7 @@
 
 This protocol defines the detailed execution model for complex Feature Implementer
 runs. Read it completely before editing when the work uses internal workers,
-dependency waves, finite recovery, nontrivial integration, or complex validation.
+shared boundary contracts, finite recovery, nontrivial integration, or complex validation.
 For a small direct change, its invariants still apply even when the full protocol is
 not loaded.
 
@@ -10,12 +10,13 @@ The protocol optimizes for:
 
 ```text
 Plan Fidelity
-+ Work Ownership
-+ Adaptive Execution
-+ Requirement Traceability
-+ Evidence-based Validation
-+ Strict Authorization Boundary
++ Fast Implementation
++ Human-Readable Code
 ```
+
+Shorten elapsed time through integration and validation while meeting the plan and
+readability criteria. Work ownership, evidence-based completion, independent use,
+and authorization boundaries support all three values.
 
 ## 0. Sources of truth and precedence
 
@@ -95,6 +96,7 @@ Required or optional:
 Acceptance criteria:
 Constraints:
 Dependencies:
+Boundary contracts:
 Related non-goals / do-not-touch areas:
 Unresolved decisions:
 Authorized actions:
@@ -128,12 +130,21 @@ only through actual dependencies.
 
 ## 2. Reuse repository findings and ownership records
 
+Before editing a Git repository, inspect relevant current staged and unstaged diffs
+and untracked files. Pre-existing edits are user-owned; preserve their contents and
+staging state during implementation, validation, integration, and recovery. Never
+use reset, revert, clean, automatic stash, checkout/restore, broad formatting, or
+file moves to discard or overwrite unowned work. For a non-Git repository, inspect
+the relevant starting file state directly.
+
 Inspect relevant repository evidence and applicable instructions to resolve
 implementation targets. Reuse available records and collect missing evidence.
 Bring these findings into the execution record:
 
 - instructions that constrain plan scope, validation, or authorized actions;
-- target symbols and available validation commands;
+- relevant source and tests, target symbols, existing helpers and public contracts;
+- local naming, structure, control-flow patterns, and concern boundaries;
+- available validation commands;
 - pre-existing changes overlapping planned units;
 - edits owned by each unit and any unresolved ownership conflict; and
 - baseline check evidence needed to classify later failures.
@@ -153,59 +164,59 @@ Target file(s) / symbol(s):
 Plan constraints and non-goals:
 Do-not-touch paths or behavior:
 Ownership overlap:
-Dependencies:
+Implementation prerequisites:
+Integration / validation prerequisites:
+Boundary contracts:
+Local code patterns and concern boundaries:
 Acceptance evidence:
 ```
 
 This map connects the intended behavior to execution and evidence. Use it to
 allocate work, check plan coverage, and identify the stopping point for each requirement.
 
-## 4. Build the work graph and choose execution depth
+## 4. Build the work graph for parallel implementation
 
 ### 4.1 Identify work units and dependencies
 
-Group requirement maps into implementation units. Two requirements may share a unit
-when they are tightly coupled in the same file, contract, migration, generated
-artifact, or validation path. Do not split tightly coupled work merely to create
-parallelism.
+Group requirement maps into verifiable feature units. Look for independent work and
+producer/consumer units whose coding can proceed together once boundary contracts
+are agreed. Runtime data flow does not by itself impose coding order.
 
-Represent dependencies as a directed acyclic graph when possible:
+Record coding and integration prerequisites separately:
 
-```text
-prerequisite unit
-      ↓
-dependent implementation
-      ↓
-integration or scenario validation
-```
+| Dependency | Scheduling decision |
+| --- | --- |
+| An agreed input/output and behavior contract is enough to code | Agree the boundary and dispatch producer and consumer implementations together. |
+| A shared declaration must exist first | One owner makes the minimum declaration edit, then releases separate implementation writers. |
+| A real predecessor result is needed to make the next decision | Obtain that result in the smallest prerequisite unit; continue unrelated work. |
+| Units must edit the same file, generated artifact, or migration chain | Assign the overlap to one owner or serialize only the conflicting writes. |
+| Actual implementations must connect to validate behavior | Code and author checks concurrently where useful; run integration checks when their real prerequisites are ready. |
 
-Cycles usually indicate that units should be combined or that an interface contract
-must be established first.
+A work graph may have different edges for coding and integration. Resolve cycles by
+establishing an interface or combining inseparable writes. Do not turn every shared
+contract into one large serial implementation unit.
 
 ### 4.2 Direct execution
 
-The primary agent should work directly when the task is:
-
-- one bounded change;
-- low risk;
-- small enough to understand and validate as a unit;
-- concentrated in one tightly coupled write surface; or
-- unlikely to gain material speed or quality from delegation.
+Direct work is appropriate for a small bounded change whose coordination cost
+exceeds the benefit, a write surface that cannot be separated by contracts, or an
+unavailable collaboration tool. Record the actual reason briefly. A call chain
+alone is not a reason to serialize implementation.
 
 A direct task still requires requirement mapping, work ownership, acceptance
 evidence, and an integrated report.
 
 ### 4.3 Delegated execution
 
-Use internal collaboration workers only when delegation has a concrete benefit:
+Actively use permitted collaboration workers to implement as much useful work
+concurrently as capacity allows. Dispatch independent units and contract-ready
+producer/consumer units to disjoint write scopes. Release ready work continuously,
+and prioritize prerequisites that are holding other useful work back.
 
-- independent write-disjoint units can progress concurrently;
-- dependency waves provide useful parallelism;
-- a complex bounded subsystem benefits from specialist implementation; or
-- risk justifies an independent read-only reviewer or validator.
-
-Do not delegate solely because there are many checklist items. Do not make worker
-availability a blocker when the primary agent can safely own the work.
+The primary agent owns contract alignment, scheduling, bottlenecks, and integration.
+It may implement or validate work outside active worker write scopes. An independent
+reviewer can help with complex or risky work. Worker count itself is not a success
+metric, and unavailable workers do not block safe direct progress.
 
 A read-only review worker may inspect overlapping paths because it has no write
 scope. Concurrent write workers must remain disjoint.
@@ -218,12 +229,16 @@ Use this contract for every delegated unit and for complex direct units:
 ID:
 Goal:
 Linked requirements:
-Dependencies:
+Implementation prerequisites:
+Integration / validation prerequisites:
+Boundary contracts: inputs, outputs, behavior, errors:
+Shared contract owner and agreed revision:
 Exclusive write scope:
 Read-only context:
 Do not touch:
 Existing changes to preserve:
 Implementation constraints:
+Local code patterns and concern boundaries:
 Acceptance criteria:
 Validation commands:
 Expected report:
@@ -246,8 +261,10 @@ write to the same:
 Directory-wide ownership is allowed only when the unit genuinely owns the entire
 directory. Read-only context may overlap freely.
 
-If several units must modify the same file or contract, combine them or serialize
-them through dependencies.
+If several units need a shared edit, assign it to one writer and parallelize the
+remaining implementation against the agreed result. Combine or serialize only the
+parts that cannot be given disjoint write scopes. Reading and implementing against
+the same stable contract does not make producer and consumer bodies one write scope.
 
 ### 5.2 Required worker context
 
@@ -259,41 +276,90 @@ Every worker assignment must state that:
   pre-existing and concurrent work;
 - it follows applicable repository instructions and reports into the existing
   requirement map and work graph;
+- it receives the same agreed boundary contract as its producers/consumers, with
+  separate coding and integration prerequisites and a named contract owner;
+- it follows the shared local code patterns and concern boundaries, using comments
+  only for non-obvious reasons or constraints behind hacky or tricky code;
+- it reports a proposed contract change to the primary agent rather than changing
+  shared assumptions unilaterally;
 - it must not spawn additional agents unless the primary agent explicitly delegates
   that coordination responsibility;
 - it must run the specified targeted validation; and
 - its report must identify changed files, requirement coverage, validation evidence,
-  blocked items, unverified items, and baseline observations.
+  blocked items, unverified items, baseline observations, and readability concerns.
 
-## 6. Execute dependency waves
+### 5.3 Agree the minimum boundary contract
 
-Schedule only units whose dependencies have been integrated and reviewed.
+Use plan and repository evidence to agree the boundaries needed for concurrent
+coding. Include only relevant details:
+
+- call points and names, input/output types, and data meaning;
+- required/optional values, empty results, and edge conditions;
+- success/failure behavior and error propagation;
+- state changes, side effects, ordering, and compatibility constraints;
+- write ownership, shared contract owner, and an identifiable agreed revision; and
+- acceptance behavior to check with real implementations connected.
+
+Reuse existing types and interfaces. One owner makes necessary shared declaration
+edits before dependent writers start. Do not delay useful dispatch to predesign
+internal implementation details or create contract paperwork for a unit with no
+shared boundary. Pass the same agreement and relevant local code examples to each
+affected worker.
+
+Resolve local choices from evidence; missing material product or API semantics still
+follow section 1.4. Never invent a contract merely to unlock concurrency.
+
+## 6. Dispatch ready work and coordinate contracts
+
+### 6.1 Continuous scheduling
+
+Schedule units as soon as their coding prerequisites and disjoint write scopes are
+ready and worker capacity is available. An agreed producer/consumer contract can be
+a sufficient coding prerequisite before either implementation exists. Do not wait
+for unrelated units to finish a wave.
 
 Example:
 
 ```text
-Wave 1
-A: schema or core contract
+Runtime flow: A fetches data → B transforms it → C displays it
 
-Wave 2
-B: API implementation
-C: repository or UI implementation
+Short boundary alignment
+  A output = B input
+  B output = C input
+  Behavior, errors, empty results, and shared ownership agreed
+  Minimum shared declarations established if needed
 
-Wave 3
-D: integration and scenario validation
+Concurrent implementation in separate write scopes
+  Worker A: fetching
+  Worker B: transformation
+  Worker C: display
+  Primary: coordination and inspection/integration of ready results
+
+Real implementations ready
+  A and B ready → check the A+B boundary
+  C ready too → check the complete scenario
 ```
 
-Within a wave:
+B codes against A's agreed output and C against B's agreed output. A runtime call
+chain does not require waiting for the preceding implementation to finish. Author
+integration checks concurrently when useful; run them when their actual prerequisites
+are available and stable.
 
-- write scopes must be disjoint;
-- no unit may depend on another unit in the same wave unless the dependency is
-  read-only and already stable;
-- the primary agent keeps enough attention for shared-workspace monitoring and
-  integration; and
-- downstream work is not released merely because a worker reports success.
+Fixtures or stubs may support isolated tests or development when needed. A stub
+result proves only the behavior it exercises, not the real producer/consumer
+boundary. The final required execution path must use actual implementations.
 
-After each wave, the primary agent must inspect and integrate prerequisite changes
-before scheduling dependent work.
+### 6.2 Contract changes and necessary waits
+
+When a worker finds a contract defect or gap, the primary agent identifies affected
+producers and consumers, aligns the updated agreement, and updates their coding and
+validation prerequisites. Hold only the affected portions while the agreement is
+unresolved; keep independent work moving. Recheck evidence invalidated by the change.
+
+Serialize conflicting shared edits or minimum work requiring actual predecessor
+results. Inspect completed diffs and evidence before integrating them, and run actual
+boundary checks as relevant implementations become ready. That integration gate does
+not delay downstream coding already released by an agreed contract.
 
 ## 7. Inspect and integrate worker results
 
@@ -305,18 +371,47 @@ primary agent must inspect the actual workspace and verify:
 3. the semantic diff satisfies linked requirements;
 4. non-goals and do-not-touch areas remain intact;
 5. applicable repository constraints are satisfied;
-6. dependency assumptions remain valid;
-7. validation output is relevant, reproducible, and trustworthy; and
-8. downstream units still have correct prerequisites.
+6. real input/output behavior, errors, and side effects match the shared agreement;
+7. coding and integration prerequisites remain correct for affected units;
+8. names, structure, control flow, concern grouping, and comments meet section 7.1;
+9. validation output supports the claims, distinguishing isolated from real
+   integration results; and
+10. no required behavior was omitted or silently altered to make the unit pass.
 
-Rerun important targeted checks when the worker output is incomplete, ambiguous, or
-high risk.
+Collect missing meaningful evidence or rerun checks invalidated by changes. Reuse
+valid results rather than repeating the same checks solely because a worker ran them.
 
 If two valid results conflict, do not discard either wholesale. Resolve an obvious
 small integration issue directly. Otherwise redefine ownership and create a bounded
 serialized reconciliation unit.
 
+### 7.1 Review code shape, concerns, and comments
+
+Give workers relevant local examples before coding, then inspect the actual diff
+and surrounding code at integration:
+
+- Use the same vocabulary for the same concepts. Match declaration structure,
+  branching, and error handling among similar functions or components in accordance
+  with repository instructions.
+- Keep data and logic that change for the same reason close together, separate
+  distinct responsibilities, and maintain a coherent abstraction level in each
+  function or block. Consistency includes structure and flow, not only whitespace.
+- Do not force unrelated concerns into a shared abstraction because they look alike.
+  Limit structural tidying to the active implementation and necessary integration.
+- Express normal behavior through names and structure. Improve confusing code before
+  adding prose; do not narrate assignments, calls, branches, or ordinary steps.
+- Add comments only for non-obvious reasons or constraints behind unavoidable hacky
+  workarounds or tricky logic. Explain why; include a known removal condition when
+  useful.
+
+Resolve readability problems with the relevant write owner. Formatter/linter success,
+code size, file count, or comment volume does not replace this inspection.
+
 ## 8. Apply finite worker recovery
+
+An outstanding integration check whose real prerequisites are still being built is
+not itself a failed worker attempt. Record implementation and pending evidence
+separately, then let the primary agent validate the connected result when ready.
 
 A worker attempt fails when it:
 
@@ -370,9 +465,15 @@ loop indefinitely.
 ## 9. Reconcile implementation with the plan
 
 After a direct unit or worker integration, reconcile changed targets, dependencies,
-and acceptance coverage with the requirement map. A newly discovered issue is not
-an active requirement. Record its effect on dependent work and validation; resolve
-material scope changes through the plan's existing decision boundary.
+boundary contracts, readability, and acceptance coverage with the requirement map.
+Compare every active requirement's behavior, constraints, and non-goals to actual
+changes: check omissions, semantic drift, and out-of-scope additions, even when tests
+pass. Every changed file must serve active requirements or necessary integration and
+validation. Do not add unrelated refactoring, cleanup, or dependency upgrades.
+
+A newly discovered issue is not an active requirement. Record its effect on
+dependent work and validation; resolve material scope changes through the plan's
+existing decision boundary.
 
 ## 10. Account for acceptance coverage
 
@@ -391,6 +492,11 @@ contracts and plan scenarios when applicable. One result may cover multiple
 criteria or levels; link it rather than rerunning it. Add checks for uncovered
 criteria or evidence invalidated by integration. A broad passing command does not
 establish coverage by itself.
+
+For parallel producer/consumer implementations, verify real inputs, outputs, errors,
+side effects, and planned scenarios after connection. Stub-only evidence cannot
+verify the real boundary. Record the code readability inspection separately from
+behavioral evidence; neither replaces the other.
 
 ### 10.1 Evidence record
 
@@ -457,7 +563,8 @@ Attach any `baseline-failure` evidence separately. Record new regressions explic
 
 Use one outcome:
 
-- **Complete** — every required item is verified and no new regression remains.
+- **Complete** — every required item is verified, no plan mismatch or new regression
+  remains, and changed code meets the readability and comment rules in section 7.1.
 - **Partially Complete** — at least one meaningful independent item is verified, but
   one or more remaining items are blocked or unverified.
 - **Blocked** — a core decision, contract, environment, permission, or capability
@@ -472,6 +579,9 @@ Use the most conservative accurate classification. Never report Complete when:
 - acceptance criteria were weakened;
 - worker output was not inspected; or
 - critical validation was skipped without equivalent evidence.
+
+Resolve remaining plan mismatches and readability violations before reporting
+Complete. A fast implementation that fails either criterion is not a successful run.
 
 ## 12. Produce the Integrated Implementation Report
 
@@ -505,7 +615,9 @@ Use this structure:
 
 - Direct work: ...
 - Delegated units and ownership: ...
-- Dependency waves: ...
+- Agreed boundary contracts and owners/revisions: ...
+- Coding versus integration prerequisites: ...
+- Reasons for direct/sequential work or waits: ...
 - Worker retries or recovery: ...
 - Primary-agent integration: ...
 
@@ -535,6 +647,11 @@ Use this structure:
 
 - ...
 
+## Code Readability
+
+- Patterns and concern grouping checked in the actual code: ...
+- Remaining hacky/tricky implementation and its non-obvious reason: ...
+
 ## Authorization Boundary
 
 - Workspace changes and validation performed: ...
@@ -545,7 +662,14 @@ Use this structure:
 ```
 
 Include only execution details that occurred. Preserve stable plan IDs throughout the
-report when available.
+report when available. Scale the report to the work; sections may be combined into
+concise prose while retaining requirement status, evidence, and the three values.
+
+When evaluating speed, record measured elapsed time from the start through final
+integration and validation, including contract alignment, waits, recovery, and rework.
+Compare only runs with the same plan, repository state, tools/worker conditions, and
+fidelity/readability criteria. Do not claim improvements from worker count or an
+unmeasured baseline, and do not rerun all work serially merely to obtain a comparison.
 
 ## 13. Stop at the authorized boundary
 
@@ -586,23 +710,36 @@ Use this matrix when reviewing the skill or testing an execution run:
 | Pre-existing or concurrent edits | Track ownership before allocating, integrating, or recovering units. |
 | Existing implementation records | Reuse valid findings and check results in the requirement map. |
 | Single low-risk bounded task | Let the primary agent implement directly without artificial delegation. |
-| Independent disjoint tasks | Allow parallel workers only when write scopes do not overlap. |
+| Independent disjoint tasks | Actively dispatch useful parallel implementation within available capacity and disjoint write scopes. |
 | Complex or risky task | Allow bounded worker implementation or independent read-only review. |
-| Dependency chain | Integrate prerequisites before releasing downstream waves. |
-| Shared file or contract | Serialize the work or combine it into one unit. |
+| A → B → C runtime chain | Agree A output/B input and B output/C input, implement concurrently, then verify connected real implementations. |
+| Shared declaration needed first | One owner makes the minimum declaration edit before concurrent producer/consumer coding. |
+| A real result is needed to decide the next implementation | Perform the minimum prerequisite and continue unaffected work. |
+| Ready unit and available capacity | Dispatch now rather than wait for an unrelated wave to finish. |
+| Contract changes during coding | Primary aligns affected producers/consumers and refreshes their prerequisites and invalidated evidence. |
+| Shared file or writable contract | Assign shared edits to one writer or serialize only the overlap; parallelize separable implementation. |
+| Stub checks pass | Leave the real integration criterion unverified until actual implementations are connected and checked. |
+| Integration prerequisites still under construction | Record pending evidence without treating the wait alone as worker failure or consuming retries. |
 | Worker claims success | Inspect the workspace and evidence before acceptance. |
 | Worker fails | Same worker retry once, replacement once, limited primary recovery, then block. |
 | Worker unavailable | Continue directly when safe; availability alone is not a blocker. |
 | Existing test failure | Record baseline evidence and distinguish it from new regressions. |
 | Missing validation coverage | Disclose which acceptance criteria lack evidence and their consequences. |
+| Similar features implemented by different workers | Share naming, declaration, and control-flow patterns; inspect consistency in the integrated code. |
+| Related logic scattered across a change | Group the same concern while retaining distinct responsibility boundaries. |
+| Similar-looking code with different concerns | Preserve separate responsibilities instead of forcing a common abstraction. |
+| Ordinary code appears to need explanatory comments | Improve names and structure instead of adding narration. |
+| Unavoidable hacky or tricky implementation | Comment only on its non-obvious reason or constraint. |
+| Fast output with a plan omission or readability violation | Correct and recheck it before calling the run successful. |
 | New regression | Never classify the result Complete. |
 | Implementation succeeds | Do not commit, push, open a PR, or deploy without separate authorization. |
 
 ## 15. Functional conformance checklist
 
-Use this checklist when changing the Feature Implementer skill itself. Retired IDs
-remain listed to preserve historical references; their former general code-editing
-rules are no longer Feature Implementer gates.
+Use this checklist when changing the Feature Implementer skill itself. The IDs map
+to the active requirements in [SPEC.md](../SPEC.md), revision 4. FI-008, FI-009, and
+FI-013 use their current spec meanings; historical retired wording does not override
+this contract or impose a minimal-diff rule.
 
 | Requirement | Protocol gate |
 | --- | --- |
@@ -613,17 +750,17 @@ rules are no longer Feature Implementer gates.
 | FI-005 | Section 1.4 prohibits inventing material contracts. |
 | FI-006 | Section 1.4 propagates blocking only through actual dependencies. |
 | FI-007 | Section 2 reuses applicable repository constraints in execution records. |
-| FI-008 | Retired: bounded code investigation is outside this execution protocol. |
-| FI-009 | Retired: abstraction reuse is outside this execution protocol. |
-| FI-010 | Section 2 records ownership overlap for scheduling and integration. |
-| FI-011 | Sections 5 and 8 limit worker writes and recovery to owned scope. |
+| FI-008 | Sections 2 and 3 inspect relevant source/tests to identify targets, ownership, dependencies, patterns, and validation. |
+| FI-009 | Sections 2, 3, and 5.3 use existing implementations and public contracts to choose targets consistent with the plan and repository. |
+| FI-010 | Section 2 requires current staged/unstaged and untracked inspection before editing and records ownership overlap. |
+| FI-011 | Section 2 preserves user-owned changes in direct and delegated work; sections 5 and 8 limit worker writes and recovery to owned scope. |
 | FI-012 | Sections 1.3 and 3 map each requirement to targets and evidence. |
-| FI-013 | Retired: semantic-diff minimality is outside this execution protocol. |
+| FI-013 | Section 9 connects every change to active requirements or necessary integration/validation and checks plan fidelity. |
 | FI-014 | Section 9 prevents discovered issues from becoming active requirements silently. |
 | FI-015 | Section 4.2 allows direct primary-agent execution for bounded low-risk work. |
-| FI-016 | Section 4.3 permits workers only when they provide material benefit. |
+| FI-016 | Sections 4.3 and 6 actively dispatch useful parallel implementation within available tools and capacity. |
 | FI-017 | Section 5.1 requires disjoint concurrent write scopes. |
-| FI-018 | Section 6 enforces dependency-wave ordering. |
+| FI-018 | Sections 4–6 agree boundary contracts before concurrent coding and retain only necessary predecessor, integration, and shared-write ordering. |
 | FI-019 | Section 7 requires primary-agent workspace inspection and integration. |
 | FI-020 | Section 7 rejects worker success claims as completion evidence. |
 | FI-021 | Section 8 defines finite same-worker and replacement-worker retries. |
@@ -634,3 +771,12 @@ rules are no longer Feature Implementer gates.
 | FI-026 | Section 12 requires one integrated implementation report. |
 | FI-027 | Section 13 prohibits unapproved Git-history and remote operations. |
 | FI-028 | Section 13 prohibits unapproved deployment, publication, and external mutation. |
+| FI-029 | Sections 1–3 and 11–12 handle ordinary plans, execution, verification, and reporting without another skill. |
+| FI-030 | Sections 4.2, 6.1, and 12 dispatch ready units and record actual reasons for direct/sequential work. |
+| FI-031 | Sections 4.1 and 5 distinguish coding prerequisites from integration/validation prerequisites. |
+| FI-032 | Sections 5.2–5.3 and 6.2 share contracts and owners/revisions and coordinate changes across affected producers/consumers. |
+| FI-033 | Sections 6.1 and 10 require real integration evidence beyond fixture/stub checks. |
+| FI-034 | Sections 5.2 and 7.1 align vocabulary, declaration structure, and control flow across similar responsibilities. |
+| FI-035 | Sections 7.1 and 9 group concerns without forced abstractions or unrelated cleanup. |
+| FI-036 | Section 7.1 reserves comments for non-obvious reasons and constraints behind hacky/tricky code. |
+| FI-037 | Sections 7, 9, and 11 require primary-agent plan fidelity and readability review before Complete. |
