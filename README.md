@@ -10,6 +10,13 @@ Codex에서 개인적으로 사용하기 위해 관리하는 스킬 저장소입
 - [feature-implementer](feature-implementer/README.md): 계획 문서의 요구사항에 맞춰 구현하고, 서브에이전트를 활용해 병렬적으로 구현하여 빠른 구현을 목표로합니다.
 - [respect-project-code](respect-project-code/README.md): 기존 저장소의 구조와 정책을 최대한 유지하며, 최소한의 변경으로 문제를 해결합니다.
 
+### 특수 스킬
+
+- [oai-docs-ui](oai-docs-ui/README.md): Pen에서 사용하는 편집 디자인 시스템과 A4 문서·16:9 발표 제작 스킬입니다.
+  - [oai-docs-ui.lib.pen](oai-docs-ui/oai-docs-ui.lib.pen): 디자인 시스템 라이브러리입니다. Pen에서 가져와 연결하여 사용합니다.
+  - [oai-style-docs](oai-style-docs/README.md): A4 세로 문서 제작 스킬입니다.
+  - [oai-style-ppt](oai-style-ppt/README.md): 16:9 발표 제작 스킬입니다.
+
 ### 구버전 스킬
 
 - [feature-planner-old](feature-planner-old/README.md): `feature-planner`와 `feature-implementer`, `respect-project-code`의 원형이 된 구버전 스킬입니다.

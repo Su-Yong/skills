@@ -1,0 +1,3137 @@
+{
+  "version": "2.18",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": 0,
+      "y": 0,
+      "name": "00 / Foundations",
+      "clip": true,
+      "width": 1920,
+      "height": 1120,
+      "fill": "$paper",
+      "layout": "vertical",
+      "gap": 40,
+      "padding": 80,
+      "children": [
+        {
+          "type": "text",
+          "id": "mnApb",
+          "name": "System name",
+          "fill": "$text",
+          "content": "oai-docs-ui",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 72,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "iTrl9",
+          "name": "System description",
+          "fill": "$text",
+          "content": "문서와 발표를 위한 하나의 편집 디자인 시스템",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 32,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "jFlDJ",
+          "name": "Color tokens",
+          "width": 1750,
+          "gap": 14,
+          "children": [
+            {
+              "type": "frame",
+              "id": "aKsY5",
+              "name": "text",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "zZ26d",
+                  "name": "text color",
+                  "fill": "$text",
+                  "width": "fill_container",
+                  "height": 104
+                },
+                {
+                  "type": "text",
+                  "id": "X50UH",
+                  "name": "text label",
+                  "fill": "$text",
+                  "content": "text",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "ORNqF",
+                  "name": "text hex",
+                  "fill": "$muted",
+                  "content": "#111111",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "X986nj",
+              "name": "muted",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "Qrr5I",
+                  "name": "muted color",
+                  "fill": "$muted",
+                  "width": "fill_container",
+                  "height": 104
+                },
+                {
+                  "type": "text",
+                  "id": "rC5YW",
+                  "name": "muted label",
+                  "fill": "$text",
+                  "content": "muted",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "f4wmob",
+                  "name": "muted hex",
+                  "fill": "$muted",
+                  "content": "#666666",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "qYJ0k",
+              "name": "accent",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "nohjC",
+                  "name": "accent color",
+                  "fill": "$accent",
+                  "width": "fill_container",
+                  "height": 104
+                },
+                {
+                  "type": "text",
+                  "id": "Q45EV3",
+                  "name": "accent label",
+                  "fill": "$text",
+                  "content": "accent",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "dIbBF",
+                  "name": "accent hex",
+                  "fill": "$muted",
+                  "content": "#5477C4",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vKL5W",
+              "name": "accent-ink",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "efBfj",
+                  "name": "accent-ink color",
+                  "fill": "$accent-ink",
+                  "width": "fill_container",
+                  "height": 104
+                },
+                {
+                  "type": "text",
+                  "id": "l98S8q",
+                  "name": "accent-ink label",
+                  "fill": "$text",
+                  "content": "accent-ink",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "gQbsd",
+                  "name": "accent-ink hex",
+                  "fill": "$muted",
+                  "content": "#4A68A9",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "B541xp",
+              "name": "accent-mid",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "uSjKO",
+                  "name": "accent-mid color",
+                  "fill": "$accent-mid",
+                  "width": "fill_container",
+                  "height": 104
+                },
+                {
+                  "type": "text",
+                  "id": "J9Xko3",
+                  "name": "accent-mid label",
+                  "fill": "$text",
+                  "content": "accent-mid",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "y4Ssv",
+                  "name": "accent-mid hex",
+                  "fill": "$muted",
+                  "content": "#CFD9EE",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Bfjpn",
+              "name": "accent-tint",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "BtZ1M",
+                  "name": "accent-tint color",
+                  "fill": "$accent-tint",
+                  "width": "fill_container",
+                  "height": 104
+                },
+                {
+                  "type": "text",
+                  "id": "g1rGK",
+                  "name": "accent-tint label",
+                  "fill": "$text",
+                  "content": "accent-tint",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "qqT7e",
+                  "name": "accent-tint hex",
+                  "fill": "$muted",
+                  "content": "#EAEFF8",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "V4W289",
+              "name": "accent-soft",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "R2RDM",
+                  "name": "accent-soft color",
+                  "fill": "$accent-soft",
+                  "width": "fill_container",
+                  "height": 104
+                },
+                {
+                  "type": "text",
+                  "id": "cZFAr",
+                  "name": "accent-soft label",
+                  "fill": "$text",
+                  "content": "accent-soft",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "FTcO8",
+                  "name": "accent-soft hex",
+                  "fill": "$muted",
+                  "content": "#F5F7FB",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "P24Yjt",
+          "name": "Typography",
+          "width": "fill_container",
+          "gap": 60,
+          "children": [
+            {
+              "type": "frame",
+              "id": "IzfIw",
+              "name": "Type hierarchy",
+              "width": 1080,
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "F4CAg",
+                  "name": "Heading sample",
+                  "fill": "$text",
+                  "content": "큰 제목, 차분한 본문",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 64,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "NaMXc",
+                  "name": "Body sample",
+                  "fill": "$text",
+                  "content": "Pretendard  ·  한글과 영문, 숫자를 하나의 서체로 연결합니다.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 28,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "glga8",
+                  "name": "Weight sample",
+                  "fill": "$muted",
+                  "content": "Regular 400   Medium 500   SemiBold 600   Bold 700",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 24,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "DyYe3",
+              "name": "Formats",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Tvz89",
+                  "name": "Docs format",
+                  "fill": "$text",
+                  "content": "DOCS   210 × 297 mm",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 28,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "PSwEr",
+                  "name": "Ppt format",
+                  "fill": "$text",
+                  "content": "PPT       1920 × 1080",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 28,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "kX2ET",
+                  "name": "Theme guidance",
+                  "fill": "$muted",
+                  "content": "format: docs / ppt\n같은 구성 요소, 다른 정보 밀도",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "x4uQOE",
+          "name": "Divider",
+          "fill": "$rule",
+          "width": "fill_container",
+          "height": 0.5
+        },
+        {
+          "type": "frame",
+          "id": "b14HFx",
+          "name": "Principles",
+          "width": "fill_container",
+          "gap": 48,
+          "children": [
+            {
+              "type": "frame",
+              "id": "XgFhj",
+              "name": "01  정렬",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "MV18w",
+                  "name": "01  정렬",
+                  "fill": "$text",
+                  "content": "01  정렬",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 24,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "HCYS9",
+                  "name": "01  정렬 text",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "왼쪽 정렬과 일관된 여백",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "FzEXW",
+              "name": "02  위계",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "an2e2",
+                  "name": "02  위계",
+                  "fill": "$text",
+                  "content": "02  위계",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 24,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "nsnG0",
+                  "name": "02  위계 text",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "크기·굵기·간격으로 읽는 순서",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "i2wVdw",
+              "name": "03  색",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "AZHdR",
+                  "name": "03  색",
+                  "fill": "$text",
+                  "content": "03  색",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 24,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "u72NH1",
+                  "name": "03  색 text",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "단일 키 컬러와 연한 강조면",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VgGOx",
+              "name": "04  내용",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ygBWu",
+                  "name": "04  내용",
+                  "fill": "$text",
+                  "content": "04  내용",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 24,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "urPC2",
+                  "name": "04  내용 text",
+                  "fill": "$muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "문서 원문 보존 · 발표 요약",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "JLYYg",
+      "x": 2080,
+      "y": 0,
+      "name": "01 / Component library",
+      "theme": {
+        "format": "docs"
+      },
+      "width": 1920,
+      "fill": "$paper",
+      "layout": "vertical",
+      "gap": 36,
+      "padding": 80,
+      "children": [
+        {
+          "type": "text",
+          "id": "S6fNp",
+          "name": "Catalog title",
+          "fill": "$text",
+          "content": "핵심 구성 요소",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 52,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "bsQpX",
+          "name": "Catalog subtitle",
+          "fill": "$muted",
+          "content": "12개 구성군 · 15개 재사용 컴포넌트 · format 변수로 문서와 발표를 전환",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 24,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "lHxSQ",
+          "name": "Component columns",
+          "width": "fill_container",
+          "gap": 60,
+          "children": [
+            {
+              "type": "frame",
+              "id": "QTrUy",
+              "name": "Typography and navigation",
+              "width": 516,
+              "layout": "vertical",
+              "gap": 28,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "tTRg7",
+                  "name": "OAI/Header catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Header",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "FDHU8",
+                  "name": "OAI/Header",
+                  "reusable": true,
+                  "width": 516,
+                  "gap": "$space-small",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tqErz",
+                      "name": "Section",
+                      "fill": "$muted",
+                      "content": "01  DESIGN PRINCIPLES",
+                      "lineHeight": "$meta-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$meta-size",
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "nz3YJ",
+                      "name": "Document",
+                      "fill": "$muted",
+                      "content": "oai-docs-ui",
+                      "lineHeight": "$meta-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$meta-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "KVfyC",
+                  "name": "OAI/Footer catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Footer",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "Z3M9BY",
+                  "name": "OAI/Footer",
+                  "reusable": true,
+                  "width": 516,
+                  "gap": "$space-small",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Qh0KX",
+                      "name": "Page",
+                      "fill": "$muted",
+                      "content": "01",
+                      "lineHeight": "$meta-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$meta-size",
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "CXA5h",
+                      "name": "Document",
+                      "fill": "$muted",
+                      "content": "편집 디자인 가이드",
+                      "lineHeight": "$meta-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$meta-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "Dm0oX",
+                  "name": "OAI/Heading catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Heading",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "lKPDY",
+                  "name": "OAI/Heading",
+                  "reusable": true,
+                  "width": 516,
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "KS33D",
+                      "name": "Title",
+                      "fill": "$text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "정보의 순서가\n읽는 흐름을 만듭니다",
+                      "lineHeight": "$title-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$title-size",
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "Q0u3si",
+                  "name": "OAI/Body catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Body",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "txvNO",
+                  "name": "OAI/Body",
+                  "reusable": true,
+                  "width": 516,
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "KSkVU",
+                      "name": "Text",
+                      "fill": "$text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "좋은 문서는 중요한 내용을 먼저 보여주고, 설명과 근거를 가까이 둡니다. 본문은 차분한 크기로 유지하고 넓은 여백과 명확한 위계로 읽는 순서를 안내합니다.",
+                      "lineHeight": "$body-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$body-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "wmgFb",
+                  "name": "OAI/Contents row catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Contents row",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "q08RG",
+                  "name": "OAI/Contents row",
+                  "reusable": true,
+                  "width": 516,
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cyoel",
+                      "name": "Contents line",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "iLYzo",
+                          "name": "Title",
+                          "fill": "$text",
+                          "content": "문서의 구조와 읽는 순서",
+                          "lineHeight": "$body-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$body-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "vK115",
+                          "name": "Page",
+                          "fill": "$text",
+                          "content": "03",
+                          "lineHeight": "$body-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$body-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "JMPi6",
+                      "name": "Divider",
+                      "fill": "$rule",
+                      "width": "fill_container",
+                      "height": 0.5
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "llzBG",
+                  "name": "OAI/Key finding catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Key finding",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "tUSdt",
+                  "name": "OAI/Key finding",
+                  "reusable": true,
+                  "width": 516,
+                  "gap": "$key-number-gap",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "EWB7x",
+                      "name": "Number",
+                      "fill": "$text",
+                      "textGrowth": "fixed-width",
+                      "width": 68.03,
+                      "content": "01",
+                      "lineHeight": "$title-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$title-size",
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Uu01O",
+                      "name": "Finding text",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": "$space-small",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "gnbHO",
+                          "name": "Title",
+                          "fill": "$text",
+                          "content": "하나의 메시지, 분명한 근거",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "LZ1bU",
+                          "name": "Text",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "핵심과 설명을 연결하고 같은 역할에는 같은 시각적 규칙을 적용합니다.",
+                          "lineHeight": "$body-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$body-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "lHZep",
+                  "name": "OAI/Roadmap catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Roadmap",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "xnJuo",
+                  "name": "OAI/Roadmap",
+                  "reusable": true,
+                  "width": 516,
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "EisJ4",
+                      "name": "Step 01",
+                      "width": "fill_container",
+                      "fill": "$accent-soft",
+                      "layout": "vertical",
+                      "gap": "$space-small",
+                      "padding": "$space-small",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kDgBB",
+                          "name": "Step 01 number",
+                          "fill": "$accent-ink",
+                          "content": "01",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "SCkr5",
+                          "name": "Step 01 title",
+                          "fill": "$text",
+                          "content": "원고",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "NMPwj",
+                          "name": "Step 01 detail",
+                          "fill": "$muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "정보 관계 정리",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "L5tAzj",
+                      "name": "Step 02",
+                      "width": "fill_container",
+                      "fill": "$accent-soft",
+                      "layout": "vertical",
+                      "gap": "$space-small",
+                      "padding": "$space-small",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "HzKCf",
+                          "name": "Step 02 number",
+                          "fill": "$accent-ink",
+                          "content": "02",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "FEgLf",
+                          "name": "Step 02 title",
+                          "fill": "$text",
+                          "content": "구성",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "yM3Ys",
+                          "name": "Step 02 detail",
+                          "fill": "$muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "판형에 맞게 배치",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "LCDR7",
+                      "name": "Step 03",
+                      "width": "fill_container",
+                      "fill": "$accent-soft",
+                      "layout": "vertical",
+                      "gap": "$space-small",
+                      "padding": "$space-small",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "iYurh",
+                          "name": "Step 03 number",
+                          "fill": "$accent-ink",
+                          "content": "03",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "qVhj8",
+                          "name": "Step 03 title",
+                          "fill": "$text",
+                          "content": "검수",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jZswU",
+                          "name": "Step 03 detail",
+                          "fill": "$muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "렌더링 후 확인",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QIF0F",
+              "name": "Editorial blocks",
+              "width": 516,
+              "layout": "vertical",
+              "gap": 28,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UZLhp",
+                  "name": "OAI/Callout catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Callout",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "QTLX1",
+                  "name": "OAI/Callout",
+                  "reusable": true,
+                  "width": 516,
+                  "fill": "$accent-soft",
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "padding": "$panel-padding",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "FbMXo",
+                      "name": "Label",
+                      "fill": "$accent-ink",
+                      "content": "기억할 원칙",
+                      "lineHeight": "$label-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$label-size",
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "m47ilE",
+                      "name": "Text",
+                      "fill": "$text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "색은 강조할 곳에만 사용합니다. 정보의 구분은 제목, 위치, 여백으로도 읽힐 수 있어야 합니다.",
+                      "lineHeight": "$body-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$body-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "x68Kmc",
+                  "name": "OAI/Quote catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Quote",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "d57yw",
+                  "name": "OAI/Quote",
+                  "reusable": true,
+                  "width": 516,
+                  "fill": "$accent-tint",
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "padding": "$panel-padding",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "RFB6f",
+                      "name": "Quote",
+                      "fill": "$text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "“여백은 읽는 사람이\n생각할 공간입니다.”",
+                      "lineHeight": "$quote-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$quote-size",
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "gmOsC",
+                      "name": "Attribution",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "서식 시연을 위한 예시 문장 · 실제 인용 아님",
+                      "lineHeight": "$attribution-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$attribution-size",
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "pSvTL",
+                  "name": "OAI/KPI catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/KPI",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "eEbkU",
+                  "name": "OAI/KPI",
+                  "reusable": true,
+                  "width": 516,
+                  "fill": "$accent-tint",
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "padding": "$panel-padding",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "R9kJ8v",
+                      "name": "Value",
+                      "fill": "$text",
+                      "content": "72%",
+                      "lineHeight": 1.1,
+                      "fontFamily": "$font-family",
+                      "fontSize": "$kpi-size",
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "s2vmHb",
+                      "name": "Label",
+                      "fill": "$text",
+                      "content": "핵심 지표의 이름",
+                      "lineHeight": "$label-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$label-size",
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "BhdL8",
+                      "name": "Context",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "가상 데이터 · 단위와 기준 기간을 함께 표시",
+                      "lineHeight": "$small-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$small-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "RpXds",
+                  "name": "OAI/Comparison catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Comparison",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "qk8JU",
+                  "name": "OAI/Comparison",
+                  "reusable": true,
+                  "width": 516,
+                  "gap": "$space-large",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Awdw2",
+                      "name": "Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": "$space-small",
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "id": "T1Qmf",
+                          "name": "Divider",
+                          "fill": "$rule",
+                          "width": "fill_container",
+                          "height": 0.5
+                        },
+                        {
+                          "type": "text",
+                          "id": "y50dGW",
+                          "name": "Left title",
+                          "fill": "$text",
+                          "content": "문서형",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "l4qSu",
+                          "name": "Left body",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "내용을 보존하고 문단의 흐름에 맞춰 이어갑니다.",
+                          "lineHeight": "$body-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$body-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "UrnHk",
+                      "name": "Right",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": "$space-small",
+                      "children": [
+                        {
+                          "type": "rectangle",
+                          "id": "TrDzN",
+                          "name": "Divider",
+                          "fill": "$rule",
+                          "width": "fill_container",
+                          "height": 0.5
+                        },
+                        {
+                          "type": "text",
+                          "id": "WXW6l",
+                          "name": "Right title",
+                          "fill": "$text",
+                          "content": "발표형",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "F9BzHQ",
+                          "name": "Right body",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "핵심 메시지와 근거를 추려 화면의 밀도를 낮춥니다.",
+                          "lineHeight": "$body-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$body-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "Svzeh",
+                  "name": "OAI/Source catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Source",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "kbOI5",
+                  "name": "OAI/Source",
+                  "reusable": true,
+                  "width": 516,
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "nXENj",
+                      "name": "Source",
+                      "fill": "$muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "출처: 자료명 · 작성자 · 발행일\n표·차트의 단위, 기준 기간, 한계를 함께 표시합니다.",
+                      "lineHeight": "$small-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$small-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Q88nTO",
+              "name": "Data and evidence",
+              "width": 516,
+              "layout": "vertical",
+              "gap": 28,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "jMjv8",
+                  "name": "OAI/Table catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Table",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "qTYS3",
+                  "name": "OAI/Table",
+                  "reusable": true,
+                  "width": 516,
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "alSz0",
+                      "name": "Row head",
+                      "width": "fill_container",
+                      "gap": "$table-cell-gap",
+                      "padding": [
+                        8.5,
+                        11.34
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "V67Ij2",
+                          "name": "Cell head 0",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "구성",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "hVcuR",
+                          "name": "Cell head 1",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "문서",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "XXcQ9",
+                          "name": "Cell head 2",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "발표",
+                          "lineHeight": "$label-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$label-size",
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "P6wLi",
+                      "name": "Divider",
+                      "fill": "$rule",
+                      "width": "fill_container",
+                      "height": 0.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "X6l9T",
+                      "name": "Row a",
+                      "width": "fill_container",
+                      "gap": "$table-cell-gap",
+                      "padding": [
+                        8.5,
+                        11.34
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Xm0IY",
+                          "name": "Cell a 0",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "판형",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "IbZ2b",
+                          "name": "Cell a 1",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "A4 세로",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "F9Iot",
+                          "name": "Cell a 2",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "16:9 가로",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "Gh1px",
+                      "name": "Divider",
+                      "fill": "$rule",
+                      "width": "fill_container",
+                      "height": 0.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "nxPxV",
+                      "name": "Row b",
+                      "width": "fill_container",
+                      "gap": "$table-cell-gap",
+                      "padding": [
+                        8.5,
+                        11.34
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "J0qTq",
+                          "name": "Cell b 0",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "내용",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "VMV9D",
+                          "name": "Cell b 1",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "원문 보존",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "sDESH",
+                          "name": "Cell b 2",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "요약·재구성",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "okFgh",
+                      "name": "Divider",
+                      "fill": "$rule",
+                      "width": "fill_container",
+                      "height": 0.5
+                    },
+                    {
+                      "type": "frame",
+                      "id": "r4Hxg",
+                      "name": "Row c",
+                      "width": "fill_container",
+                      "gap": "$table-cell-gap",
+                      "padding": [
+                        8.5,
+                        11.34
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "zruIT",
+                          "name": "Cell c 0",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "전달",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "fQPRB",
+                          "name": "Cell c 1",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "원본 + PDF",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "i81UJ",
+                          "name": "Cell c 2",
+                          "fill": "$text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "원본 + PDF",
+                          "lineHeight": "$value-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$value-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "zvtFO",
+                      "name": "Divider",
+                      "fill": "$rule",
+                      "width": "fill_container",
+                      "height": 0.5
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "m4XWW",
+                  "name": "OAI/Bar chart catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Bar chart",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "ZTPx7",
+                  "name": "OAI/Bar chart",
+                  "reusable": true,
+                  "width": 516,
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "U9bo8j",
+                      "name": "Title",
+                      "fill": "$text",
+                      "content": "참여 비율 · 가상 데이터",
+                      "lineHeight": "$label-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$label-size",
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "q4ME4",
+                      "name": "Bar row 1",
+                      "width": "fill_container",
+                      "gap": "$space-small",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cbaoi",
+                          "name": "Category 1",
+                          "fill": "$muted",
+                          "textGrowth": "fixed-width",
+                          "width": 64,
+                          "content": "그룹 A",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "rectangle",
+                          "id": "ozj1x",
+                          "name": "Bar 1",
+                          "fill": "$accent-mid",
+                          "width": 182,
+                          "height": 11
+                        },
+                        {
+                          "type": "text",
+                          "id": "F3q3v0",
+                          "name": "Value 1",
+                          "fill": "$text",
+                          "content": "52%",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QgQ5K",
+                      "name": "Bar row 2",
+                      "width": "fill_container",
+                      "gap": "$space-small",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "zjCQp",
+                          "name": "Category 2",
+                          "fill": "$muted",
+                          "textGrowth": "fixed-width",
+                          "width": 64,
+                          "content": "그룹 B",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "rectangle",
+                          "id": "gbQt6",
+                          "name": "Bar 2",
+                          "fill": "$data-strong",
+                          "width": 252,
+                          "height": 11
+                        },
+                        {
+                          "type": "text",
+                          "id": "P9092",
+                          "name": "Value 2",
+                          "fill": "$text",
+                          "content": "72%",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "RQoyC",
+                      "name": "Bar row 3",
+                      "width": "fill_container",
+                      "gap": "$space-small",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "MpiuO",
+                          "name": "Category 3",
+                          "fill": "$muted",
+                          "textGrowth": "fixed-width",
+                          "width": 64,
+                          "content": "그룹 C",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "rectangle",
+                          "id": "Z183mS",
+                          "name": "Bar 3",
+                          "fill": "$accent-mid",
+                          "width": 308,
+                          "height": 11
+                        },
+                        {
+                          "type": "text",
+                          "id": "MAOJj",
+                          "name": "Value 3",
+                          "fill": "$text",
+                          "content": "88%",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "z641b",
+                      "name": "Scale",
+                      "fill": "$muted",
+                      "content": "0–100% 동일 척도 · 시연 값, 실제 조사 아님",
+                      "lineHeight": "$small-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$small-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "vIvpk",
+                  "name": "OAI/Line chart catalog label",
+                  "fill": "$accent-ink",
+                  "content": "OAI/Line chart",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-family",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "rfPyw",
+                  "name": "OAI/Line chart",
+                  "reusable": true,
+                  "width": 516,
+                  "layout": "vertical",
+                  "gap": "$space-small",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fs06C",
+                      "name": "Title",
+                      "fill": "$text",
+                      "content": "지표 변화 · 가상 데이터",
+                      "lineHeight": "$label-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$label-size",
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "DhHph",
+                      "name": "Plot",
+                      "width": 516,
+                      "height": 140,
+                      "layout": "none",
+                      "children": [
+                        {
+                          "type": "path",
+                          "id": "z3jMA1",
+                          "x": 0,
+                          "y": 0,
+                          "name": "Guide lines",
+                          "geometry": "M0 0h440m-440 70h440m-440 70h440",
+                          "viewBox": [
+                            0,
+                            0,
+                            440,
+                            140
+                          ],
+                          "width": 516,
+                          "height": 140,
+                          "stroke": "$rule",
+                          "strokeWidth": 0.5
+                        },
+                        {
+                          "type": "path",
+                          "id": "UOh5p",
+                          "x": 0,
+                          "y": 0,
+                          "name": "Series 20 40 35 70",
+                          "geometry": "M0 112l146.67-28 146.66 7 146.67-49",
+                          "viewBox": [
+                            0,
+                            0,
+                            440,
+                            140
+                          ],
+                          "width": 516,
+                          "height": 140,
+                          "stroke": "$data-strong",
+                          "strokeWidth": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Vz6h6",
+                      "name": "Axis labels",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dJgml",
+                          "name": "1분기",
+                          "fill": "$muted",
+                          "content": "1분기",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "I0rwj2",
+                          "name": "2분기",
+                          "fill": "$muted",
+                          "content": "2분기",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "sPlSr",
+                          "name": "3분기",
+                          "fill": "$muted",
+                          "content": "3분기",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "iW5tS",
+                          "name": "4분기",
+                          "fill": "$muted",
+                          "content": "4분기",
+                          "lineHeight": "$small-line",
+                          "fontFamily": "$font-family",
+                          "fontSize": "$small-size",
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "R9d1u",
+                      "name": "Scale",
+                      "fill": "$muted",
+                      "content": "0–100 · 값 20 / 40 / 35 / 70 · 예시",
+                      "lineHeight": "$small-line",
+                      "fontFamily": "$font-family",
+                      "fontSize": "$small-size",
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "heo9V",
+      "x": 0,
+      "y": 1450,
+      "name": "Docs / 01 Cover",
+      "theme": {
+        "format": "docs"
+      },
+      "clip": true,
+      "width": 595.2755905511812,
+      "height": 841.8897637795276,
+      "fill": "$paper",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "wbgJy",
+          "x": 39.68503937007874,
+          "y": 45.35433070866142,
+          "name": "Publisher",
+          "fill": "$text",
+          "content": "oai-docs-ui",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 12,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "PpnIU",
+          "x": 39.68503937007874,
+          "y": 102.04724409448819,
+          "name": "Document type",
+          "fill": "$accent-ink",
+          "content": "EDITORIAL DESIGN SYSTEM",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 10.5,
+          "fontWeight": "600"
+        },
+        {
+          "id": "qxg36",
+          "type": "ref",
+          "ref": "lKPDY",
+          "name": "Cover title",
+          "x": 39.68503937007874,
+          "y": 153.0708661417323,
+          "width": 515.9055118110236,
+          "descendants": {
+            "KS33D": {
+              "content": "읽는 흐름을\n만드는 문서",
+              "fontSize": 48,
+              "fontWeight": "700",
+              "lineHeight": 1.1041666666666667
+            }
+          }
+        },
+        {
+          "type": "text",
+          "id": "oQKWd",
+          "x": 39.68503937007874,
+          "y": 402.5196850393701,
+          "name": "Subtitle",
+          "fill": "$text",
+          "textGrowth": "fixed-width",
+          "width": 515.9055118110236,
+          "content": "A4 문서와 16:9 발표를 연결하는\n공통 디자인 원칙과 재사용 구성",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 18,
+          "fontWeight": "500"
+        },
+        {
+          "type": "rectangle",
+          "id": "aTKeA",
+          "x": 39.68503937007874,
+          "y": 504.5669291338583,
+          "name": "Abstract cover",
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "assets/cover.png",
+            "mode": "fill"
+          },
+          "width": 515.9055118110236,
+          "height": 238.11023622047244
+        },
+        {
+          "type": "text",
+          "id": "PHM5c",
+          "x": 39.68503937007874,
+          "y": 788.0314960629921,
+          "name": "Edition",
+          "fill": "$muted",
+          "content": "2026.09   /   스타일 적용 예시",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 10.5,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "XpOdJ",
+      "x": 675,
+      "y": 1450,
+      "name": "Docs / 02 Chapter",
+      "theme": {
+        "format": "docs"
+      },
+      "clip": true,
+      "width": 595.2755905511812,
+      "height": 841.8897637795276,
+      "fill": "$accent-soft",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "b9M7Y",
+          "x": 39.68503937007874,
+          "y": 79.37007874015748,
+          "name": "Chapter number",
+          "fill": "$accent-ink",
+          "content": "01   원칙",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 10.5,
+          "fontWeight": "600"
+        },
+        {
+          "id": "tlJdT",
+          "type": "ref",
+          "ref": "lKPDY",
+          "name": "Chapter title",
+          "x": 39.68503937007874,
+          "y": 113.38582677165356,
+          "width": 515.9055118110236,
+          "descendants": {
+            "KS33D": {
+              "content": "읽는 순서를\n설계합니다",
+              "fontSize": 38,
+              "lineHeight": 1.131578947368421
+            }
+          }
+        },
+        {
+          "type": "text",
+          "id": "cXgp8",
+          "x": 39.68503937007874,
+          "y": 317.4803149606299,
+          "name": "Lead",
+          "fill": "$text",
+          "textGrowth": "fixed-width",
+          "width": 515.9055118110236,
+          "content": "중요한 내용을 먼저 보여주고,\n설명과 근거는 가까이 둡니다.",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 18,
+          "fontWeight": "500"
+        },
+        {
+          "id": "Ox5mx",
+          "type": "ref",
+          "ref": "txvNO",
+          "name": "Chapter introduction",
+          "x": 39.68503937007874,
+          "y": 428.0314960629922,
+          "width": 515.9055118110236,
+          "descendants": {
+            "KSkVU": {
+              "content": "이 디자인 시스템은 문서와 발표에 같은 색, 서체, 정렬 원칙을 적용합니다. 독자가 내용을 따라가는 방식에 맞춰 글자의 크기와 정보의 밀도를 조절합니다."
+            }
+          }
+        },
+        {
+          "id": "WATK2",
+          "type": "ref",
+          "ref": "xnJuo",
+          "name": "Chapter roadmap",
+          "x": 39.68503937007874,
+          "y": 623.6220472440946,
+          "width": 515.9055118110236
+        },
+        {
+          "id": "RMGta",
+          "type": "ref",
+          "ref": "Z3M9BY",
+          "name": "Chapter footer",
+          "x": 39.68503937007874,
+          "y": 795,
+          "width": 515.9055118110236,
+          "descendants": {
+            "Qh0KX": {
+              "content": "01"
+            },
+            "CXA5h": {
+              "content": "oai-docs-ui · 문서 예시"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "h32O4",
+      "x": 1350,
+      "y": 1450,
+      "name": "Docs / 03 Body",
+      "theme": {
+        "format": "docs"
+      },
+      "clip": true,
+      "width": 595.2755905511812,
+      "height": 841.8897637795276,
+      "fill": "$paper",
+      "layout": "none",
+      "children": [
+        {
+          "id": "R1u5qF",
+          "type": "ref",
+          "ref": "FDHU8",
+          "name": "Body header",
+          "x": 39.68503937007874,
+          "y": 39.68503937007874,
+          "width": 515.9055118110236,
+          "descendants": {
+            "tqErz": {
+              "content": "01  편집 원칙"
+            },
+            "nz3YJ": {
+              "content": "DOCS"
+            }
+          }
+        },
+        {
+          "id": "lL2LN",
+          "type": "ref",
+          "ref": "lKPDY",
+          "name": "Body title",
+          "x": 39.68503937007874,
+          "y": 76.53543307086615,
+          "width": 515.9055118110236,
+          "descendants": {
+            "KS33D": {
+              "content": "원칙을 함께 쓰면\n문서가 일관되어집니다"
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "GxDec",
+          "x": 39.68503937007874,
+          "y": 166,
+          "name": "Reading flow",
+          "width": 515.9055118110236,
+          "layout": "vertical",
+          "gap": 22.67716535433071,
+          "children": [
+            {
+              "id": "U6LVzp",
+              "type": "ref",
+              "ref": "txvNO",
+              "name": "Paragraph one",
+              "width": "fill_container",
+              "descendants": {
+                "KSkVU": {
+                  "content": "좋은 문서는 중요한 내용을 먼저 보여주고, 설명과 근거를 가까이 둡니다. 본문은 차분한 크기로 유지하고 넓은 여백과 명확한 위계로 읽는 순서를 안내합니다."
+                }
+              }
+            },
+            {
+              "id": "qlYiJ",
+              "type": "ref",
+              "ref": "txvNO",
+              "name": "Paragraph two",
+              "width": "fill_container",
+              "descendants": {
+                "KSkVU": {
+                  "content": "A4 문서는 원문의 문장과 수치를 보존하며 의미가 끝나는 지점에서 페이지를 나눕니다. 발표 자료는 같은 사실을 바탕으로 핵심을 추려, 한 화면에서 전달할 메시지를 분명하게 만듭니다."
+                }
+              }
+            },
+            {
+              "id": "jcUGS",
+              "type": "ref",
+              "ref": "QTLX1",
+              "name": "Editorial principle",
+              "width": "fill_container",
+              "descendants": {
+                "FbMXo": {
+                  "content": "본문은 내용에 맞게"
+                },
+                "m47ilE": {
+                  "content": "모든 문단을 카드로 만들지 않습니다. 서로 관련된 내용은 묶고, 새로운 논점에는 충분한 간격을 둡니다."
+                }
+              }
+            },
+            {
+              "id": "QtTsw",
+              "type": "ref",
+              "ref": "qTYS3",
+              "name": "Mode comparison",
+              "width": "fill_container"
+            },
+            {
+              "id": "RvfbL",
+              "type": "ref",
+              "ref": "kbOI5",
+              "name": "Body source",
+              "width": "fill_container",
+              "descendants": {
+                "nXENj": {
+                  "content": "출처: oai-docs-ui 제작 규칙 · 2026.09\n본 페이지는 디자인 시스템의 적용을 보여주는 예시 원고입니다."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "vlMmf",
+          "type": "ref",
+          "ref": "Z3M9BY",
+          "name": "Body footer",
+          "x": 39.68503937007874,
+          "y": 795,
+          "width": 515.9055118110236,
+          "descendants": {
+            "Qh0KX": {
+              "content": "02"
+            },
+            "CXA5h": {
+              "content": "oai-docs-ui · 문서 예시"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "em1NQ",
+      "x": 0,
+      "y": 2500,
+      "name": "PPT / 01 Cover",
+      "theme": {
+        "format": "ppt"
+      },
+      "clip": true,
+      "width": 1920,
+      "height": 1080,
+      "fill": "$paper",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "gTpSv",
+          "x": 120,
+          "y": 72,
+          "name": "Publisher",
+          "fill": "$text",
+          "content": "oai-docs-ui",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 28,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "BP4wA",
+          "x": 120,
+          "y": 135,
+          "name": "Presentation type",
+          "fill": "$accent-ink",
+          "content": "EDITORIAL DESIGN SYSTEM   /   16:9",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 22,
+          "fontWeight": "600"
+        },
+        {
+          "id": "Y5DRh",
+          "type": "ref",
+          "ref": "lKPDY",
+          "name": "Cover title",
+          "x": 120,
+          "y": 205,
+          "width": 1680,
+          "descendants": {
+            "KS33D": {
+              "content": "하나의 시스템,\n두 가지 읽는 방식",
+              "fontSize": 96,
+              "fontWeight": "700",
+              "lineHeight": 1.125
+            }
+          }
+        },
+        {
+          "type": "text",
+          "id": "jXBOX",
+          "x": 120,
+          "y": 455,
+          "name": "Subtitle",
+          "fill": "$text",
+          "content": "문서와 발표를 연결하는 공통 디자인 원칙",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 36,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "hQ5iq",
+          "x": 120,
+          "y": 558,
+          "name": "Abstract cover",
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "assets/cover.png",
+            "mode": "fill"
+          },
+          "width": 1680,
+          "height": 352
+        },
+        {
+          "type": "text",
+          "id": "Hvd7X",
+          "x": 120,
+          "y": 986,
+          "name": "Edition",
+          "fill": "$muted",
+          "content": "2026.09  /  스타일 적용 예시",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 22,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "gOb5I",
+      "x": 2080,
+      "y": 2500,
+      "name": "PPT / 02 Chapter",
+      "theme": {
+        "format": "ppt"
+      },
+      "clip": true,
+      "width": 1920,
+      "height": 1080,
+      "fill": "$accent-soft",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "jlaMd",
+          "x": 120,
+          "y": 120,
+          "name": "Chapter label",
+          "fill": "$accent-ink",
+          "content": "01   원칙",
+          "lineHeight": 1.5,
+          "fontFamily": "$font-family",
+          "fontSize": 28,
+          "fontWeight": "600"
+        },
+        {
+          "id": "r2L6O7",
+          "type": "ref",
+          "ref": "lKPDY",
+          "name": "Chapter title",
+          "x": 120,
+          "y": 232,
+          "width": 1680,
+          "descendants": {
+            "KS33D": {
+              "content": "정보의 순서가\n이해의 속도를 바꿉니다",
+              "fontSize": 96,
+              "lineHeight": 1.1458333333333333
+            }
+          }
+        },
+        {
+          "type": "text",
+          "id": "U6UyAY",
+          "x": 120,
+          "y": 548,
+          "name": "Lead",
+          "fill": "$text",
+          "textGrowth": "fixed-width",
+          "width": 1680,
+          "content": "중요한 내용을 먼저 보여주고, 설명과 근거를 가까이 둡니다.",
+          "lineHeight": 1.3181818181818181,
+          "fontFamily": "$font-family",
+          "fontSize": 44,
+          "fontWeight": "normal"
+        },
+        {
+          "id": "TF5VE",
+          "type": "ref",
+          "ref": "xnJuo",
+          "name": "Chapter roadmap",
+          "x": 120,
+          "y": 730,
+          "width": 1680
+        },
+        {
+          "id": "T3kDJ",
+          "type": "ref",
+          "ref": "Z3M9BY",
+          "name": "Chapter footer",
+          "x": 120,
+          "y": 998,
+          "width": 1680,
+          "descendants": {
+            "Qh0KX": {
+              "content": "02"
+            },
+            "CXA5h": {
+              "content": "oai-docs-ui · 발표 예시"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "uVHxl",
+      "x": 4160,
+      "y": 2500,
+      "name": "PPT / 03 Body",
+      "theme": {
+        "format": "ppt"
+      },
+      "clip": true,
+      "width": 1920,
+      "height": 1080,
+      "fill": "$paper",
+      "layout": "none",
+      "children": [
+        {
+          "id": "LmYaQ",
+          "type": "ref",
+          "ref": "FDHU8",
+          "name": "Body header",
+          "x": 120,
+          "y": 72,
+          "width": 1680,
+          "descendants": {
+            "tqErz": {
+              "content": "01  편집 원칙"
+            },
+            "nz3YJ": {
+              "content": "PPT"
+            }
+          }
+        },
+        {
+          "id": "UU4M9",
+          "type": "ref",
+          "ref": "lKPDY",
+          "name": "Body title",
+          "x": 120,
+          "y": 158,
+          "width": 1680,
+          "descendants": {
+            "KS33D": {
+              "content": "같은 원칙을 공유하고,\n목적에 맞게 편집합니다"
+            }
+          }
+        },
+        {
+          "id": "EG7aW",
+          "type": "ref",
+          "ref": "txvNO",
+          "name": "Summary",
+          "x": 120,
+          "y": 394,
+          "width": 1680,
+          "descendants": {
+            "KSkVU": {
+              "content": "문서는 원문을 보존하고, 발표는 핵심을 추립니다.\n서체·색·정렬 원칙을 공유하면서 화면의 정보 밀도를 조절합니다."
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "N2ehRx",
+          "x": 120,
+          "y": 564,
+          "name": "Three key facts",
+          "width": 1680,
+          "gap": 48,
+          "children": [
+            {
+              "id": "SApYV",
+              "type": "ref",
+              "ref": "eEbkU",
+              "name": "핵심 구성군",
+              "width": "fill_container",
+              "descendants": {
+                "R9kJ8v": {
+                  "content": "12"
+                },
+                "s2vmHb": {
+                  "content": "핵심 구성군"
+                },
+                "BhdL8": {
+                  "content": "같은 역할에는 같은 시각 규칙"
+                }
+              }
+            },
+            {
+              "id": "wqwKD",
+              "type": "ref",
+              "ref": "eEbkU",
+              "name": "문서형",
+              "width": "fill_container",
+              "descendants": {
+                "R9kJ8v": {
+                  "content": "A4"
+                },
+                "s2vmHb": {
+                  "content": "문서형"
+                },
+                "BhdL8": {
+                  "content": "원문과 근거를 보존하는 구성"
+                }
+              }
+            },
+            {
+              "id": "OZTUz",
+              "type": "ref",
+              "ref": "eEbkU",
+              "name": "발표형",
+              "width": "fill_container",
+              "descendants": {
+                "R9kJ8v": {
+                  "content": "16:9"
+                },
+                "s2vmHb": {
+                  "content": "발표형"
+                },
+                "BhdL8": {
+                  "content": "핵심 사실을 전달하는 구성"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "frTBE",
+          "type": "ref",
+          "ref": "kbOI5",
+          "name": "Source",
+          "x": 120,
+          "y": 916,
+          "width": 1680,
+          "descendants": {
+            "nXENj": {
+              "content": "출처: oai-docs-ui 제작 규칙 · 2026.09  /  문서 예시의 내용을 발표용으로 재구성"
+            }
+          }
+        },
+        {
+          "id": "PfKRt",
+          "type": "ref",
+          "ref": "Z3M9BY",
+          "name": "Body footer",
+          "x": 120,
+          "y": 998,
+          "width": 1680,
+          "descendants": {
+            "Qh0KX": {
+              "content": "03"
+            },
+            "CXA5h": {
+              "content": "oai-docs-ui · 발표 예시"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "themes": {
+    "format": [
+      "docs",
+      "ppt"
+    ]
+  },
+  "variables": {
+    "paper": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "text": {
+      "type": "color",
+      "value": "#111111"
+    },
+    "muted": {
+      "type": "color",
+      "value": "#666666"
+    },
+    "rule": {
+      "type": "color",
+      "value": "#C7C7C7"
+    },
+    "neutral-fill": {
+      "type": "color",
+      "value": "#F4F4F4"
+    },
+    "accent": {
+      "type": "color",
+      "value": "#5477C4"
+    },
+    "accent-soft": {
+      "type": "color",
+      "value": "#F5F7FB"
+    },
+    "accent-tint": {
+      "type": "color",
+      "value": "#EAEFF8"
+    },
+    "accent-mid": {
+      "type": "color",
+      "value": "#CFD9EE"
+    },
+    "accent-ink": {
+      "type": "color",
+      "value": "#4A68A9"
+    },
+    "data-strong": {
+      "type": "color",
+      "value": "#5477C4"
+    },
+    "on-accent": {
+      "type": "color",
+      "value": "#000000"
+    },
+    "font-family": {
+      "type": "string",
+      "value": "Pretendard"
+    },
+    "body-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 12,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 36,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "title-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 26,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 80,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "label-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 11,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 28,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "small-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 9,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 24,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "meta-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 8.5,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 22,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "quote-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 20,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 48,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "kpi-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 40,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 96,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "space-small": {
+      "type": "number",
+      "value": [
+        {
+          "value": 8.5,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 20,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "space-medium": {
+      "type": "number",
+      "value": [
+        {
+          "value": 14.17,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 32,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "space-large": {
+      "type": "number",
+      "value": [
+        {
+          "value": 22.68,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 48,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "panel-padding": {
+      "type": "number",
+      "value": [
+        {
+          "value": 19.84,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 32,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "body-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.5,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.3888888888888888,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "title-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.2307692307692308,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.2,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "label-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.4545454545454546,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.4285714285714286,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "small-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.4444444444444444,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.3333333333333333,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "meta-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.411764705882353,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.4090909090909092,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "quote-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.45,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.3333333333333333,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "value-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 10.5,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 30,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "value-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.4285714285714286,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.4,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "attribution-size": {
+      "type": "number",
+      "value": [
+        {
+          "value": 10.5,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 24,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "attribution-line": {
+      "type": "number",
+      "value": [
+        {
+          "value": 1.4285714285714286,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 1.3333333333333333,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "table-cell-gap": {
+      "type": "number",
+      "value": [
+        {
+          "value": 22.68,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 48,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    },
+    "key-number-gap": {
+      "type": "number",
+      "value": [
+        {
+          "value": 11.34,
+          "theme": {
+            "format": "docs"
+          }
+        },
+        {
+          "value": 32,
+          "theme": {
+            "format": "ppt"
+          }
+        }
+      ]
+    }
+  },
+  "fileToken": "7aea441e-61e2-46be-bcf2-7c0efc2a2f73",
+  "fonts": [
+    {
+      "name": "Pretendard",
+      "url": "assets/fonts/Pretendard-Regular.ttf"
+    },
+    {
+      "name": "Pretendard",
+      "url": "assets/fonts/Pretendard-Medium.ttf",
+      "weight": 500
+    },
+    {
+      "name": "Pretendard",
+      "url": "assets/fonts/Pretendard-SemiBold.ttf",
+      "weight": 600
+    },
+    {
+      "name": "Pretendard",
+      "url": "assets/fonts/Pretendard-Bold.ttf",
+      "weight": 700
+    }
+  ]
+}

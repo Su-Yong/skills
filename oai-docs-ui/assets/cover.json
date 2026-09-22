@@ -1,0 +1,125 @@
+{
+  "random": "default",
+  "seed": "oai-docs-ui-v1",
+  "width": 2600,
+  "height": 1200,
+  "time": 9.253643861273304,
+  "color": "#5477C4",
+  "geometrySeed": "oai-docs-ui-v1",
+  "layers": [
+    {
+      "style": "neuralGlass",
+      "params": {
+        "enabled": true,
+        "opacity": 1,
+        "transform": {
+          "translateX": 0,
+          "translateY": 0,
+          "rotation": 0,
+          "scale": 1
+        },
+        "cameraSpeed": 0.2,
+        "pathAmpY": 0.85,
+        "pathFreqX": 0.93,
+        "pathFreqZ": 0.62,
+        "pathTimeFreq": 0.01,
+        "rot3Base": 0.03,
+        "rot3Offset": 0.62,
+        "rot4Base": -0.18,
+        "rot4Offset": 0.33,
+        "offset2X": 2.75,
+        "offset2Y": 0.15,
+        "offset2Z": 2.3,
+        "cellSizeX": 3.7,
+        "cellSizeY": 1,
+        "cellSizeZ": 2.7,
+        "cell2X": 1.9,
+        "cell2Y": 6.2,
+        "cell2Z": 1,
+        "thickness1": 0.115,
+        "thickness2": 0.155,
+        "thickness3": 0.085,
+        "blendSmooth1": 0.055,
+        "blendSmooth2": 0.175,
+        "lightSpeed": 1.35,
+        "specPower": 68,
+        "glassFade": 0.145,
+        "ior": 0.93,
+        "volPower": 0.1,
+        "volScale": 0.0001,
+        "fogDensity": 0.016,
+        "maxDist": 50.30835817,
+        "marchSteps": 39,
+        "fov": 0.75,
+        "cameraPosX": 2,
+        "cameraPosY": 2.5,
+        "cameraPosZ": 0.8,
+        "colorLightcol1": "#A2ACE7",
+        "colorLightcol2": "#EAC68F",
+        "colors": [
+          "#62C822",
+          "#0767F4",
+          "#A891B3",
+          "#BF4682"
+        ],
+        "colorCount": 3,
+        "renderScale": 0.36,
+        "hue": 52,
+        "saturation": 0.6
+      }
+    },
+    {
+      "style": "solarWhirls",
+      "params": {
+        "enabled": true,
+        "opacity": 0.626920307916589,
+        "transform": {
+          "translateX": 0,
+          "translateY": 0,
+          "rotation": 0,
+          "scale": 1
+        },
+        "speed": 0.25,
+        "hue": 19,
+        "saturation": 0.63,
+        "color1_r": 0,
+        "color1_g": 0.72,
+        "color1_b": 0.59,
+        "color2_r": 0.86,
+        "color2_g": 0.85,
+        "color2_b": 0,
+        "color3_r": 0.27,
+        "color3_g": 0.14,
+        "color3_b": 0.56
+      }
+    }
+  ],
+  "jobs": 4,
+  "upstream": "https://github.com/Northstrix/merucav/tree/b543416e23d5ccd5b6fa84628e483a16ae34c9ca",
+  "renderer": "merucav-cpu-v2",
+  "runtime": "v24.20.0",
+  "composite": "screen",
+  "stats": {
+    "low": 0.22901680574417113,
+    "high": 1,
+    "neutralFallback": false,
+    "layers": [
+      {
+        "style": "neuralGlass",
+        "sourceWidth": 936,
+        "sourceHeight": 432,
+        "nonFiniteValues": 0
+      },
+      {
+        "style": "solarWhirls",
+        "sourceWidth": 2600,
+        "sourceHeight": 1200,
+        "nonFiniteValues": 0
+      }
+    ]
+  },
+  "sha256": "55c280dd2c99f34d601dc2ac969829331ddc4786387629143ffa3a1ecae49bda",
+  "sourceSha256": "160dccdc9b297a1383864088278d844fa8c0906af486cd94bc75fabc276800c9",
+  "image": "cover.png",
+  "licenseNotice": "../scripts/vendor/NOTICE.md"
+}
