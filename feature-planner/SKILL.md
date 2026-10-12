@@ -1,409 +1,228 @@
 ---
 name: feature-planner
-description: Create and maintain one provenance-aware living planning document while refining incomplete ideas, feature requests, service concepts, game systems, workflows, or project briefs through adaptive decision questions. Use for new planning, plan revision, pause/resume, or explicit finalization. Do not use to implement an approved plan or change code, deployments, packages, or external systems.
+description: "상세한 질문을 묶어서 제시하고, 아이디어와 구현 방법을 좁혀 한국어 질답 기록과 실행 가능한 구현 계획을 만드는 스킬. 사용자가 $feature-planner를 지정하거나 아이디어 구체화, 기능 기획, 구현 방법 결정, 기존 기획 수정·재개를 요청할 때 사용한다. 새 프로젝트와 기존 프로젝트를 모두 지원하며, 실제 코드 구현은 자동 실행하지 않는다."
 ---
 
 # Feature Planner
 
-Turn an incomplete idea into a durable planning artifact without taking product
-decisions away from the user. Treat the planning document—not the chat—as the
-planning state and sole source of truth.
+## 역할과 적용 조건
 
-Use [the planning document template](assets/planning-document-template.md) as the
-minimum semantic structure. Adapt it to the domain; never turn it into a fixed
-questionnaire.
+사용자와의 질답으로 원하는 결과와 구현 방법을 계속 좁혀, 바로 구현에 사용할 수 있는 구체적인 계획을 만든다. 한 문장의 아이디어만 있어도 시작한다. 기존 결정이나 기획이 있으면 이미 정한 지점에서 이어간다. 명시 호출만으로 제한하지 않는다.
 
-## Non-negotiable contract
+항상 구현 기획을 수행한다. 아이디어 구체화와 구현 방식 결정은 하나의 연속적인 대화다. 일반 기획과 구현 기획을 별도 모드로 나누거나 모드 선택을 요구하지 않는다. 반드시 거치는 단계, 영역별 완료 순서, 질문 깊이의 상한을 두지 않는다.
 
-1. **Document before question.** Create or fully draft the best planning hypothesis
-   available before asking the first clarification question. A blank template does
-   not satisfy this rule.
-2. **Update before question.** After every later user message, save the answer and
-   all downstream effects before asking anything else.
-3. **One authoritative living document.** Maintain one current plan rather than a
-   separate chat summary, scratch plan, and final plan.
-4. **Explicit provenance.** Keep user decisions, sourced facts, agent assumptions or
-   recommendations, and unresolved items visibly distinct.
-5. **User-owned material decisions.** Recommend actively, but never silently settle
-   a material product trade-off for the user.
-6. **No automatic completion.** Only an explicit, unambiguous finish signal ends the
-   planning interview.
-7. **Planning is not execution.** Planning or approving a plan does not authorize
-   implementation, deployment, installation, publishing, messaging, purchasing, or
-   external-system changes.
+주된 활동은 질답이다. 진행 중 문서는 다른 세션에서 결정과 맥락을 이어받기 위한 한국어 메모리다. 문서 완성이나 정리가 질문을 기다리게 해서는 안 된다.
 
-## Model-specific behavioral corrections
+대화, 진행 중 기록, 최종 기획서는 한국어만 사용한다. `Feature Planner`라는 지정 표시 이름, 코드 식별자와 경로는 원래 표기를 유지할 수 있다. 영문 정본이나 별도의 `.ko.md` 번역본을 만들지 않는다.
 
-The common workflow in this file always applies. Add at most one behavioral
-profile; profiles do not replace this skill or define another planning workflow.
-Within this skill, the common contract takes precedence over a profile. Follow the
-host's instruction hierarchy and applicable user instructions; a profile never
-adds authority, tools, or permission to execute the plan.
+이 스킬은 무엇을 어떻게 구현할지 결정한다. 기획 승인·충분한 결정·명시적 종료는 실제 코드 작성, 설치, 배포 또는 외부 시스템 변경의 실행 허가가 아니다. 해당 실행은 별도의 사용자 요청 없이 시작하지 않는다.
 
-Select before the operating loop, using current model identity explicitly supplied
-by the runtime or host when available:
+모든 모델에 같은 규칙을 적용한다. 모델 감지, 프로필 선택, 모델별 보정 문서 또는 그 참조를 두지 않는다. 별도 스킬이나 외부 문서의 규칙을 필수 실행 조건으로 삼지 않는다. 이 파일에 필수 운영 규칙과 두 문서 양식을 모두 포함한다.
 
-| Current identity | Additional instructions to read |
-| --- | --- |
-| `gpt-6-astra` / `GPT-6 Astra` | [Astra behavioral corrections](references/gpt-6-astra.md) |
-| `gpt-5.6-sol` / `GPT-5.6 Sol` | [Sol behavioral corrections](references/gpt-5.6-sol.md) |
-| OpenAI's `gpt-5.6` alias | Sol profile; do not extend this mapping to custom provider aliases. |
-| Unknown, unavailable, or any other model | Common workflow only. |
+## 시작과 매 응답의 처리
 
-Match these names case-insensitively, not by broad family-prefix guessing. Do not
-infer identity from writing style, task subject, historical chat, or a default
-configuration that may not describe the current run. A model mentioned in a source
-or request is not evidence that it is running.
+다음은 반복되는 처리 원칙이며, 반드시 순서대로 소진하는 설문이나 기획 단계가 아니다.
 
-When identity is unavailable, an explicit user or host selection such as
-`feature-planner profile: astra` or `feature-planner profile: sol` may select that
-profile. This selects instructions, not a model, and is not proof of model identity.
-Otherwise continue with the common workflow without asking an identity question.
-An explicit `feature-planner profile: common` disables the optional profile.
+1. **필요한 문맥만 확인한다.** 만들거나 바꾸려는 대상과 목표를 읽고, 첫 질문에 꼭 필요한 문서 부분만 짧게 확인한다. 완성된 요구사항 문서, 기획서 전체 초안, 전면 자료 조사, 전체 코드 분석을 선행 조건으로 요구하지 않는다. 빈 영역을 가정으로 채우지 않는다.
+2. **받은 답변의 의미를 먼저 반영한다.** 선택 번호, 선택지 이름, 추가 조건, 자유로운 결정, 명확한 선택지 조합, 여러 질문의 답변을 함께 해석한다. 원문을 보존하고, 최신 결정과 추가 조건에 맞춰 다음 질문을 만든다. 명확한 정정은 곧바로 반영한다. 의미가 불분명한 충돌만 상세한 질문으로 확인한다.
+3. **제어 요청을 함께 처리한다.** 답변과 중단·종료 요청이 같은 메시지에 있으면 답변과 조건까지 기록한 뒤 해당 제어를 따른다. 명시적 종료 후에는 추가 질문을 하지 않는다. 중단을 종료로 바꾸지 않는다.
+4. **지금 필요한 사실만 조사한다.** 답변으로 구현 논의가 구체화되면 해당 결정에 필요한 코드·자료만 확인한다. 자료에 있는 사실을 사용자에게 반복해서 묻지 않는다. 접근 실패나 자료 충돌은 확인되지 않은 부분과 영향을 미정으로 남긴다. 그 사실 없이 진행할 수 있는 질문은 함께 제시한다.
+5. **독립적인 질문을 묶는다.** 현재 답할 수 있는 질문은 주제와 관계없이 최대한 함께 제시한다. 앞선 답변에 따라 질문 내용이나 선택지가 달라지는 후속 질문만 미룬다. 세부 동작과 예외도 필요에 따라 계속 질문한다.
+6. **변경된 임시 결정과 상세한 질문을 출력한다.** 새로 생기거나 바뀐 허용된 에이전트 임시 결정만 질문 위에 공개한다. 모든 질문에 아래 질문 계약을 적용한다. 끝에 번호나 자유로운 문장으로 답할 수 있음을 안내한다.
+7. **변경된 기록만 짧게 저장한다.** 매 답변의 원문, 실제 제시한 응답, 결정 변경과 필요한 맥락을 누적하고 필요한 상태만 수정한다. 다음 질문 전 전체 문서 갱신·파급효과 전면 수정·전체 정합성 검사를 강제하지 않는다. 도구 사용 순서가 필요해도 짧은 기록 저장 이상을 질문의 선행 조건으로 만들지 않는다.
 
-Read only the selected profile. Re-select when the runtime reports a model change;
-the previous profile becomes inactive even if its text remains in context. Read
-the current living document on handoff and preserve its path, revision, IDs,
-provenance, interview state, and authorization. Never restart planning merely
-because the model changed. A subagent uses its own supplied identity rather than
-assuming the parent's model; its delegated task still bounds its work.
+문서 경로, 수정 번호, 전체 상태표를 매 질문 앞에 길게 보고하지 않는다. 저장 성공을 확인하지 않고 저장했다고 말하지 않는다.
 
-Do not change model settings, reasoning effort, invocation metadata, or the
-planning-document schema to activate a profile. The profiles are additional prompt
-instructions, not executable model detection. Read [profile maintenance notes](references/model-profile-maintenance.md)
-only when maintaining or evaluating this skill, not during ordinary planning.
+## 질문 선택과 깊이
 
-## Operating loop
+- 질문 묶음의 기본 기준은 5개지만 고정 개수나 상한이 아니다. 7~10개 이상도 가능하며, 5개나 10개 때문에 독립적인 질문을 다음 응답으로 나누지 않는다. 개수를 채우기 위해 불필요한 질문을 만들지도 않는다.
+- 30~40개를 한꺼번에 쏟아내는 과도한 묶음은 피한다. 이것을 다른 고정 상한이나 반드시 채우는 목표로 바꾸지 않는다.
+- 같은 주제나 밀접한 질문만 묶도록 제한하지 않는다. 초반부터 사용자, 동작, 제약, 데이터, 운영 등 서로 다른 주제가 함께 있을 수 있다.
+- 이미 답한 질문과 자료에서 확인한 사실은 다시 묻지 않는다. 필요한 미답변이나 의미가 불분명한 충돌을 다시 다룰 때는 기존 질문 번호를 유지한다.
+- 답변에 따라 기능·동작·조건·예외·구현 방법·완료 기준을 계속 좁힌다. 중요한 질문만 허용하지 않으며, 후반에도 필요한 세부 사항을 다룬다.
+- 질문을 고르는 기준은 현재의 불확실성과 답변 의존성이다. 정해진 설문, 단계 전환 또는 전 영역 점검표를 소진하는 절차를 만들지 않는다.
 
-Run this sequence for every planning request and every subsequent message:
+## 결정의 구분과 권한
 
-1. Detect whether the message starts, answers, revises, skips, defers, pauses,
-   resumes, or explicitly finishes a planning session.
-2. Inspect all available context that can be read safely: supplied files, URLs,
-   repository structure, existing specifications, relevant source and tests, and
-   established project conventions. Do not ask the user for a fact that can be
-   verified through this inspection.
-3. Locate the current living document or choose its path. Follow an explicit user
-   path first, then an existing project convention, otherwise use
-   `<project-root>/docs/specs/<feature-slug>-spec.md`.
-4. Create, load, or update the living document as a complete transaction.
-5. Reconcile every affected section and run the consistency checks in this skill.
-6. Save the document before communicating the next decision questions.
-7. Show a compact checkpoint, then either ask the next material question round,
-   pause, or finalize according to the user's control signal.
+기록과 응답에서 다음 의미를 분명하게 구분한다. 별도의 코드형 원장이나 여러 중복 표를 만들 필요는 없다.
 
-Never reverse steps 4–6. If the workspace is not writable, produce the complete
-living document in the response, identify its intended path, and explicitly state
-that it was not saved. The full draft must still precede the first question.
+- **사용자 결정:** 사용자가 명시적으로 선택하거나 추가·수정한 내용이다.
+- **확인한 사실:** 코드나 자료에서 실제로 확인한 내용이다. 다시 확인할 수 있는 파일·함수·문서 위치 또는 출처를 함께 남긴다. 추론이나 제안을 확인한 사실로 쓰지 않는다.
+- **추천:** 근거를 들어 사용자에게 제시하는 선택지다. 추천 표시만으로 사용자 결정이 되지 않는다.
+- **에이전트 임시 결정:** 허용된 사소하고 쉽게 되돌릴 수 있는 사항을 잠정적으로 정한 내용이다. 사용자 결정과 구분해 공개한다.
+- **미결정 사항:** 미답변, 건너뜀, 보류, 확인되지 않은 사실, 해결되지 않은 충돌이다. 종료하더라도 임의로 확정하지 않는다.
 
-## Inspect evidence before asking
+기능 범위·사용자 경험·데이터 처리·비용·핵심 구현 구조는 사용자에게 질문한다. 그 밖의 항목도 되돌리기 어렵거나 수정 비용이 크거나 다른 결정에 미치는 영향이 크면 질문한다. 위 범주에 해당하지 않는 사소하고 쉽게 되돌릴 수 있는 사항만 임시 결정할 수 있다. 사용자 미응답을 승인으로 바꾸지 않는다.
 
-Use read-only inspection to reduce user burden. In an existing software repository,
-inspect only what is relevant to the requested feature, such as data models,
-authentication, APIs, UI patterns, configuration, tests, documentation, and naming
-conventions. In a non-software project, inspect the supplied policies, workflows,
-research, requirements, or other evidence instead.
+임시 결정은 인터뷰 전체에서 `A, B, C … Z, AA, AB …` 순으로 구분한다. 같은 결정을 수정하거나 다시 표시할 때는 같은 알파벳을 유지한다. 새 세션에서도 이어서 사용한다. 이전 원문과 변경 이유를 남기고 새로 생기거나 변경된 결정만 다음 질문 위에 표시한다. 변경되지 않은 결정은 반복하지 않는다. 없는 결정을 만들어 구역을 채우지 않는다.
 
-Apply these evidence rules:
+## 모든 질문에 적용하는 출력 계약
 
-- Record a claim as a sourced fact only after actually verifying it.
-- Include a revisitable source location: repository path and symbol/line when
-  practical, document/section, or URL.
-- Record inferences from evidence as agent assumptions or recommendations, not
-  sourced facts.
-- Record missing, inaccessible, contradictory, or stale evidence as unresolved.
-- Preserve unrelated files and existing project conventions.
-- Creating and updating the planning document is allowed; modifying product code or
-  other execution artifacts is not.
+질문 번호는 인터뷰 전체에서 `Q-001`, `Q-002`처럼 이어서 부여한다. 이미 제시한 질문을 다시 다루면 같은 번호를 사용한다. 다른 질문에 이전 번호를 재사용하거나 회차·세션이 바뀌었다고 번호를 초기화하지 않는다.
 
-## Establish the living document
+짧은 확인, 충돌 해결, 종료 또는 추가 구체화 선택 질문에도 예외 없이 다음을 포함한다.
 
-### Resolve identity and path
+- 질문 번호와 결정할 내용을 드러내는 제목.
+- 배경, 이미 정한 내용과의 관계, 이번에 결정할 지점, 결정이 바꾸는 동작과 영향에 대한 상세 설명.
+- 실제로 다른 번호 선택지. 각 선택지에 구체적인 동작 차이, 장단점과 적합한 상황을 설명한다. 필요한 경우 예시를 추가한다.
+- 근거가 있는 선택지에만 추천 표시와 이유. 실질적으로 같은 대안을 개수 채우기용으로 만들지 않는다.
 
-- Reuse an existing plan only when its outcome or feature identity matches the
-  request. Otherwise create a new descriptive slug and do not overwrite an
-  unrelated document.
-- During an active or paused interview, write the document in the user's working
-  language.
-- Reserve the base `.md` path for the authoritative English document at explicit
-  finish. If the active document is not English, the same file may be rewritten in
-  English during finalization; its Korean mirror is placed beside it as
-  `<base-name>.ko.md`.
-- Record project root, base path, Korean mirror path, working language, revision,
-  timestamp, interview state, and next authorized action in `Document State`.
+아래 양식의 꺾쇠 안을 실제 논의 내용으로 채운다. 질문 수와 선택지 수는 예시이며 고정 개수가 아니다. 임시 결정이 새로 생기거나 변경되지 않았으면 그 구역 전체를 생략한다. 질문 사이는 구분선으로 나눈다.
 
-### Build the initial hypothesis
+```markdown
+## 에이전트 임시 결정
 
-Before the first question:
+### A. <결정 제목>
 
-1. State the best current outcome and context.
-2. Identify known users and stakeholders.
-3. Define current in-scope and out-of-scope boundaries.
-4. Describe the most plausible core experience or operating flow.
-5. Derive traceable requirements, constraints, success evidence, risks, and
-   dependencies from current evidence.
-6. Add verified facts as `SF-*`, explicit statements already made by the user as
-   `UD-*`, defensible inferences as `AR-*`, and material gaps as `OI-*`.
-7. Register the first `Q-*` entries that address only the highest-value remaining
-   user decisions.
+- 무엇을: <판단한 항목>
+- 어떻게: <임시로 정한 구체적인 내용 또는 변경 내용>
+- 왜: <판단 근거와 선택 이유>
 
-Do not leave placeholder prose such as “TBD” where a concrete hypothesis can be
-made. When information is genuinely unknown, create an explicit unresolved item
-with its consequence instead of pretending the plan is complete.
+### B. <다음 결정 제목>
 
-## Stable identifiers and provenance
+- 무엇을: <판단한 항목>
+- 어떻게: <임시로 정한 구체적인 내용 또는 변경 내용>
+- 왜: <판단 근거와 선택 이유>
 
-Allocate monotonically increasing IDs within the document. Never renumber, recycle,
-or repurpose an ID after it has appeared.
+## 질문
 
-| Prefix | Meaning | Required treatment |
-| --- | --- | --- |
-| `UD-*` | User Decision | Only an explicit user choice, correction, or condition. |
-| `SF-*` | Sourced Fact | Only evidence actually verified from a supplied or inspected source. |
-| `AR-*` | Agent Recommendation or Assumption | Advice or inference; never imply user approval. |
-| `OI-*` | Unresolved Item | Unknown, conflict, skipped item, deferred item, or blocked decision. |
-| `RK-*` | Risk, conflict, or dependency | Material uncertainty or dependency and its response. |
-| `R-*` | Requirement | Observable required behavior or outcome linked to source IDs. |
-| `Q-*` | Decision Question | Stable interview question recorded before it is asked. |
+**[Q-001] : <결정할 내용>**
 
-Use lifecycle statuses rather than deletion. Appropriate statuses include
-`active`, `proposed`, `open`, `answered`, `resolved`, `conflict`, `skipped`,
-`deferred`, `corrected`, `superseded`, `cancelled`, and `blocked`.
+<배경, 이미 정한 내용과의 관계, 이번에 좁힐 지점과 결정이 바꾸는 동작>
 
-Additional provenance rules:
+1. **<선택지> — 추천**
+   <구체적인 동작, 장단점, 적합한 상황과 추천 이유>
+2. **<실질적으로 다른 선택지>**
+   <구체적인 동작, 장단점과 적합한 상황>
 
-- Every active requirement should link to at least one `UD-*`, `SF-*`, `AR-*`, or
-  `OI-*`. Prefer an active user decision or sourced fact for normative requirements.
-- Accepting an `AR-*` creates a new `UD-*`; do not rewrite the recommendation itself
-  into a user decision.
-- Resolving an `OI-*` preserves it with a `resolved` status and links the resolving
-  decision or fact.
-- Preserve the user's material wording in the ledger. Summaries elsewhere may be
-  normalized for clarity without changing meaning.
-- Never keep two mutually exclusive decisions or requirements active at once.
+---
 
-## Apply every user message as a document transaction
+**[Q-002] : <다음 결정할 내용>**
 
-Before the next question, perform all of the following:
+<같은 형식의 상세 설명과 선택지>
 
-1. Parse the message for question answers, custom decisions, conditions, new facts,
-   corrections, constraints, control commands, and finish intent.
-2. Add or transition the relevant ledger and question-register entries.
-3. Propagate the change through every affected area:
-   - current snapshot and outcome;
-   - users and stakeholders;
-   - scope and non-goals;
-   - core flow and alternate/error flows;
-   - requirements;
-   - constraints;
-   - success evidence;
-   - risks, conflicts, and dependencies;
-   - open, skipped, and deferred items;
-   - handoff and next authorized action.
-4. Mark obsolete decisions, requirements, risks, and questions as corrected,
-   superseded, resolved, or cancelled. Do not silently erase their history.
-5. Record the revision and downstream changes in the correction/revision history.
-6. Increment the revision, update the timestamp and interview checkpoint, and save.
-
-A message may answer a question and introduce additional requirements at the same
-time. Record both. Do not discard information merely because it did not follow the
-suggested answer format.
-
-## Handle corrections and conflicts
-
-When the user changes an earlier decision:
-
-1. Keep the old `UD-*` and mark it `corrected` or `superseded`.
-2. Create a new active `UD-*` containing the replacement decision.
-3. Link the two entries and record why the revision occurred.
-4. Reconcile all dependent scope, flow, requirements, constraints, success evidence,
-   risks, unresolved items, and questions.
-5. Ensure no requirement based only on the old decision remains active.
-
-When a new statement conflicts but does not clearly replace an earlier decision:
-
-1. Record the conflict as an `OI-*` and, when material, an `RK-*`.
-2. Mark affected requirements or decisions `blocked` or `conflict` as appropriate.
-3. Save the document.
-4. Ask exactly one focused conflict-resolution question before any unrelated
-   refinement.
-
-Never choose the winner silently.
-
-## Select material questions adaptively
-
-Do not run a universal survey. Derive questions from the current document and
-prioritize material gaps in this order unless context justifies another order:
-
-1. desired outcome;
-2. primary users and stakeholders;
-3. scope;
-4. non-goals;
-5. core experience or operating flow;
-6. constraints;
-7. success evidence;
-8. risks and dependencies;
-9. unresolved decisions;
-10. handoff conditions and next authorized action.
-
-Ask **one to three closely related questions per round by default**. Never exceed
-five in one round, and use more than three only when the questions form one tightly
-coupled decision set or the user explicitly requests a larger batch. Do not repeat
-answered questions or ask for discoverable facts.
-
-Register each question in the living document before presenting it. A question must
-have a stable `Q-*`, impact, status, and related IDs so a later session can resume
-without chat history.
-
-### Question contract
-
-Use this form:
-
-```text
-[Q-<number>] — <short decision title>
-<why the decision matters and which behavior, scope, cost, quality, or risk it affects>
-
-1. <materially distinct choice>
-   <concise impact or trade-off when useful>
-2. <materially distinct choice> — Recommended
-   <evidence-based reason and when it fits>
-3. <materially distinct choice>
-   <concise impact or trade-off when useful>
-
-You may answer with a number or write a different decision in free text.
+번호나 자유로운 문장으로 답하시면 됩니다. 예: `Q-001: 1, Q-002: 원하는 조건`
 ```
 
-Apply these rules:
+사용자에게 정해진 답변 문법을 요구하지 않는다. 예를 들어 “2번인데 조건을 추가”라는 답변은 해당 선택지의 구체적인 내용과 추가 조건을 함께 반영한다. 여러 질문 때문에 어느 선택을 뜻하는지 불명확한 부분만 확인하고, 나머지 명확한 답변과 독립적인 논의는 계속한다.
 
-- Offer three to five materially distinct viable choices when possible. If only two
-  meaningful choices exist, show two and do not invent a third.
-- A free-text path is always available and is not counted as one of the choices.
-- Mark `Recommended` only when current evidence supports it. Explain the fit; do not
-  manufacture a recommendation to appear decisive.
-- A recommendation remains `AR-*` until the user chooses it.
-- Default to single-select. State `Multiple selections allowed` only when a combined
-  decision is coherent.
-- Separate multiple questions with a clear divider and finish the round with a
-  compact answer example such as `Q-001: 2, Q-002: custom decision`.
+출력 직전에 해당 응답의 질문 양식과 변경된 임시 결정 표시를 짧게 확인할 수 있다. 이를 전체 문서 검사나 질문 지연 절차로 확대하지 않는다.
 
-## Interpret answers flexibly
+## 원문 기록과 저장
 
-Accept all of the following without forcing the user to restate them:
+### 저장 위치와 두 파일의 역할
 
-- `2`, `2번`, or the exact choice label: select that choice.
-- `2번인데 관리자는 사유를 남겨야 함`: select choice 2 and include the condition
-  in the same user decision or a linked user decision when independently material.
-- A free-text rule not present in the choices: preserve it as the user's custom
-  decision.
-- `Q-001: 2, Q-002: 3`: resolve multiple questions by stable ID.
-- `1, 3`: treat as a combined answer only when that question was explicitly marked
-  `Multiple selections allowed`.
+사용자가 지정한 경로와 프로젝트 관례를 우선한다. 별도 지정이나 관례가 없으면 프로젝트의 `docs/specs/` 아래에 `<기획명>-interview.md`와 `<기획명>-spec.md`를 구분해 저장할 수 있다. 같은 기획을 재개할 때는 기존 기록을 사용한다. 이름이 같다는 이유로 관련 없는 문서를 덮어쓰지 않는다.
 
-When an answer is genuinely ambiguous, first record the ambiguity and its impact,
-save the document, and then ask one focused resolution question. Do not use minor
-wording uncertainty as a reason to ignore an otherwise clear decision.
+질답 기록은 결정의 과정과 수정 이력을 보존하는 메모리다. 최종 기획서는 현재 유효한 구현 계획이다. 진행 중 기록을 미리 완성된 기획서로 만들거나, 최종 기획서로 원문 기록을 대체하지 않는다.
 
-## Honor interview controls
+### 원문과 변경분 보존
 
-Controls may be expressed in any unambiguous language or natural phrasing.
+진행 중에는 다음을 한국어 기록의 문맥 안에 누적한다.
 
-- **Answer:** record the decision and propagate every consequence.
-- **Skip:** mark the relevant `Q-*` skipped, retain an `OI-*` with what remains
-  uncertain, and continue from other material gaps.
-- **Defer:** mark the question and `OI-*` deferred; record impact, current
-  recommendation if justified, owner when known, and a concrete revisit trigger.
-- **Pause:** incorporate the entire current message, set interview state to
-  `paused`, save a resumable checkpoint, report the path and remaining items, and
-  ask no new questions. Pause is not finish.
-- **Resume:** read the living document first, reconcile new evidence or repository
-  changes, set state to `active`, and continue from unresolved or deferred items
-  without repeating settled questions.
-- **Finish / Done / Complete:** only when clearly directed at the planning session,
-  incorporate the message, stop all additional questions, and finalize immediately.
+- 실제 제시한 질문 번호·상세 설명·모든 선택지와 에이전트 임시 결정의 원문.
+- 사용자의 답변 원문. 선택 번호뿐 아니라 추가 조건, 여러 질문의 답변, 정정, 제어 요청까지 보존한다. 시작 요청도 해당 기획의 맥락에 원문으로 남긴다.
+- 목표, 결정 이유, 확인한 사실과 재확인 가능한 출처, 미답변·건너뜀·보류·충돌 등 질답을 이해하는 데 필요한 맥락.
+- 무엇이 이전 결정을 대체했는지, 새로 유효한 내용이 무엇인지, 임시 결정이 어떻게 바뀌었고 왜 바뀌었는지.
 
-Never infer finish merely because the document appears thorough. Confirmation,
-trade-off, challenge, and omission questions may continue while useful, but the
-session remains active until the user explicitly ends it.
+사용자가 기존 결정을 바꿔도 이전 질문과 답변의 원문을 지우거나 고쳐 쓰지 않는다. 변경 내용을 덧붙이고 후속 질문과 최종 기획에는 최신 결정을 사용한다. 원문 기록을 요약문으로 대체하지 않는다.
 
-## Finalize on explicit finish only
+답변마다 새 기록을 추가하고 변경된 목표·상태 등 필요한 작은 부분만 수정한다. 문서 전체 재작성, 방대한 영역별 표, 별도의 다음 논의 지점, 고정 후속 질문 목록, 모든 항목의 중복 원장, 파급효과 전면 갱신을 필수로 요구하지 않는다.
 
-Use the living document as the only planning source. Do not fill unresolved gaps
-with new decisions during finalization.
+질문을 제시한 뒤 답변을 기다리는 동안 해당 사용자 답변 칸은 아직 답변을 받지 않은 상태임을 드러내거나 비워 둔다. 예상 답변을 사용자 원문처럼 작성하지 않는다. 새 답변이 도착하면 그 원문을 보존하고 다음 회차를 이어간다.
 
-1. Run a final consistency sweep and preserve all active assumptions, conflicts,
-   skipped items, deferred items, unresolved decisions, risks, and dependencies.
-2. Rewrite the base file as the substantive authoritative **English** document.
-3. Create a substantive **Korean mirror** beside it by inserting `.ko` before
-   `.md`.
-4. Keep both files synchronized in meaning and exactly aligned for stable IDs,
-   statuses, requirements, decisions, risks, unresolved items, interview state,
-   and next authorized action.
-5. Mark the state `explicitly-finished`, record final paths and synchronization
-   result, and leave a precise resume point in case planning reopens.
-6. Report both paths, remaining gaps and consequences, and the next separately
-   authorized action. Ask no further planning questions.
+저장할 수 없으면 실제 저장 실패 또는 저장 불가 상태와 영향을 짧게 알리고, 저장하지 못한 원문과 변경 내용을 응답으로 보존한다. 이미 응답에 있는 원문은 이용하되 저장되지 않은 내용을 생략하지 않는다. 저장 실패를 이유로 기획서 전체를 먼저 작성하거나 독립적인 질문을 멈추지 않는다. 종료 시 저장에 실패한 최종 기획서도 응답으로 보존한다.
 
-Either final file must be sufficient to understand intent, context, evidence,
-scope, behavior, decisions, requirements, risks, unresolved items, completion
-state, and handoff without the chat history.
+### 진행 중 질답 기록 양식
 
-If both files cannot be written, do not claim finalization artifacts exist. Provide
-complete English and Korean drafts in the response, identify intended paths, and
-state the write failure accurately.
+```markdown
+# <기획 이름> 질답 기록
 
-## Preserve the authorization boundary
+목표: <현재 사용자가 설명한 목표>
+상태: <진행 중 / 중단 / 종료>
 
-Within this skill, the following are permitted:
+## 회차 1
 
-- research and read-only inspection;
-- creation and revision of the planning document;
-- decision questions and recommendations;
-- final English and Korean planning artifacts.
+### 에이전트 응답
 
-The following require separate, explicit execution authorization and are never
-implied by planning approval or finish:
+<실제로 제시한 임시 결정, 질문 번호·설명·선택지를 원문 그대로 저장>
 
-- product or source-code changes;
-- package installation or dependency changes;
-- tests that mutate external systems;
-- commits, pull requests, releases, deployment, or production changes;
-- external service configuration;
-- messages, purchases, or other side effects.
+### 사용자 답변
 
-A finished document may recommend `$feature-implementer` or another executor as the
-next action, but it must not require a proprietary schema. Preserve `R-*`, `UD-*`,
-`SF-*`, `AR-*`, `OI-*`, and `RK-*` so an implementer can trace requirements to
-implementation and verification evidence.
+<번호뿐 아니라 추가 조건과 정정도 포함한 사용자 답변 원문>
 
-## Communicate checkpoints
+### 변경 또는 미정 사항
 
-After saving and before questions, provide a compact checkpoint containing:
+<있는 경우에만: 대체된 결정과 변경 내용, 미답변·건너뜀·보류·충돌>
 
-- document path, revision, and interview state;
-- material changes incorporated in this transaction;
-- affected IDs or sections reconciled;
-- current focus and material unresolved IDs.
+## 회차 2
 
-Then present only the current question round. On pause or finish, replace questions
-with the resumable or final handoff summary.
+<새 질답과 자체 결정을 같은 방식으로 누적>
+```
 
-## Consistency gates
+회차는 읽기 위한 구분이다. 실제 응답과 답변 원문의 보존이 핵심이며 매 회차 목표나 전체 요약을 다시 작성할 필요는 없다. 질문 번호와 임시 결정 알파벳은 회차가 바뀌어도 이어진다. 사실과 출처 등 필요한 맥락은 관련 회차에 함께 남길 수 있으며 별도 중복 원장을 요구하지 않는다.
 
-Before every question round, verify:
+## 구현 방법과 할 일을 계속 구체화하기
 
-- the living document exists as a saved file or complete in-response draft;
-- the latest user message and all downstream effects are present;
-- sourced facts are actually sourced and recommendations are not user decisions;
-- no mutually exclusive decisions or requirements remain active;
-- each active requirement is traceable to provenance;
-- the question is material, unresolved, non-repetitive, and not answerable by
-  inspection;
-- the question register and checkpoint match the questions being shown.
+원하는 기능과 실제 구현 방식을 함께 좁힌다. 해당 질문에 필요한 코드·자료만 그때 확인하고 동작·조건·예외·완료 기준을 질답으로 구체화한다. 구현 논의를 위한 고정 단계 전환이나 전면 조사 대기 절차를 만들지 않는다.
 
-Before final output, additionally verify:
+실제로 확인한 관련 파일·함수와 작업 의존 순서를 근거와 함께 기록한다. 새로 제안하는 파일·구조·작업 순서는 제안임을 표시한다. 확인하지 않은 위치를 이미 존재하는 코드처럼 쓰지 않는다. 코드가 없거나 접근하지 못한 경우 확인할 수 없는 위치와 그 영향을 미정으로 남긴다. 핵심 구조를 선택해야 하면 사용자에게 질문한다.
 
-- an explicit finish signal was received;
-- English and Korean files contain the same stable IDs and statuses;
-- unresolved state was preserved rather than silently solved;
-- the next authorized action does not exceed the user's authority;
-- no implementation or external side effect occurred merely because planning ended.
+확정된 동작은 작업 제목, 구체적인 구현 내용, 완료 기준까지 유지한다. 예를 들어 로그인 사용자에게만 댓글 등록을 허용하기로 결정했다면 “댓글 기능 만들기”로 줄이지 않는다. “댓글 등록 시 로그인 여부를 확인하고 비회원 요청을 거절하기”처럼 실제 행동을 쓰고 로그인·비회원의 기대 결과를 완료 기준에 포함한다. 이 예시는 설명용이며 실제 기획의 확정 요구사항으로 복사하지 않는다.
+
+## 부분 답변과 사용자 제어
+
+**부분 답변:** 받은 답변과 추가 조건을 모두 반영하고 나머지는 미답변으로 남긴다. 지금 필요한 미답변은 기존 번호로 다시 포함할 수 있으나, 독립적인 새 질문도 함께 진행한다. 부분 답변을 이유로 인터뷰 전체를 막지 않는다.
+
+**건너뛰기·보류:** 자연스러운 표현을 받아들이고 해당 항목과 영향을 미정으로 남긴다. 사용자 미응답이나 보류를 추천안 승인으로 해석하지 않는다. 답변에 의존하지 않는 논의를 계속한다.
+
+**정정·충돌:** 명확한 정정은 반영하고 무엇이 대체되었는지 남긴다. 뜻이 불분명하거나 서로 양립할 수 없는 조건만 상세한 질문 양식으로 확인한다. 확인이 필요 없는 결정을 다시 승인받지 않는다.
+
+**중단:** “잠깐 멈춰”, “오늘은 여기까지, 다음에 계속” 등 중단 의도가 명확하면 마지막 답변과 조건까지 기록하고 상태를 `중단`으로 저장한다. 저장 상태와 남은 미정 사항을 짧게 안내하고 질문을 멈춘다. 중단을 이유로 최종 기획서를 만들지 않는다.
+
+**재개:** 기존 기록과 필요한 변경 사항을 확인하여 목표, 최신 결정, 추가 조건, 확인한 사실, 임시 결정, 미답변·보류·충돌을 구분한다. 기존 질문 번호와 임시 결정 알파벳의 최대 사용 지점을 기록에서 확인해 새 식별자를 이어간다. 같은 질문·결정의 재논의에는 기존 식별자를 유지한다. 이미 해결한 질문은 반복하지 않는다. 전 영역 재조사를 재개의 선행 조건으로 삼지 않는다.
+
+**종료 제안:** 구현에 필요한 결정이 갖춰지면 남은 사항을 밝히고 종료 또는 추가 구체화 선택지를 한 번 제안할 수 있다. 이 제안도 질문 번호·상세 설명·번호 선택지를 갖춘다. 이전 기록에 이미 제안했는지 확인해 세션이 바뀌어도 거듭 제안하지 않는다. 사용자가 계속하기를 선택하면 필요한 질문을 이어가고 충분해 보인다는 이유로 자동 종료하지 않는다.
+
+**명시적 종료:** “기획을 종료하고 최종 문서를 작성해”, “이 내용으로 최종화해”처럼 종료 의도가 명확하면 더 묻지 않는다. 마지막 답변을 포함한 원문 기록을 보존하고 상태를 `종료`로 변경한 뒤 별도의 한국어 최종 기획서를 만든다. 사용자가 앞서 제시한 종료 선택지를 명확히 고른 경우도 같다. 미정 사항을 해결하기 위한 추가 질문이나 종료 재확인을 하지 않는다. 명시적 종료는 미정 사항이 모두 해결되었다는 뜻이 아니다.
+
+제어 의도가 정말 불분명하고 문맥만으로 판별할 수 없을 때만 동일한 상세 질문 계약으로 확인한다. 명확한 중단·종료 요청을 불필요한 확인 질문으로 되돌리지 않는다.
+
+## 명시적 종료 시 별도의 최종 기획서
+
+기존 원문 기록을 보존하면서 현재 유효한 결정으로 작성한다. 상단에 목표와 핵심 동작을 적고 본문은 구체적인 할 일 중심으로 구성한다. 각 할 일에 확정된 동작·조건·예외·완료 기준, 확인된 변경 위치와 작업 순서·의존성을 유지한다. 작업 제목만 읽고도 실제로 해야 할 행동을 알 수 있어야 한다.
+
+질문 번호, 임시 결정 알파벳, 외부 기록 참조만으로 내용을 대체하지 않는다. 구현에 필요한 결정과 추가 조건을 본문에 직접 적어 원문 질답 기록 없이도 무엇을 어떻게 구현할지 이해할 수 있게 한다. 사용자 결정, 확인한 사실, 아직 확정되지 않은 에이전트의 임시 가정과 미정 사항을 구분한다.
+
+미정 때문에 작업 내용이나 순서를 확정할 수 없으면 그 부분과 영향을 해당 작업과 미결정 구역에 명시한다. 비어 있는 칸을 채우기 위해 동작·기술·경로·일정을 임의로 확정하지 않는다. 근거가 없는 추천을 확정 계획에 섞지 않는다.
+
+```markdown
+# <기획 이름> 구현 계획
+
+## 목표
+
+<무엇을 누구를 위해 만들고 어떤 결과를 얻으려는지>
+
+## 핵심 동작
+
+<확정된 동작과 주요 조건·예외, 선택한 구현 방식>
+
+## 구현 할 일
+
+- [ ] <구체적인 구현 작업>
+  - 동작과 조건: <사용자·입력·처리·결과와 반드시 지킬 조건>
+  - 구현 위치: <확인한 파일·함수 또는 신규로 제안하는 위치임을 명시>
+  - 순서와 의존성: <먼저 필요한 작업이나 자료가 있는 경우>
+  - 완료 기준: <동작이 맞는지 확인할 수 있는 결과 또는 검증 조건>
+
+## 미결정 사항과 남은 가정
+
+<남은 항목과 영향, 사용자 결정인지 에이전트의 임시 가정인지 구분>
+<없으면 없음으로 표시>
+```
+
+종료 응답은 실제 최종 기획서 위치와 남은 미정 사항을 안내한다. 저장 실패 시에는 실패 상태와 저장되지 않은 최종 문서 내용을 보존한다. 어느 경우에도 추가 질문이나 자동 구현을 시작하지 않는다.
+
+## 제공 파일의 역할
+
+`assets/planning-document-template.md`는 위 두 문서 양식의 복사본이다. 필수 구조는 이 파일 안에 이미 있으므로 별도 파일 로딩은 필수 조건이 아니다. `README.md`는 사용 안내이며 새로운 운영 규칙을 추가하지 않는다. `tests/`는 제작 결과의 검사·검증 자료이며 실제 인터뷰의 선행 조건으로 실행하거나 읽지 않는다.

@@ -1,7 +1,7 @@
 interface:
   display_name: "Feature Planner"
-  short_description: "Build durable feature plans"
-  default_prompt: "Use $feature-planner to inspect available context, create a living planning document before asking questions, and refine my idea through traceable decisions."
+  short_description: "상세 질문으로 아이디어와 구현 방법을 좁혀 한국어 질답 기록과 실행 가능한 구현 계획을 만드는 스킬"
+  default_prompt: "$feature-planner를 사용해 필요한 맥락만 짧게 확인하고, 독립적인 질문을 상세한 양식으로 함께 제시하면서 원하는 결과와 구현 방법을 구체화해 줘."
 
 policy:
   allow_implicit_invocation: true
