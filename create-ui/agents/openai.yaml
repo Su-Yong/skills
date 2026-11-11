@@ -1,0 +1,7 @@
+interface:
+  display_name: "create-ui"
+  short_description: "데이터 구조를 먼저 설계하고 일관된 스타일로 웹사이트를 만드는 스킬"
+  default_prompt: "$create-ui 스킬로 데이터 포맷과 페이지 계층을 먼저 정하고, 필요한 정보만 담은 웹사이트를 만들어 줘."
+
+policy:
+  allow_implicit_invocation: true
