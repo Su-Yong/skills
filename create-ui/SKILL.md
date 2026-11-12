@@ -1,6 +1,6 @@
 ---
 name: create-ui
-description: "데이터 포맷과 페이지 계층을 먼저 설계하고 절제된 웹사이트를 구현한다. Vite·React·Tailwind CSS·shadcn/ui 기반의 웹사이트 제작, 기존 사이트의 기술·화면 전환, 현재 프로젝트의 스타일·탐색 구조 변경에 사용한다. 필요한 Hono + Node 서버와 저장소 구현도 지원한다."
+description: "데이터 포맷과 페이지 계층을 먼저 설계하고 절제된 웹사이트를 구현한다. Vite·React·Tailwind CSS·shadcn/ui 기반의 웹사이트 제작, 기존 사이트의 기술·화면 전환, 현재 프로젝트의 스타일·탐색 구조 변경과 UI 규칙 검사·수정에 사용한다. 필요한 Hono + Node 서버와 저장소 구현도 지원한다."
 ---
 
 # create-ui
@@ -17,16 +17,20 @@ description: "데이터 포맷과 페이지 계층을 먼저 설계하고 절제
 | `$create-ui migrate <전환 범위>` | [migrate 지침](reference/commands/migrate.md)을 읽고 기존 기능·데이터 계약을 보존하며 기술과 화면을 전환한다. |
 | `$create-ui style` | [style 지침](reference/commands/style.md)에 따라 현재 프로젝트의 설정과 변경 가능한 항목을 짧게 보여준다. |
 | `$create-ui style <변경 요청>` | [style 지침](reference/commands/style.md)에 따라 시각적 값, 개별 화면의 배치, 페이지 계층과 탐색 방식을 수정한다. |
+| `$create-ui audit` | [audit 지침](reference/commands/audit.md)에 따라 현재 프로젝트에 적용되는 모든 스킬 규칙을 검사하고 문제를 수정·재검증한다. |
+| `$create-ui audit <text / layout / ui / page / data>` | [audit 지침](reference/commands/audit.md)에 따라 지정한 주제의 전체 화면을 검사하고 문제를 수정·재검증한다. |
 | `$create-ui help` | [help 지침](reference/commands/help.md)에 따라 역할과 짧은 사용 예시를 안내한다. |
 
 `help`와 변경 요청이 없는 `style`은 조회만 한다. 파일 생성·설치·서버 실행·기술 전환을 시작하지 않는다. 아직 웹 프로젝트가 없으면 현재 설정이 없음을 알리고 사용법을 안내한다. `style` 조회를 위해 별도의 미리보기 앱을 만들지 않는다.
+
+`audit`은 인자가 없어도 검사·수정·재검증을 수행한다. `text`는 모든 텍스트, `layout`과 `ui`는 모두 Block·컴포넌트·배치, `page`와 `data`는 모두 데이터에 맞는 페이지 구성과 작업 흐름을 대상으로 한다.
 
 해당 명령 문서와 현재 작업에 필요한 참고 문서만 읽는다. 데이터에 맞는 Block은 [Block 참고](reference/blocks.md), 페이지 구성은 [레이아웃](reference/layout.md), UI 선택과 아이콘은 [컴포넌트](reference/components.md), 컬러와 실제 스타일 값은 [스타일 시스템](reference/style-system.md)을 사용한다.
 
 ## 작업 범위 확인
 
 - 요청에 필요한 현재 프로젝트의 구조, 실행 명령, 기존 UI·스타일·데이터·서버를 확인한다. 기존 변경과 규칙을 보존하며 관련 없는 파일을 정리하지 않는다.
-- 새 프런트엔드와 전환 대상은 Vite·React·Tailwind CSS·shadcn/ui를 사용하고, 새 코드와 전환 대상 코드는 TypeScript로 작성한다. 좁은 `style` 요청을 프로젝트 전체의 기술 전환으로 확대하지 않는다.
+- 새 프런트엔드와 전환 대상은 Vite·React·Tailwind CSS·shadcn/ui를 사용하고, 새 코드와 전환 대상 코드는 TypeScript로 작성한다. `style`이나 `audit` 요청을 프로젝트 전체의 기술 전환으로 확대하지 않는다.
 - 판단 근거를 짧게 알리고 진행한다. 고정된 디자인 승인 단계를 두지 않는다. 사용 목적·데이터 계약·기존 브랜드 등 결과를 크게 바꾸는 충돌이 있으면 영향받는 부분만 질문하고 독립적인 작업은 계속한다.
 - 서버를 구성하거나 전환하는 작업에서 **기존 서버가 있으면 유지할지 교체할지 질문한다.** 이 작업에서 이미 받은 선택은 다시 묻지 않는다. 답변이 없다는 이유로 교체를 결정하지 않으며, 단순 스타일 수정 때문에 서버 교체 질문을 시작하지 않는다.
 - 완성된 스킬이나 프로젝트에 접근할 수 있다는 이유로 전역 설치·배포·외부 서비스 변경을 실행하지 않는다. 요청받은 프로젝트 변경과 검증의 범위를 지킨다.

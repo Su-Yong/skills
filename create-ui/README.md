@@ -20,9 +20,11 @@ $create-ui
 | `$create-ui migrate` | 기존 기능과 데이터 계약을 보존하며 기술과 화면 구성을 전환합니다. 기존 서버가 있으면 교체 여부를 묻습니다. |
 | `$create-ui style` | 현재 프로젝트의 스타일과 변경 가능한 항목을 짧게 보여줍니다. 파일을 수정하거나 미리보기 앱을 만들지 않습니다. |
 | `$create-ui style <변경 요청>` | 색상·글꼴·간격부터 페이지 계층과 탐색 방식까지 현재 프로젝트에서 수정합니다. |
+| `$create-ui audit` | 현재 프로젝트에 적용되는 모든 스킬 규칙을 검사하고 문제를 수정·재검증합니다. |
+| `$create-ui audit <주제>` | `text`, `layout`, `ui`, `page`, `data` 중 지정한 주제를 검사하고 문제를 수정·재검증합니다. |
 | `$create-ui help` | 명령과 사용법을 안내합니다. |
 
-상세 동작은 [migrate](reference/commands/migrate.md), [style](reference/commands/style.md), [help](reference/commands/help.md) 문서로 나누어 관리합니다.
+상세 동작은 [migrate](reference/commands/migrate.md), [style](reference/commands/style.md), [audit](reference/commands/audit.md), [help](reference/commands/help.md) 문서로 나누어 관리합니다.
 
 ```text
 $create-ui style 팔레트를 블루로 바꾸고, 표의 행 간격을 조금 좁혀 줘.
@@ -40,6 +42,19 @@ $create-ui migrate
 ```
 
 이미 전달한 서버 유지·교체 결정은 다시 묻지 않습니다. 아직 결정하지 않은 기존 서버의 교체 여부는 확인한 뒤 적용합니다.
+
+## 규칙 검사와 수정
+
+`audit`은 현재 앱을 실제로 검사하고, 규칙에 맞지 않는 부분을 수정한 뒤 다시 확인합니다. 별도 페이지 범위를 지정하지 않으면 모든 페이지가 대상입니다.
+
+| 호출 | 검사·수정 범위 |
+| --- | --- |
+| `$create-ui audit text` | 모든 화면과 주요 상태의 텍스트 내용·필요성·중복·대체 가능성 |
+| `$create-ui audit layout` 또는 `$create-ui audit ui` | 영역별 Block의 적합성과 반영, 실제 shadcn/ui·shadcn.io 사용, 배치와 동작 |
+| `$create-ui audit page` 또는 `$create-ui audit data` | 데이터 포맷에 맞는 페이지 분할, 정보 계층, 데이터 연결과 작업 흐름 |
+| `$create-ui audit` | 위 범위 모두와 스타일·테마·접근성·상태 처리 등 적용되는 전체 규칙 |
+
+기존 기능·데이터 계약과 명시적인 사용자 선택을 보존하며 수정합니다. 검사하지 못한 화면이나 남은 문제는 결과에 표시합니다. 사용법만 확인하려면 `$create-ui help audit`을 사용합니다.
 
 ## 기본 디자인
 
